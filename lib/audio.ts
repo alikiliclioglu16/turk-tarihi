@@ -113,6 +113,7 @@ export function sesDurdur(): void {
 export function sessizAyarla(deger: boolean): void {
   sessiz = deger;
   if (deger) seslendirmeyiDurdur();
+  if (deger) sesKonumGuncelle(1e9, 1e9);
   if (anaKazanc && ctx) anaKazanc.gain.setTargetAtTime(deger ? 0 : 1, ctx.currentTime, 0.05);
   if (aktifAnlati) aktifAnlati.muted = deger;
 }
@@ -369,4 +370,199 @@ export function anlatiDurdur(): void {
 
 export function anlatiVarMi(dosyaAdi: string): boolean {
   return !bulunamayan.has(dosyaAdi);
+}
+
+
+/* ============================================================
+   MEKÂN SESLERİ — mesafeye göre kısılan çevresel ses
+   ============================================================ */
+
+export interface SesKaynagi {
+  id: string;
+  x: number;
+  z: number;
+  /** bu mesafede duyulmaya başlar */
+  menzil: number;
+  /** en yakında ulaşacağı ses düzeyi */
+  guc: number;
+  tur: "demirci" | "pazar" | "su" | "ates" | "suru" | "meydan";
+}
+
+interface CanliKaynak {
+  kaynak: SesKaynagi;
+  kazanc: GainNode;
+  durdur: () => void;
+}
+
+const canliKaynaklar = new Map<string, CanliKaynak>();
+let mekanKazanc: GainNode | null = null;
+
+function mekanKazancHazirla(): GainNode | null {
+  if (!ctx || !anaKazanc) return null;
+  if (!mekanKazanc) {
+    mekanKazanc = ctx.createGain();
+    mekanKazanc.gain.value = 0.85;
+    mekanKazanc.connect(anaKazanc);
+  }
+  return mekanKazanc;
+}
+
+/** Filtreli gürültü döngüsü — su, kalabalık ve sürü için temel */
+function gurultuDongusu(
+  cikis: GainNode, tip: BiquadFilterType, frekans: number, q: number, hiz: number
+): () => void {
+  if (!ctx) return () => {};
+  const uzunluk = ctx.sampleRate * 2;
+  const buf = ctx.createBuffer(1, uzunluk, ctx.sampleRate);
+  const veri = buf.getChannelData(0);
+  for (let i = 0; i < uzunluk; i++) veri[i] = Math.random() * 2 - 1;
+
+  const kaynak = ctx.createBufferSource();
+  kaynak.buffer = buf;
+  kaynak.loop = true;
+
+  const filtre = ctx.createBiquadFilter();
+  filtre.type = tip;
+  filtre.frequency.value = frekans;
+  filtre.Q.value = q;
+
+  const lfo = ctx.createOscillator();
+  lfo.frequency.value = hiz;
+  const lfoKazanc = ctx.createGain();
+  lfoKazanc.gain.value = frekans * 0.22;
+  lfo.connect(lfoKazanc).connect(filtre.frequency);
+
+  kaynak.connect(filtre).connect(cikis);
+  kaynak.start();
+  lfo.start();
+
+  return () => {
+    try { kaynak.stop(); lfo.stop(); } catch { /* yoksay */ }
+  };
+}
+
+/** Demirci çekici — düzenli aralıklarla metalik vuruş */
+function cekicDongusu(cikis: GainNode): () => void {
+  if (!ctx) return () => {};
+  const z = window.setInterval(() => {
+    if (!ctx) return;
+    const t0 = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(1850, t0);
+    osc.frequency.exponentialRampToValueAtTime(620, t0 + 0.16);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.5, t0);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.4);
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = 1400;
+    bp.Q.value = 2.2;
+    osc.connect(bp).connect(g).connect(cikis);
+    osc.start(t0);
+    osc.stop(t0 + 0.45);
+  }, 1180);
+  return () => window.clearInterval(z);
+}
+
+/** Sürü — arada bir hayvan sesi */
+function suruDongusu(cikis: GainNode): () => void {
+  if (!ctx) return () => {};
+  const z = window.setInterval(() => {
+    if (!ctx || Math.random() > 0.45) return;
+    const t0 = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    osc.type = "sawtooth";
+    const temel = 180 + Math.random() * 120;
+    osc.frequency.setValueAtTime(temel, t0);
+    osc.frequency.linearRampToValueAtTime(temel * 0.82, t0 + 0.5);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(0.22, t0 + 0.08);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.7);
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 900;
+    osc.connect(lp).connect(g).connect(cikis);
+    osc.start(t0);
+    osc.stop(t0 + 0.75);
+  }, 2600);
+  return () => window.clearInterval(z);
+}
+
+function kaynakBaslat(k: SesKaynagi): CanliKaynak | null {
+  const ana = mekanKazancHazirla();
+  if (!ctx || !ana) return null;
+  const g = ctx.createGain();
+  g.gain.value = 0;
+  g.connect(ana);
+
+  let durdur: () => void;
+  switch (k.tur) {
+    case "su":
+      durdur = gurultuDongusu(g, "bandpass", 900, 0.7, 0.23);
+      break;
+    case "pazar":
+    case "meydan":
+      durdur = gurultuDongusu(g, "bandpass", 420, 1.6, 0.55);
+      break;
+    case "ates":
+      durdur = gurultuDongusu(g, "highpass", 1500, 0.5, 0.9);
+      break;
+    case "demirci":
+      durdur = cekicDongusu(g);
+      break;
+    case "suru":
+      durdur = suruDongusu(g);
+      break;
+    default:
+      durdur = () => {};
+  }
+  return { kaynak: k, kazanc: g, durdur };
+}
+
+/** Sahnedeki ses kaynaklarını tanımlar (dünya koordinatında) */
+export function mekanSesleriKur(kaynaklar: SesKaynagi[]): void {
+  if (!ctx) return;
+  for (const [id, c] of canliKaynaklar) {
+    if (!kaynaklar.some((k) => k.id === id)) {
+      c.durdur();
+      try { c.kazanc.disconnect(); } catch { /* yoksay */ }
+      canliKaynaklar.delete(id);
+    }
+  }
+  for (const k of kaynaklar) {
+    if (canliKaynaklar.has(k.id)) continue;
+    const c = kaynakBaslat(k);
+    if (c) canliKaynaklar.set(k.id, c);
+  }
+}
+
+/**
+ * Oyuncunun konumuna göre tüm kaynakların ses düzeyini günceller.
+ * Yaklaştıkça artar, uzaklaştıkça yumuşakça kapanır.
+ */
+export function sesKonumGuncelle(x: number, z: number): void {
+  if (!ctx || sessiz) {
+    for (const c of canliKaynaklar.values()) {
+      c.kazanc.gain.setTargetAtTime(0, ctx?.currentTime ?? 0, 0.3);
+    }
+    return;
+  }
+  for (const c of canliKaynaklar.values()) {
+    const k = c.kaynak;
+    const d = Math.hypot(x - k.x, z - k.z);
+    const oran = Math.max(0, 1 - d / k.menzil);
+    // kare eğri: uzakta hızla düşer, yakında dolgun
+    const hedef = oran * oran * k.guc;
+    c.kazanc.gain.setTargetAtTime(hedef, ctx.currentTime, 0.35);
+  }
+}
+
+export function mekanSesleriKapat(): void {
+  for (const c of canliKaynaklar.values()) {
+    c.durdur();
+    try { c.kazanc.disconnect(); } catch { /* yoksay */ }
+  }
+  canliKaynaklar.clear();
 }

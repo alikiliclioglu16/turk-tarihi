@@ -18,6 +18,8 @@ import { Suru } from "./Suru";
 import { Canlilar } from "./Canlilar";
 import { SinirKusagi } from "./SinirKusagi";
 import { CarpismaKurulumu } from "./CarpismaKurulumu";
+import { ZeminGolgeleri } from "./ZeminGolgeleri";
+import { MekanSesleri } from "./MekanSesleri";
 import { HotspotMarker } from "./HotspotMarker";
 import { DurakIsigi } from "./DurakIsigi";
 import { AltinYol } from "./AltinYol";
@@ -60,6 +62,7 @@ export function D01Scene() {
       <AdaptiveDpr pixelated={false} />
       <Suspense fallback={null}>
         <CarpismaKurulumu />
+        <MekanSesleri />
         <IBL />
         {/* PCSS yumuşak gölgeler: temasta keskin, uzaklaştıkça yumuşayan */}
         {kalite === "yuksek" && <SoftShadows size={9} samples={8} focus={0.75} />}
@@ -67,6 +70,7 @@ export function D01Scene() {
         <BolgeAtmosferi />
         <Dere />
         <Terrain />
+        <ZeminGolgeleri />
         <Dekor />
         <Sis />
         <AtesEfekti pos={[0, 0, 0]} />

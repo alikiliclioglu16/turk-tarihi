@@ -6,6 +6,7 @@ import { araziYukseklik, SINIR_IC, DUNYA_YARICAP } from "@/lib/terrain";
 import { DUNYA_OLCEK } from "@/lib/dunyaOlcek";
 import { cimDokusu, kuruToprakDokusu, kayaZeminDokusu, patikaDokusu } from "@/lib/textures";
 import { BOLGELER, BOLGE_SIRASI } from "@/lib/bolgeler";
+import { useFrame } from "@react-three/fiber";
 
 /**
  * ARAZİ
@@ -47,8 +48,40 @@ function rotayaUzaklik(x: number, z: number, rota: [number, number][]): number {
   return en;
 }
 
+/** Yumuşak bulut deseni — büyük lekeler hâlinde */
+function bulutDesenUret(): THREE.CanvasTexture {
+  const B = 256;
+  const c = document.createElement("canvas");
+  c.width = c.height = B;
+  const g = c.getContext("2d")!;
+  g.fillStyle = "#000";
+  g.fillRect(0, 0, B, B);
+  g.globalCompositeOperation = "lighter";
+  let tohum = 8821;
+  const r = () => { tohum = (tohum * 1103515245 + 12345) & 0x7fffffff; return tohum / 0x7fffffff; };
+  for (let i = 0; i < 90; i++) {
+    const x = r() * B, y = r() * B, rad = 18 + r() * 52;
+    const grad = g.createRadialGradient(x, y, 0, x, y, rad);
+    grad.addColorStop(0, "rgba(255,255,255,0.5)");
+    grad.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = grad;
+    g.beginPath();
+    g.arc(x, y, rad, 0, Math.PI * 2);
+    g.fill();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  return t;
+}
+
 export function Terrain() {
   const mesh = useRef<THREE.Mesh>(null);
+  const bulutDokusu = useMemo(bulutDesenUret, []);
+  const bulutZaman = useRef({ value: 0 });
+
+  useFrame((_, delta) => {
+    bulutZaman.current.value += delta;
+  });
   const cim = useMemo(() => cimDokusu(), []);
   const toprak = useMemo(() => kuruToprakDokusu(), []);
   const kaya = useMemo(() => kayaZeminDokusu(), []);
@@ -130,6 +163,8 @@ export function Terrain() {
       shader.uniforms.toprakHarita = { value: toprak };
       shader.uniforms.kayaHarita = { value: kaya };
       shader.uniforms.patikaHarita = { value: patika };
+      shader.uniforms.bulutHarita = { value: bulutDokusu };
+      shader.uniforms.bulutZaman = bulutZaman.current;
 
       shader.vertexShader = shader.vertexShader
         .replace(
@@ -154,6 +189,8 @@ export function Terrain() {
            uniform sampler2D toprakHarita;
            uniform sampler2D kayaHarita;
            uniform sampler2D patikaHarita;
+           uniform sampler2D bulutHarita;
+           uniform float bulutZaman;
            varying vec4 vHarman;
            varying vec3 vDunyaKonum;`
         )
@@ -189,13 +226,23 @@ export function Terrain() {
           float dalga = sin(vDunyaKonum.x * 0.011) * cos(vDunyaKonum.z * 0.009);
           zeminRenk *= 0.94 + dalga * 0.07;
 
+          // ---- BULUT GÖLGELERİ ----
+          // Gökyüzünden geçen büyük gölge lekeleri. İki katman farklı
+          // hızda kayar; manzara sürekli değişiyormuş gibi görünür.
+          vec2 bUv1 = vDunyaKonum.xz * 0.0032 + vec2(bulutZaman * 0.0042, bulutZaman * 0.0018);
+          vec2 bUv2 = vDunyaKonum.xz * 0.0019 - vec2(bulutZaman * 0.0026, bulutZaman * 0.0011);
+          float b1 = texture2D(bulutHarita, bUv1).r;
+          float b2 = texture2D(bulutHarita, bUv2).r;
+          float bulut = smoothstep(0.42, 0.78, b1 * 0.65 + b2 * 0.55);
+          zeminRenk *= mix(1.0, 0.74, bulut);
+
           diffuseColor.rgb *= zeminRenk;
           `
         );
     };
-    m.customProgramCacheKey = () => "arazi-harman-v1";
+    m.customProgramCacheKey = () => "arazi-harman-v2";
     return m;
-  }, [cim, toprak, kaya, patika]);
+  }, [cim, toprak, kaya, patika, bulutDokusu]);
 
   return <mesh ref={mesh} geometry={geo} material={mat} receiveShadow frustumCulled={false} />;
 }
