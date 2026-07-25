@@ -319,6 +319,14 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--cini); outline-
 .mini-harita {
   position: absolute; right: 16px; bottom: 16px; z-index: 24;
   pointer-events: none; filter: drop-shadow(0 6px 20px rgba(0,0,0,.5));
+  transition: transform .25s ease;
+}
+.mini-harita.buyuk { right: 50%; bottom: 50%; transform: translate(50%, 50%); }
+.mini-harita-dugme {
+  position: absolute; right: 4px; top: 4px; pointer-events: auto;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(12,18,28,.85); border: 1px solid rgba(255,207,114,.5);
+  color: #F7EBD3; font-size: 14px;
 }
 .mini-harita canvas { display: block; border-radius: 50%; }
 .mini-harita-etiket {

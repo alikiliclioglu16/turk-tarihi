@@ -8,7 +8,7 @@ import { zeminDokusu } from "@/lib/textures";
 export function Terrain() {
   const tex = useMemo(() => zeminDokusu(), []);
   const geo = useMemo(() => {
-    const g = new THREE.PlaneGeometry(900, 900, 200, 200);
+    const g = new THREE.PlaneGeometry(880, 880, 220, 220);
     const pos = g.attributes.position;
     const renkler = new Float32Array(pos.count * 3);
     for (let i = 0; i < pos.count; i++) {

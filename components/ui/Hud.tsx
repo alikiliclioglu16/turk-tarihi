@@ -3,7 +3,17 @@
 import { useEffect, useState } from "react";
 import { useOyun } from "@/lib/store";
 import { sesBaslat, sessizAyarla, sessizMi, tik } from "@/lib/audio";
-import { BonusSayac } from "./BonusPanel";
+import { BONUS_TOPLAM } from "@/lib/bonusKesifler";
+
+/** Meraklı Gözler sayacı */
+function BonusSayac() {
+  const bulunan = useOyun((s) => s.bulunanBonuslar);
+  return (
+    <span className="bonus-sayac" title="Meraklı Gözler — obada bulunabilecek keşifler">
+      ✨ {bulunan.length}/{BONUS_TOPLAM}
+    </span>
+  );
+}
 
 export function Hud() {
   const nodlar = useOyun((s) => s.nodlar);

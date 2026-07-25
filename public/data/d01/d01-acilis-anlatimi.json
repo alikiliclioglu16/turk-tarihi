@@ -1,0 +1,19 @@
+{
+  "acilis": [
+    {
+      "id": "d01_acilis_01",
+      "audio": "d01_acilis_01.wav",
+      "text": "Bak yolcu; önünde geniş bir oba uzanıyor. Otağlar, yollar ve sürüler, bozkırda büyük bir düzen kuruyor. Ufukta dört ayrı bölge seçiliyor."
+    },
+    {
+      "id": "d01_acilis_02",
+      "audio": "d01_acilis_02.wav",
+      "text": "Burada insanlar üretir, paylaşır, dinlenir ve yolculuğa hazırlanır. Ocaklar tüter, zanaatlar sürer, hayvanlar çevrede dolaşır. Her köşe başka bir iz saklar."
+    },
+    {
+      "id": "d01_acilis_03",
+      "audio": "d01_acilis_03.wav",
+      "text": "Buraya ilk kez geliyorsun, yiğidim. Gözlerini açık tut ve yolun işaretlerini izle. Bu keşif, geçmişi kanıtlarla anlamanın kapısını aralayacak."
+    }
+  ]
+}

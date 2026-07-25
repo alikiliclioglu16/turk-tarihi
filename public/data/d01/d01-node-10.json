@@ -108,57 +108,75 @@
     "options": [
       {
         "id": "a",
-        "text": "Biliyoruz — Su ve patika | Coğrafya hareket seçeneklerini etkiler.",
+        "text": "Su ve patika | Coğrafya hareket seçeneklerini etkiler.",
         "correct": true,
-        "feedback": "Doğru. Coğrafi izler hareket imkânları hakkında doğrudan kanıt sunar."
+        "feedback": "Doğru. Coğrafi izler hareket imkânları hakkında doğrudan kanıt sunar.",
+        "dogruDuzey": "Biliyoruz",
+        "sutun": "Biliyoruz"
       },
       {
         "id": "b",
-        "text": "Tahmin ediyoruz — Taş figür | Önemli bir kişiyi anlatıyor olabilir.",
+        "text": "Taş figür | Önemli bir kişiyi anlatıyor olabilir.",
         "correct": true,
-        "feedback": "Doğru. Figür yorum sağlar; kimlik başka kanıtlar olmadan kesinleşmez."
+        "feedback": "Doğru. Figür yorum sağlar; kimlik başka kanıtlar olmadan kesinleşmez.",
+        "dogruDuzey": "Tahmin ediyoruz",
+        "sutun": "Tahmin ediyoruz"
       },
       {
         "id": "c",
-        "text": "Bilmiyoruz — Aşınmış yazıt | Kayıp bölümde hangi sözlerin bulunduğu",
+        "text": "Aşınmış yazıt | Kayıp bölümde hangi sözlerin bulunduğu",
         "correct": true,
-        "feedback": "Evet. Okunamayan bölüm hakkında kesin bir cümle kuramayız."
+        "feedback": "Evet. Okunamayan bölüm hakkında kesin bir cümle kuramayız.",
+        "dogruDuzey": "Bilmiyoruz",
+        "sutun": "Bilmiyoruz"
       },
       {
         "id": "d",
-        "text": "Biliyoruz — Yarı gömülü kap | Buluntu konumunun araştırma için önemli olduğu",
+        "text": "Yarı gömülü kap | Buluntu konumunun araştırma için önemli olduğu",
         "correct": true,
-        "feedback": "Doğru. Buluntunun bağlamı, nesnenin yorumlanmasını destekler."
+        "feedback": "Doğru. Buluntunun bağlamı, nesnenin yorumlanmasını destekler.",
+        "dogruDuzey": "Biliyoruz",
+        "sutun": "Biliyoruz"
       },
       {
         "id": "e",
-        "text": "Tahmin ediyoruz — Eski patika | Mevsimlik hareket için kullanılmış olabileceği",
+        "text": "Eski patika | Mevsimlik hareket için kullanılmış olabileceği",
         "correct": true,
-        "feedback": "Güzel. Patika ihtimal düşündürür; kullanım amacı ayrıca araştırılmalıdır."
+        "feedback": "Güzel. Patika ihtimal düşündürür; kullanım amacı ayrıca araştırılmalıdır.",
+        "dogruDuzey": "Tahmin ediyoruz",
+        "sutun": "Tahmin ediyoruz"
       },
       {
         "id": "f",
-        "text": "Bilmiyoruz — İsimsiz nesne | İlk sahibinin kim olduğu",
+        "text": "İsimsiz nesne | İlk sahibinin kim olduğu",
         "correct": true,
-        "feedback": "Doğru. Doğrudan kayıt yoksa sahibin adını kesin söyleyemeyiz."
+        "feedback": "Doğru. Doğrudan kayıt yoksa sahibin adını kesin söyleyemeyiz.",
+        "dogruDuzey": "Bilmiyoruz",
+        "sutun": "Bilmiyoruz"
       },
       {
         "id": "g",
-        "text": "Biliyoruz — Tek taş figür | Kişinin adı ve bütün yaşam öyküsü",
+        "text": "Tek taş figür | Kişinin adı ve bütün yaşam öyküsü",
         "correct": false,
-        "feedback": "Tek figür bu ayrıntıları kesinleştirmez. Başka kaynaklar gerekir."
+        "feedback": "Tek figür bu ayrıntıları kesinleştirmez. Başka kaynaklar gerekir.",
+        "dogruDuzey": "Bilmiyoruz",
+        "sutun": "Biliyoruz"
       },
       {
         "id": "h",
-        "text": "Tahmin ediyoruz — Aşınmış yazıt | İstediğimiz cümleyi tamamlayabileceğimiz",
+        "text": "Aşınmış yazıt | İstediğimiz cümleyi tamamlayabileceğimiz",
         "correct": false,
-        "feedback": "Eksik yazı istenen öyküyle tamamlanmaz. Bilmediğimizi açıkça söyleriz."
+        "feedback": "Eksik yazı istenen öyküyle tamamlanmaz. Bilmediğimizi açıkça söyleriz.",
+        "dogruDuzey": "Bilmiyoruz",
+        "sutun": "Tahmin ediyoruz"
       },
       {
         "id": "i",
-        "text": "Bilmiyoruz — Su kaynağı | Çevrede su bulunduğu",
+        "text": "Su kaynağı | Çevrede su bulunduğu",
         "correct": false,
-        "feedback": "Suyu doğrudan gözleyebiliriz. Bu bilgi “Biliyoruz” düzeyindedir."
+        "feedback": "Suyu doğrudan gözleyebiliriz. Bu bilgi “Biliyoruz” düzeyindedir.",
+        "dogruDuzey": "Biliyoruz",
+        "sutun": "Bilmiyoruz"
       }
     ],
     "hints": [
@@ -171,7 +189,16 @@
         "text": "Okunamayan yazı ve isimsiz sahipler “bilmiyoruz” grubunda kalır."
       }
     ],
-    "successFeedback": "Kaynakları dikkatle bağladın. Bildiğinle tahmin ettiğini açıkça ayırdın."
+    "successFeedback": "Kaynakları dikkatle bağladın. Bildiğinle tahmin ettiğini açıkça ayırdın.",
+    "arayuz": {
+      "sutunlar": [
+        "Biliyoruz",
+        "Tahmin ediyoruz",
+        "Bilmiyoruz"
+      ],
+      "yonerge": "Kartları doğru sütuna sürükle.",
+      "karistir": true
+    }
   },
   "reward": {
     "cardId": "card_10",
@@ -221,8 +248,11 @@
     "d01_n10_fb_correct_b.wav",
     "d01_n10_fb_correct_c.wav",
     "d01_n10_fb_correct_d.wav",
-    "d01_n10_fb_wrong_e.wav",
-    "d01_n10_fb_wrong_f.wav",
+    "d01_n10_fb_correct_e.wav",
+    "d01_n10_fb_correct_f.wav",
+    "d01_n10_fb_wrong_g.wav",
+    "d01_n10_fb_wrong_h.wav",
+    "d01_n10_fb_wrong_i.wav",
     "d01_n10_hint_2.wav",
     "d01_n10_hint_4.wav",
     "d01_n10_success.wav",

@@ -108,39 +108,45 @@
     "options": [
       {
         "id": "a",
-        "text": "Gördüğüm — Figürün elinde kap benzeri bir şekil var.",
+        "text": "Figürün elinde kap benzeri bir şekil var.",
         "correct": true,
-        "feedback": "Bu ayrıntı doğrudan görülebilir. Gözlem sütununa yerleştir."
+        "feedback": "Bu ayrıntı doğrudan görülebilir. Gözlem sütununa yerleştir.",
+        "sutun": "Gördüğüm"
       },
       {
         "id": "b",
-        "text": "Gördüğüm — Taşın yüzeyi aşınmış ve çatlamış.",
+        "text": "Taşın yüzeyi aşınmış ve çatlamış.",
         "correct": true,
-        "feedback": "Aşınma ve çatlak gözle görülür. Gözlem sütununa gider."
+        "feedback": "Aşınma ve çatlak gözle görülür. Gözlem sütununa gider.",
+        "sutun": "Gördüğüm"
       },
       {
         "id": "c",
-        "text": "Gördüğüm — Bazı yüz çizgileri artık seçilemiyor.",
+        "text": "Bazı yüz çizgileri artık seçilemiyor.",
         "correct": true,
-        "feedback": "Çizgilerin seçilememesi görülebilir. Bu bir gözlemdir."
+        "feedback": "Çizgilerin seçilememesi görülebilir. Bu bir gözlemdir.",
+        "sutun": "Gördüğüm"
       },
       {
         "id": "d",
-        "text": "Düşündüğüm — Figür önemli bir kişiyi anlatıyor olabilir.",
+        "text": "Figür önemli bir kişiyi anlatıyor olabilir.",
         "correct": true,
-        "feedback": "“Olabilir” sözü dikkatli yorum kurduğunu gösterir."
+        "feedback": "“Olabilir” sözü dikkatli yorum kurduğunu gösterir.",
+        "sutun": "Düşündüğüm"
       },
       {
         "id": "e",
-        "text": "Düşündüğüm — Kap bir törenle ilişkili olabilir.",
+        "text": "Kap bir törenle ilişkili olabilir.",
         "correct": true,
-        "feedback": "Bu anlam doğrudan görülmez. Kaynaklarla sınanacak bir yorumdur."
+        "feedback": "Bu anlam doğrudan görülmez. Kaynaklarla sınanacak bir yorumdur.",
+        "sutun": "Düşündüğüm"
       },
       {
         "id": "f",
-        "text": "Düşündüğüm — Taşın ilk yeri başka bir nokta olabilir.",
+        "text": "Taşın ilk yeri başka bir nokta olabilir.",
         "correct": true,
-        "feedback": "İlk konum bilinmiyor. Bu nedenle ifade bir yorumdur."
+        "feedback": "İlk konum bilinmiyor. Bu nedenle ifade bir yorumdur.",
+        "sutun": "Düşündüğüm"
       }
     ],
     "hints": [
@@ -153,7 +159,15 @@
         "text": "“Var” ve “görülüyor” gözlemdir. “Olabilir” sözü yorumu gösterir."
       }
     ],
-    "successFeedback": "Gözlemle yorumu ayırdın. Geçmişi araştırırken bu ayrım çok değerlidir."
+    "successFeedback": "Gözlemle yorumu ayırdın. Geçmişi araştırırken bu ayrım çok değerlidir.",
+    "arayuz": {
+      "sutunlar": [
+        "Gördüğüm",
+        "Düşündüğüm"
+      ],
+      "yonerge": "Kartları doğru sütuna sürükle.",
+      "karistir": true
+    }
   },
   "reward": {
     "cardId": "card_04",
@@ -199,9 +213,9 @@
     "d01_n04_hs_tas_dizisi.wav",
     "d01_n04_fb_correct_a.wav",
     "d01_n04_fb_correct_b.wav",
-    "d01_n04_fb_wrong_c.wav",
+    "d01_n04_fb_correct_c.wav",
     "d01_n04_fb_correct_d.wav",
-    "d01_n04_fb_wrong_e.wav",
+    "d01_n04_fb_correct_e.wav",
     "d01_n04_fb_correct_f.wav",
     "d01_n04_hint_2.wav",
     "d01_n04_hint_4.wav",

@@ -141,7 +141,12 @@
         "text": "Doğru sıra: koşulları gözlemle, hazırlan, yolu izle, kampı kur."
       }
     ],
-    "successFeedback": "Hareketin bir düzen ve karar işi olduğunu kavradın. Yol artık daha anlamlı."
+    "successFeedback": "Hareketin bir düzen ve karar işi olduğunu kavradın. Yol artık daha anlamlı.",
+    "arayuz": {
+      "tip": "sirala",
+      "yonerge": "Adımları doğru sıraya diz.",
+      "karistir": true
+    }
   },
   "reward": {
     "cardId": "card_07",

@@ -108,39 +108,45 @@
     "options": [
       {
         "id": "a",
-        "text": "Değişen — Otağın kumaşı yıpranmış, bazı direkler çürümüş.",
+        "text": "Otağın kumaşı yıpranmış, bazı direkler çürümüş.",
         "correct": true,
-        "feedback": "Malzemenin durumu zamanla değişmiş. Bu ifade “Değişen” sütununa gider."
+        "feedback": "Malzemenin durumu zamanla değişmiş. Bu ifade “Değişen” sütununa gider.",
+        "sutun": "Değişen"
       },
       {
         "id": "b",
-        "text": "Değişen — Eski patikanın bir bölümü otlarla kapanmış.",
+        "text": "Eski patikanın bir bölümü otlarla kapanmış.",
         "correct": true,
-        "feedback": "Patikanın görünümü değişmiş. Bu ifade “Değişen” sütunundadır."
+        "feedback": "Patikanın görünümü değişmiş. Bu ifade “Değişen” sütunundadır.",
+        "sutun": "Değişen"
       },
       {
         "id": "c",
-        "text": "Süren — İnsanlar suya ve güvenli barınmaya ihtiyaç duyar.",
+        "text": "İnsanlar suya ve güvenli barınmaya ihtiyaç duyar.",
         "correct": true,
-        "feedback": "Bu ihtiyaç farklı dönemlerde sürebilir. “Süren” sütununa yerleştir."
+        "feedback": "Bu ihtiyaç farklı dönemlerde sürebilir. “Süren” sütununa yerleştir.",
+        "sutun": "Süren"
       },
       {
         "id": "d",
-        "text": "Süren — Geçmişi anlamak için izleri karşılaştırma gereği sürer.",
+        "text": "Geçmişi anlamak için izleri karşılaştırma gereği sürer.",
         "correct": true,
-        "feedback": "Araştırma ihtiyacı devam eder. Bu ifade “Süren” sütununa gider."
+        "feedback": "Araştırma ihtiyacı devam eder. Bu ifade “Süren” sütununa gider.",
+        "sutun": "Süren"
       },
       {
         "id": "e",
-        "text": "Hem değişen hem süren — Desenler farklılaşabilir, dokuma geleneği yaşayabilir.",
+        "text": "Desenler farklılaşabilir, dokuma geleneği yaşayabilir.",
         "correct": true,
-        "feedback": "Biçim değişebilir, uygulama sürebilir. İki durumu birlikte gösterir."
+        "feedback": "Biçim değişebilir, uygulama sürebilir. İki durumu birlikte gösterir.",
+        "sutun": "Hem değişen hem süren"
       },
       {
         "id": "f",
-        "text": "Hem değişen hem süren — Yerleşimler değişebilir, birlikte yaşama ihtiyacı sürebilir.",
+        "text": "Yerleşimler değişebilir, birlikte yaşama ihtiyacı sürebilir.",
         "correct": true,
-        "feedback": "Yerleşim biçimi değişirken ortak ihtiyaç sürebilir. Doğru sütunu seçtin."
+        "feedback": "Yerleşim biçimi değişirken ortak ihtiyaç sürebilir. Doğru sütunu seçtin.",
+        "sutun": "Hem değişen hem süren"
       }
     ],
     "hints": [
@@ -153,7 +159,16 @@
         "text": "Bir ifade iki özelliği taşıyorsa “Hem değişen hem süren” sütununa gider."
       }
     ],
-    "successFeedback": "Değişimle sürekliliği birlikte gördün. Geçmiş tek çizgide ilerlemez."
+    "successFeedback": "Değişimle sürekliliği birlikte gördün. Geçmiş tek çizgide ilerlemez.",
+    "arayuz": {
+      "sutunlar": [
+        "Değişen",
+        "Süren",
+        "Hem değişen hem süren"
+      ],
+      "yonerge": "Kartları doğru sütuna sürükle.",
+      "karistir": true
+    }
   },
   "reward": {
     "cardId": "card_09",
@@ -201,6 +216,8 @@
     "d01_n09_fb_correct_b.wav",
     "d01_n09_fb_correct_c.wav",
     "d01_n09_fb_correct_d.wav",
+    "d01_n09_fb_correct_e.wav",
+    "d01_n09_fb_correct_f.wav",
     "d01_n09_hint_2.wav",
     "d01_n09_hint_4.wav",
     "d01_n09_success.wav",

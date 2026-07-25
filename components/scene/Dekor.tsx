@@ -41,7 +41,7 @@ export function Dekor() {
     for (let i = 0; i < OT_SAYISI; i++) {
       const x = (rnd() - 0.5) * 700;
       const z = (rnd() - 0.5) * 720;
-      if (Math.hypot(x, z) > 350) continue;
+      if (Math.hypot(x, z) > 360) continue;
       const s = 0.7 + rnd() * 1.3;
       gecici.position.set(x, araziYukseklik(x, z) + 0.3 * s, z);
       gecici.rotation.set(0, rnd() * Math.PI, 0);
@@ -53,7 +53,7 @@ export function Dekor() {
     for (let i = 0; i < KAYA_SAYISI; i++) {
       const x = (rnd() - 0.5) * 680;
       const z = (rnd() - 0.5) * 700;
-      if (Math.hypot(x, z) > 340) continue;
+      if (Math.hypot(x, z) > 350) continue;
       const s = 0.35 + rnd() * 1.1;
       gecici.position.set(x, araziYukseklik(x, z) + 0.14 * s, z);
       gecici.rotation.set(rnd() * 3, rnd() * 3, rnd() * 3);
@@ -64,7 +64,7 @@ export function Dekor() {
 
     for (let i = 0; i < DAG_SAYISI; i++) {
       const a = (i / DAG_SAYISI) * Math.PI * 2 + rnd() * 0.3;
-      const r = 400 + rnd() * 90;
+      const r = 430 + rnd() * 90;
       const s = 1 + rnd() * 1.1;
       gecici.position.set(Math.cos(a) * r, 2, Math.sin(a) * r);
       gecici.rotation.set(0, rnd() * Math.PI, 0);

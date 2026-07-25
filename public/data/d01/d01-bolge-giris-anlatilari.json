@@ -1,0 +1,40 @@
+{
+  "bolgeGiris": {
+    "balbal_sirti": [
+      {
+        "id": "d01_bolge_balbal_sirti_01",
+        "audio": "d01_bolge_balbal_sirti_01.wav",
+        "text": "Taşlık sırt güneş altında sessizce yükseliyor. Aşınmış figürler, çevrede saygılı bir duruş bırakıyor. Rüzgâr, taşların arasından yavaşça geçiyor."
+      },
+      {
+        "id": "d01_bolge_balbal_sirti_02",
+        "audio": "d01_bolge_balbal_sirti_02.wav",
+        "text": "Burada gördüğün ayrıntılarla düşündüğün anlamı ayıracaksın. Her taş, dikkatli bakışına başka bir soru sunabilir. Kesinlik için sabırlı ol, yolcu."
+      }
+    ],
+    "su_basi": [
+      {
+        "id": "d01_bolge_su_basi_01",
+        "audio": "d01_bolge_su_basi_01.wav",
+        "text": "Dere, söğütlerin arasından sakin biçimde akıyor. Güneş suya vurdukça çevrenin yolları daha belirginleşiyor. Serin kıyılar yaşamın izlerini topluyor."
+      },
+      {
+        "id": "d01_bolge_su_basi_02",
+        "audio": "d01_bolge_su_basi_02.wav",
+        "text": "Bu bölgede suyu, zemini ve otlağı birlikte okuyacaksın. Uygun yer seçimi, tek işarete dayanmaz. Çevreyi bütün olarak düşün, evlat."
+      }
+    ],
+    "eski_yurt": [
+      {
+        "id": "d01_bolge_eski_yurt_01",
+        "audio": "d01_bolge_eski_yurt_01.wav",
+        "text": "Eski yerleşimin izleri açık güneş altında sessizce duruyor. Burada korku değil, düşünce ve saygı var. Zaman, her yüzeyde başka iz bırakmış."
+      },
+      {
+        "id": "d01_bolge_eski_yurt_02",
+        "audio": "d01_bolge_eski_yurt_02.wav",
+        "text": "Buluntuların yerini, değişen yapıları ve süren ihtiyaçları inceleyeceksin. Geçmiş, ancak ilişkiler korununca daha anlaşılır olur. Dikkatle bak, yolcu."
+      }
+    ]
+  }
+}

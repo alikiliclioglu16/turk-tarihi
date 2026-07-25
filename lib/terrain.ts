@@ -85,6 +85,19 @@ export function araziYukseklik(gx: number, gz: number): number {
     y -= k * k * 2.6;
   }
 
+  // ---- DÜNYA SINIRI ----
+  // Belirli bir yarıçaptan sonra arazi hızla yükselir: dünyayı çevreleyen
+  // doğal bir tepe kuşağı. Oyuncu buranın ötesine geçemez; sonsuz boş
+  // ova yerine kapalı ve okunabilir bir dünya olur.
+  const merkezUz = Math.hypot(x, z);
+  if (merkezUz > SINIR_IC) {
+    const k = Math.min(1, (merkezUz - SINIR_IC) / (SINIR_DIS - SINIR_IC));
+    const yumusak = k * k * (3 - 2 * k);
+    y += yumusak * 26;
+    // tepe sırtında dalgalanma
+    y += yumusak * Math.sin(Math.atan2(z, x) * 7) * 4;
+  }
+
   // kamp alanı tamamen düz olsun
   const dOba = Math.hypot(x, z - 4);
   if (dOba < 15) {
@@ -95,6 +108,10 @@ export function araziYukseklik(gx: number, gz: number): number {
   return y * DUNYA_OLCEK;
 }
 
+/** Dünya sınırı — tasarım biriminde (× DUNYA_OLCEK = metre) */
+export const SINIR_IC = 108;   // tepeler burada yükselmeye başlar
+export const SINIR_DIS = 132;  // tepe zirvesi
+
 /** Su yüzeyi kotu — dere bu seviyede akar */
 export const SU_KOTU = -3.4 * DUNYA_OLCEK;
 
@@ -103,4 +120,9 @@ export function dereIcindeMi(gx: number, gz: number): boolean {
 }
 
 /** Dünya sınırı (metre) */
-export const DUNYA_YARICAP = 130 * DUNYA_OLCEK;
+/**
+ * Oyuncunun gidebileceği en uzak nokta.
+ * En uzak durak (node 05) merkeze 96 birim; sınır 118 birim —
+ * yani bölgelerin ~15 saniye ötesine kadar gidilebilir.
+ */
+export const DUNYA_YARICAP = 118 * DUNYA_OLCEK;

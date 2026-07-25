@@ -66,7 +66,8 @@ function otagKonumlari() {
     }
   }
 
-  return liste.slice(0, OTAG_SAYISI);
+  // dünya sınırı dışına taşanları ele
+  return liste.filter((o) => Math.hypot(o.x, o.z) < 300).slice(0, OTAG_SAYISI);
 }
 
 export function BuyukOba() {

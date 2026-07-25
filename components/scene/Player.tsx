@@ -132,9 +132,15 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
       const aci = Math.atan2(yon.current.x, yon.current.z) + camYaw.current + Math.PI;
       const nx = g.position.x + Math.sin(aci) * hiz * guc * dt;
       const nz = g.position.z + Math.cos(aci) * hiz * guc * dt;
-      if (Math.hypot(nx, nz) < DUNYA_YARICAP) {
+      const yeniUz = Math.hypot(nx, nz);
+      if (yeniUz < DUNYA_YARICAP) {
         g.position.x = nx;
         g.position.z = nz;
+      } else {
+        // sınıra teğet kayarak dur — sert duvar hissi olmasın
+        const oran = DUNYA_YARICAP / yeniUz;
+        g.position.x = nx * oran;
+        g.position.z = nz * oran;
       }
       hedefAci.current = aci;
       adimFaz.current += dt * ADIM_TEMPO * guc * (kosuyor.current ? 1.5 : 1);
@@ -154,6 +160,7 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
     oyuncuKonumu.x = g.position.x;
     oyuncuKonumu.y = g.position.y;
     oyuncuKonumu.z = g.position.z;
+    oyuncuKonumu.aci = g.rotation.y;
 
     yuruyusYogunluk.current = THREE.MathUtils.lerp(
       yuruyusYogunluk.current, yuruyor ? guc : 0, dt * 8
