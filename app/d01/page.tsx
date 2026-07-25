@@ -9,7 +9,8 @@ import { ilerlemeSifirla } from "@/lib/progress";
 import { sesBaslat, sessizAyarla, sessizMi } from "@/lib/audio";
 
 import { DiscoveryStage2D } from "@/components/discovery2d/DiscoveryStage2D";
-import { DedeKorkutGuide, type RehberPoz } from "@/components/discovery2d/DedeKorkutGuide";
+import { DedeKorkutGuide } from "@/components/discovery2d/DedeKorkutGuide";
+import { pozSec } from "@/lib/pozSecici";
 import { QuestEngine } from "@/components/discovery2d/QuestEngine";
 import { HistoryCardReward } from "@/components/discovery2d/HistoryCardReward";
 import { NodeProgress } from "@/components/discovery2d/NodeProgress";
@@ -111,13 +112,19 @@ export default function D01Page() {
   const aktifHotspot = aktifHotspotId ? nod?.hotspots.find((h) => h.id === aktifHotspotId) : null;
   const taraf = nod ? rehberTarafi(nod) : "sag";
 
-  /* Faza göre rehber pozu */
-  let poz: RehberPoz = "DK01";
-  if (faz === "anlati") poz = anlatiIndex === 0 ? "DK01" : "DK04";
-  else if (faz === "kesif") poz = aktifHotspot ? "DK04" : taraf === "sol" ? "DK02" : "DK03";
-  else if (faz === "gorev") poz = ipucu ? "DK05" : "DK04";
-  else if (faz === "kapanis") poz = "DK06";
-  else if (faz === "bolumBitti") poz = "DK08";
+  /* Poz seçimi tek merkezden: lib/pozSecici.ts */
+  const sonCevapDogru =
+    faz === "gorev" && geriBildirim
+      ? nod?.quest.options.some((o) => o.correct && o.feedback === geriBildirim) ?? null
+      : null;
+
+  const poz = pozSec({
+    faz,
+    anlatiIndex,
+    hotspotAcik: Boolean(aktifHotspot),
+    ipucuVar: Boolean(ipucu),
+    sonCevapDogru,
+  });
 
   return (
     <main className="d01-sayfa">
@@ -153,8 +160,9 @@ export default function D01Page() {
       {/* --- ANLATI --- */}
       {faz === "anlati" && nod && nod.narration[anlatiIndex] && (
         <DedeKorkutGuide
-          poz={poz}
-          taraf={taraf}
+          poseId={poz}
+          side={taraf}
+          ariaLabel="Dede Korkut anlatıyor"
           metin={nod.narration[anlatiIndex].text}
           altBaslik={nod.title}
           ses={nod.narration[anlatiIndex].audio}
@@ -168,8 +176,9 @@ export default function D01Page() {
       {faz === "kesif" && nod && (
         aktifHotspot ? (
           <DedeKorkutGuide
-            poz="DK04"
-            taraf={taraf}
+            poseId={poz}
+            side={taraf}
+            ariaLabel={`Dede Korkut: ${aktifHotspot.label}`}
             metin={aktifHotspot.text}
             altBaslik={aktifHotspot.label}
             ses={aktifHotspot.audio}
@@ -216,8 +225,9 @@ export default function D01Page() {
       {/* --- KAPANIŞ --- */}
       {faz === "kapanis" && nod && (
         <DedeKorkutGuide
-          poz="DK06"
-          taraf={taraf}
+          poseId={poz}
+          side={taraf}
+          ariaLabel="Dede Korkut uğurluyor"
           metin={nod.closing.text}
           altBaslik={nod.title}
           ses={nod.closing.audio}

@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { varlikYolu, varlikCoz } from "@/lib/manifest";
+import { useEffect, useRef, useState } from "react";
+import { varlikCoz, varlikYolu } from "@/lib/manifest";
+import { POZ_ACIKLAMA, type PozId } from "@/lib/pozSecici";
 import { RehberYerTutucu } from "./Placeholder";
 import { anlatiCal, anlatiDurdur } from "@/lib/audio";
 
-export type RehberPoz = "DK01" | "DK02" | "DK03" | "DK04" | "DK05" | "DK06" | "DK07" | "DK08";
-
 interface Props {
-  poz: RehberPoz;
-  taraf: "sol" | "sag";
+  poseId: PozId;
+  side: "sol" | "sag";
+  visible?: boolean;
+  ariaLabel?: string;
+  className?: string;
   metin: string;
-  baslik?: string;
   altBaslik?: string;
   ses?: string;
   altyaziAcik: boolean;
@@ -21,22 +22,40 @@ interface Props {
 
 /**
  * DEDE KORKUT REHBER KATMANI
- * Poz görseli + anlatı paneli + altyazı + tekrar dinle.
- * Pozlar arasında crossfade, hafif nefes hareketi.
+ *
+ * Poz görselini manifestten çözer, pozlar arasında 220 ms opacity
+ * crossfade uygular, en-boy oranını korur (object-fit: contain),
+ * anlatı panelini ve altyazıyı yönetir.
+ *
+ * Bileşen poz SEÇMEZ — hangi pozun geleceğine `lib/pozSecici.ts` karar verir.
  */
 export function DedeKorkutGuide({
-  poz, taraf, metin, baslik, altBaslik, ses, altyaziAcik, dugmeMetni, onDevam,
+  poseId, side, visible = true, ariaLabel, className = "",
+  metin, altBaslik, ses, altyaziAcik, dugmeMetni, onDevam,
 }: Props) {
-  const [yazilan, setYazilan] = useState("");
-  const [bitti, setBitti] = useState(false);
-  const yol = varlikYolu(`dk.${poz}`);
-  const kayit = varlikCoz(`dk.${poz}`);
+  /* --- poz crossfade --- */
+  const [gorunen, setGorunen] = useState<PozId>(poseId);
+  const [cikan, setCikan] = useState<PozId | null>(null);
+  const oncekiRef = useRef<PozId>(poseId);
 
+  useEffect(() => {
+    if (poseId === oncekiRef.current) return;
+    setCikan(oncekiRef.current);
+    setGorunen(poseId);
+    oncekiRef.current = poseId;
+    const z = setTimeout(() => setCikan(null), 240);
+    return () => clearTimeout(z);
+  }, [poseId]);
+
+  /* --- anlatı sesi --- */
   useEffect(() => {
     if (ses) anlatiCal(ses);
     return () => anlatiDurdur();
   }, [ses]);
 
+  /* --- daktilo --- */
+  const [yazilan, setYazilan] = useState("");
+  const [bitti, setBitti] = useState(false);
   useEffect(() => {
     setYazilan("");
     setBitti(false);
@@ -58,24 +77,38 @@ export function DedeKorkutGuide({
     return () => clearInterval(z);
   }, [metin]);
 
-  const isaret = poz === "DK02" ? "sag" : poz === "DK03" ? "sol" : null;
+  if (!visible) return null;
+
+  const cizPoz = (id: PozId, sinif: string) => {
+    const yol = varlikYolu(`dk.${id}`);
+    const kayit = varlikCoz(`dk.${id}`);
+    if (!yol) return <RehberYerTutucu key={id} isaret={null} />;
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        key={id}
+        src={yol}
+        alt={kayit?.alt ?? POZ_ACIKLAMA[id]}
+        className={`rehber-img ${sinif}`}
+        width={1024}
+        height={1536}
+        decoding="async"
+      />
+    );
+  };
 
   return (
-    <div className={`rehber-katman ${taraf}`}>
-      <div className="rehber-figur" key={poz}>
-        {yol ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={yol} alt={kayit?.alt ?? "Dede Korkut"} className="rehber-img" />
-        ) : (
-          <RehberYerTutucu isaret={isaret} />
-        )}
+    <div className={`rehber-katman ${side} ${className}`} aria-label={ariaLabel}>
+      <div className="rehber-figur">
+        {cikan && cizPoz(cikan, "poz-cikan")}
+        {cizPoz(gorunen, "poz-giren")}
       </div>
 
       <div className="anlati-panel" onClick={() => !bitti && (setYazilan(metin), setBitti(true))}>
         <div className="anlati-ust">
           <div>
             <div className="anlati-ad">Dede Korkut</div>
-            {(baslik || altBaslik) && <div className="anlati-yer">{altBaslik ?? baslik}</div>}
+            {altBaslik && <div className="anlati-yer">{altBaslik}</div>}
           </div>
           <button
             type="button"

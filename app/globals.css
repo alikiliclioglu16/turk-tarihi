@@ -344,15 +344,37 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--cini); outline-
 .rehber-katman.sag { right: 0; flex-direction: row-reverse; }
 @keyframes rehberGir { from { opacity: 0; transform: translateY(18px); } }
 .rehber-figur {
-  width: clamp(96px, 15vw, 172px); flex: 0 0 auto;
+  position: relative; flex: 0 0 auto;
+  width: clamp(120px, 17vw, 230px);
+  /* 1024x1536 = 2:3 — oran korunur, asla kırpılmaz */
+  aspect-ratio: 1024 / 1536;
+  /* mobilde ekranı boğmasın */
+  max-height: min(46dvh, 420px);
   animation: nefes 5.5s ease-in-out infinite;
-  filter: drop-shadow(0 10px 26px rgba(0,0,0,.7));
+  filter: drop-shadow(0 12px 30px rgba(0,0,0,.75));
 }
 @keyframes nefes {
   0%,100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(-5px) scale(1.008); }
 }
-.rehber-svg, .rehber-img { width: 100%; height: auto; display: block; }
+.rehber-svg { width: 100%; height: 100%; display: block; object-fit: contain; }
+
+/* poz crossfade — 220 ms, kırpma yok */
+.rehber-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: bottom center;
+  display: block;
+}
+.poz-giren { animation: pozGir .22s ease forwards; }
+.poz-cikan { animation: pozCik .22s ease forwards; pointer-events: none; }
+@keyframes pozGir { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pozCik { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .poz-giren, .poz-cikan { animation: none; }
+  .poz-cikan { opacity: 0; }
+  .rehber-figur { animation: none; }
+}
 
 .anlati-panel {
   flex: 1; min-width: 0;
@@ -439,7 +461,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--cini); outline-
 /* ---------- MOBİL ---------- */
 @media (max-width: 720px) {
   .rehber-katman { width: 100%; gap: 0; padding: 0 8px 10px; }
-  .rehber-figur { width: 82px; }
+  .rehber-figur { width: clamp(96px, 27vw, 140px); max-height: 34dvh; }
   .anlati-metin { font-size: 14.5px; }
   .hotspot { width: 64px; height: 64px; }
   .hotspot-etiket { font-size: 11px; bottom: -22px; }
