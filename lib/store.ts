@@ -77,6 +77,9 @@ interface Durum {
   goreveGec: () => void;
   cevapVer: (secenekId: string) => void;
   cokluCevapVer: (secenekId: string) => void;
+  /** Sütunlu ve sıralamalı görevler kendi mantığını yürütür; bitince bunu çağırır */
+  gorevTamamlandi: () => void;
+  yanlisDeneme: () => void;
   bonusBul: (id: string) => void;
   bonusKapat: () => void;
   kisiBilgiAc: (id: string, ad: string, metin: string) => void;
@@ -265,6 +268,35 @@ export const useOyun = create<Durum>((set, get) => ({
   acilisAtla: () => {
     input.kilitli = false;
     set({ faz: "gezinti" });
+  },
+
+  gorevTamamlandi: () => {
+    const { nodlar, aktifIndex, kazanilanKartlar } = get();
+    const nod = nodlar[aktifIndex];
+    if (!nod) return;
+    const kayit = ilerlemeYukle();
+    olayKaydet("gorev_tamamlandi", { node: nod.nodeId, tip: nod.quest.type });
+    ilerlemeKaydet({ ...kayit, kartlar: [...new Set([...kayit.kartlar, nod.reward.cardId])] });
+    input.kilitli = false;
+    set({
+      faz: "odul",
+      sonGeriBildirim: nod.quest.successFeedback,
+      ipucu: null,
+      kazanilanKartlar: kazanilanKartlar.some((k) => k.cardId === nod.reward.cardId)
+        ? kazanilanKartlar
+        : [...kazanilanKartlar, nod.reward],
+    });
+  },
+
+  /** Yanlış yerleştirme veya yanlış sıra — ipucu sayacını ilerletir */
+  yanlisDeneme: () => {
+    const { denemeSayisi, nodlar, aktifIndex } = get();
+    const yeni = denemeSayisi + 1;
+    const nod = nodlar[aktifIndex];
+    const ipucuKaydi = nod?.quest.hints
+      .filter((h) => h.afterAttempt <= yeni)
+      .sort((a, b) => b.afterAttempt - a.afterAttempt)[0];
+    set({ denemeSayisi: yeni, ipucu: ipucuKaydi?.text ?? null });
   },
 
   cokluCevapVer: (secenekId) => {

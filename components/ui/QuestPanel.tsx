@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useOyun } from "@/lib/store";
+import { SiniflandirmaPaneli } from "./SiniflandirmaPaneli";
+import { SiralamaPaneli } from "./SiralamaPaneli";
 import { tik } from "@/lib/audio";
 
 /**
@@ -9,7 +11,11 @@ import { tik } from "@/lib/audio";
  *  • secim          → tek doğru şık
  *  • eslestir /
  *    coklu_secim    → birden çok doğru şık; hepsi bulununca tamamlanır
- *  • sirala, siniflandir, baglanti → Paket 5
+ *  • siniflandir, baglanti → SiniflandirmaPaneli (sütunlu yerleştirme)
+ *  • sirala               → SiralamaPaneli (yukarı-aşağı dizme)
+ *
+ * Arayüz bilgisi (sütun başlıkları, yönerge) JSON'daki `quest.arayuz`
+ * alanından gelir; hiçbir etiket koda gömülü değildir.
  */
 export function QuestPanel() {
   const nodlar = useOyun((s) => s.nodlar);
@@ -19,12 +25,53 @@ export function QuestPanel() {
   const dogruSecilenler = useOyun((s) => s.dogruSecilenler);
   const geriBildirim = useOyun((s) => s.sonGeriBildirim);
   const ipucu = useOyun((s) => s.ipucu);
+  const denemeSayisi = useOyun((s) => s.denemeSayisi);
+  const gorevTamamlandi = useOyun((s) => s.gorevTamamlandi);
+  const yanlisDeneme = useOyun((s) => s.yanlisDeneme);
   const [secilen, setSecilen] = useState<string | null>(null);
   const [hataId, setHataId] = useState<string | null>(null);
 
   const nod = nodlar[aktifIndex];
   if (!nod) return null;
   const gorev = nod.quest;
+  /* ---------- ÖZEL ARAYÜZLER ---------- */
+  // Sütunlu görevler: sınıflandırma ve bağlantı
+  const sutunlu =
+    (gorev.type === "siniflandir" || gorev.type === "baglanti") &&
+    Boolean(gorev.arayuz?.sutunlar?.length);
+
+  if (sutunlu) {
+    return (
+      <div className="alt-panel">
+        <div className="panel gorev-panel-genis">
+          <SiniflandirmaPaneli
+            gorev={gorev}
+            denemeSayisi={denemeSayisi}
+            ipucu={ipucu}
+            onTamamlandi={gorevTamamlandi}
+            onYanlis={yanlisDeneme}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (gorev.type === "sirala") {
+    return (
+      <div className="alt-panel">
+        <div className="panel gorev-panel-genis">
+          <SiralamaPaneli
+            gorev={gorev}
+            denemeSayisi={denemeSayisi}
+            ipucu={ipucu}
+            onTamamlandi={gorevTamamlandi}
+            onYanlis={yanlisDeneme}
+          />
+        </div>
+      </div>
+    );
+  }
+
   const cokluMu =
     gorev.type === "eslestir" || gorev.type === "coklu_secim" || gorev.type === "siniflandir";
   const hedefSayi = gorev.options.filter((o) => o.correct).length;

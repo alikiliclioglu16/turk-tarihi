@@ -33,6 +33,21 @@ export interface QuestOption {
   text: string;
   correct: boolean;
   feedback: string;
+  /** sınıflandırma ve bağlantı görevlerinde kartın ait olduğu sütun */
+  sutun?: string;
+  /** bağlantı görevinde kartın gerçek bilgi düzeyi (yanlış etiketli kartlar için) */
+  dogruDuzey?: string;
+}
+
+/** Görev arayüzü tanımı — JSON'dan gelir, koda gömülü değildir */
+export interface QuestArayuz {
+  /** sınıflandırma ve bağlantı için sütun başlıkları */
+  sutunlar?: string[];
+  /** sıralama görevleri için */
+  tip?: string;
+  yonerge?: string;
+  /** kartlar karıştırılarak gösterilsin mi */
+  karistir?: boolean;
 }
 
 export interface QuestHint {
@@ -43,6 +58,7 @@ export interface QuestHint {
 export interface Quest {
   type: QuestType;
   prompt: string;
+  arayuz?: QuestArayuz;
   options: QuestOption[];
   hints: QuestHint[];
   successFeedback: string;
