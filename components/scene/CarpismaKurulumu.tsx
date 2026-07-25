@@ -41,6 +41,8 @@ export function CarpismaKurulumu() {
     const girilebilir: [number, number, number, number][] = [
       [-27, -14, 0.75, 1.5], [36, 23, -0.6, 1.25],
       [-84, 52, 2.0, 1.2], [52, -76, 1.4, 1.2],
+      [0, 20, 0.2, 1.8], [46, -30, -1.1, 1.45],
+      [-44, 72, 2.4, 1.35], [70, 26, 0.9, 1.35],
     ];
     for (const [gx, gz, rot, olc] of girilebilir) {
       const merkezX = gx * DUNYA_OLCEK;

@@ -13,7 +13,7 @@ interface Props {
   rotY?: number;
   olcek?: number;
   /** iç düzen çeşidi */
-  tur?: "aile" | "usta" | "bey";
+  tur?: "aile" | "usta" | "bey" | "hakan";
 }
 
 /**
@@ -52,6 +52,30 @@ export function GirilebilirOtag({ pos: hamPos, rotY = 0, olcek = 1.35, tur = "ai
 
   return (
     <group position={[pos[0], y, pos[1]]} rotation={[0, rotY, 0]} scale={olcek}>
+      {/* hakan otağı: kırmızı çatı, tuğ, ek süsleme */}
+      {tur === "hakan" && (
+        <>
+          <mesh position={[0, 5.6, 0]} castShadow>
+            <cylinderGeometry args={[0.14, 0.17, 5.0, 7]} />
+            <meshStandardMaterial map={ahsap} roughness={0.9} />
+          </mesh>
+          <mesh position={[0, 8.0, 0]}>
+            <sphereGeometry args={[0.2, 12, 10]} />
+            <meshStandardMaterial color="#C9A24B" metalness={0.7} roughness={0.3} />
+          </mesh>
+          {Array.from({ length: 10 }).map((_, i) => {
+            const a = (i / 10) * Math.PI * 2;
+            return (
+              <mesh key={i} position={[Math.cos(a) * 0.1, 7.4, Math.sin(a) * 0.1]}
+                rotation={[Math.cos(a) * 0.25, 0, -Math.sin(a) * 0.25]}>
+                <cylinderGeometry args={[0.018, 0.008, 0.8, 4]} />
+                <meshStandardMaterial color="#2B2118" roughness={1} />
+              </mesh>
+            );
+          })}
+        </>
+      )}
+
       {/* --- DIŞ KABUK (içeri girince saydamlaşır) --- */}
       <mesh position={[0, 1.05, 0]} castShadow receiveShadow>
         <cylinderGeometry args={[2.6, 2.9, 2.1, 20, 1, true]} />
@@ -68,7 +92,7 @@ export function GirilebilirOtag({ pos: hamPos, rotY = 0, olcek = 1.35, tur = "ai
         <coneGeometry args={[3.1, 1.9, 20, 1, true]} />
         <meshStandardMaterial
           ref={catiMat}
-          color="#C9BA98"
+          color={tur === "hakan" ? "#9E3A32" : tur === "bey" ? "#B4553F" : "#C9BA98"}
           roughness={0.96}
           side={THREE.DoubleSide}
           transparent
@@ -192,7 +216,7 @@ export function GirilebilirOtag({ pos: hamPos, rotY = 0, olcek = 1.35, tur = "ai
           </mesh>
         </group>
       )}
-      {tur === "bey" && (
+      {(tur === "bey" || tur === "hakan") && (
         <group position={[0, 0, -2.1]}>
           <mesh position={[0, 0.28, 0]} castShadow>
             <boxGeometry args={[1.5, 0.5, 0.8]} />
@@ -201,6 +225,15 @@ export function GirilebilirOtag({ pos: hamPos, rotY = 0, olcek = 1.35, tur = "ai
           <mesh position={[0, 0.62, -0.3]} castShadow>
             <boxGeometry args={[1.4, 0.24, 0.25]} />
             <meshStandardMaterial color="#8A2C25" roughness={0.95} />
+          </mesh>
+          {/* asılı yay ve sadak — bey otağı dekoru, kullanım yok */}
+          <mesh position={[-1.4, 1.5, -0.4]} rotation={[0, 0.4, 0.2]}>
+            <torusGeometry args={[0.42, 0.03, 6, 14, Math.PI * 1.1]} />
+            <meshStandardMaterial color="#6E4B26" roughness={0.85} />
+          </mesh>
+          <mesh position={[1.3, 1.4, -0.5]} rotation={[0, -0.3, 0.15]} castShadow>
+            <cylinderGeometry args={[0.13, 0.15, 0.6, 10]} />
+            <meshStandardMaterial color="#7A5A3A" roughness={0.9} />
           </mesh>
         </group>
       )}

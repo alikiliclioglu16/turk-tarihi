@@ -447,3 +447,47 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--cini); outline-
   font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
   font-weight: 800; color: var(--cini);
 }
+
+/* ---------- Açılış ve bölge giriş anlatısı ---------- */
+.acilis-anlati {
+  position: absolute; left: 50%; bottom: 92px; transform: translateX(-50%);
+  z-index: 27; width: min(760px, calc(100% - 40px));
+  display: flex; align-items: flex-end; gap: 14px;
+  pointer-events: none;
+  animation: acilisAnlatiGir .5s ease;
+}
+@keyframes acilisAnlatiGir { from { opacity: 0; transform: translate(-50%, 12px); } }
+.acilis-anlati-portre { flex: 0 0 auto; }
+.acilis-anlati-metin {
+  flex: 1; background: rgba(8,13,22,.82); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,207,114,.32); border-radius: 14px;
+  padding: 12px 16px;
+}
+.acilis-anlati-ad {
+  display: block; font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+  color: #FFCF72; font-weight: 800; margin-bottom: 5px;
+}
+.acilis-anlati-metin p { font-size: 16px; line-height: 1.55; color: #F7EBD3; }
+
+/* ---------- Bölge adı kartı ---------- */
+.bolge-adi {
+  position: absolute; left: 50%; top: 22%; transform: translateX(-50%);
+  z-index: 27; text-align: center; pointer-events: none;
+  animation: bolgeAdiGir 1s cubic-bezier(.2,.8,.3,1);
+}
+@keyframes bolgeAdiGir {
+  from { opacity: 0; transform: translate(-50%, 18px) scale(.96); }
+}
+.bolge-adi-ust {
+  font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+  color: #FFCF72; font-weight: 800;
+}
+.bolge-adi-metin {
+  font-size: clamp(30px, 5vw, 54px); font-weight: 800; color: #FFF6E2;
+  line-height: 1.05; margin-top: 4px;
+  text-shadow: 0 4px 26px rgba(0,0,0,.6);
+}
+.bolge-adi-alt {
+  font-size: 14px; color: #FFF6E2BB; letter-spacing: .16em;
+  text-transform: uppercase; margin-top: 6px;
+}

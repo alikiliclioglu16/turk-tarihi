@@ -164,6 +164,25 @@ export const OGRENME_NOKTALARI: OgrenmeNoktasi[] = [
   { id: "og_ey_koruma", ad: "Yerinde Bırakmak", tip: "tarih", pos: [-36, 1.0, -74],
     metin: "Buluntu yerinden alınırsa bağlamı kaybolur. Bilgi çoğu zaman yerinde saklıdır.",
     kaynakNotu: null },
+  /* ---------- GİRİLEBİLİR OTAĞLAR ---------- */
+  { id: "og_ot_hakan", ad: "Hakan Otağı", tip: "yapi", pos: [0, 2.4, 20],
+    metin: "En büyük otağ topluluğun ortasında kurulurdu. Kapısı herkese açık sayılırdı.",
+    kaynakNotu: "DOĞRULANMALI — otağ hiyerarşisi bölgeye göre değişir" },
+  { id: "og_ot_bey1", ad: "Bey Otağı", tip: "yapi", pos: [46, 2.0, -30],
+    metin: "Kırmızı çatı ve tuğ, otağın sahibinin sorumluluğunu gösterirdi. Süs değil, işaretti.",
+    kaynakNotu: "DOĞRULANMALI" },
+  { id: "og_ot_bey2", ad: "Sırt Beyinin Otağı", tip: "yapi", pos: [-44, 2.0, 72],
+    metin: "Yüksek yerdeki otağ hem uzağı görür hem uzaktan görünürdü.",
+    kaynakNotu: null },
+  { id: "og_ot_usta", ad: "Usta Otağı", tip: "zanaat", pos: [70, 2.0, 26],
+    metin: "Ustanın otağı hem ev hem atölyedir. Tezgâh kapıya yakın kurulurdu.",
+    kaynakNotu: null },
+  { id: "og_ot_ic", ad: "Otağın İçi", tip: "yasam", pos: [-27, 1.8, -14],
+    metin: "İçeride ocak ortada, yatak kenarda olurdu. Her eşyanın yeri belliydi.",
+    kaynakNotu: "DOĞRULANMALI — iç düzen kaynakla eşleştirilmeli" },
+  { id: "og_ot_besik", ad: "Beşik", tip: "yasam", pos: [36, 1.6, 23],
+    metin: "Beşik otağın en sıcak köşesine konurdu. Sallanması sesle birlikte uyku getirirdi.",
+    kaynakNotu: null },
 ];
 
 export const OGRENME_TOPLAM = OGRENME_NOKTALARI.length;

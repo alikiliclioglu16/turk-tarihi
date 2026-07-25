@@ -15,6 +15,8 @@ import { KesifKartiPaneli } from "@/components/ui/KesifKartiPaneli";
 import { AnlatiSeridi } from "@/components/ui/AnlatiSeridi";
 import { MiniHarita } from "@/components/ui/MiniHarita";
 import { FinalSinavi } from "@/components/ui/FinalSinavi";
+import { AcilisAnlatisi } from "@/components/ui/AcilisAnlatisi";
+import { BolgeGirisi } from "@/components/ui/BolgeGirisi";
 import { KisiPanel } from "@/components/ui/KisiPanel";
 
 // R3F sunucuda render edilemez
@@ -102,10 +104,12 @@ export default function D01Page() {
             <p className="acilis-alt">Bozkır · Öğle vakti</p>
           </div>
           <button className="acilis-atla" onClick={acilisAtla}>Tanıtımı geç →</button>
+          <AcilisAnlatisi />
         </div>
       )}
       {faz !== "yukleniyor" && <Hud />}
       {faz !== "yukleniyor" && <MiniHarita />}
+      {faz !== "yukleniyor" && faz !== "acilis" && <BolgeGirisi />}
 
       <KisiPanel />
 

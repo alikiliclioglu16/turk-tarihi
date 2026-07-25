@@ -177,6 +177,20 @@ export const VARLIKLAR: Record<string, VarlikTanimi> = {
     greybox: { sekil: "kutu", boyut: [1.2, 1.8, 0.3], renk: "#C9A863" } },
   P04: { kod: "P04", ad: "Aşık Oyunu", path: null, hazir: false,
     greybox: { sekil: "silindir", boyut: [2.2, 0.1, 2.2], renk: "#3A3226" } },
+  Z01: { kod: "Z01", ad: "Ok Yapım Tezgâhı", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [1.9, 0.7, 0.75], renk: "#6E4B26" } },
+  Z02: { kod: "Z02", ad: "Keçe Basma Alanı", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [3.2, 0.5, 2.2], renk: "#D9CBAA" } },
+  Z03: { kod: "Z03", ad: "Deri Gerdirme", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [2.3, 1.7, 0.3], renk: "#B08858" } },
+  Z04: { kod: "Z04", ad: "Çömlek Çarkı", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [0.9, 0.9, 0.9], renk: "#9A6E4E" } },
+  Z05: { kod: "Z05", ad: "Güreş Alanı", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [8.6, 0.1, 8.6], renk: "#4A4030" } },
+  Z06: { kod: "Z06", ad: "At Eğitim Çemberi", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [12, 1.2, 12], renk: "#6E4B26" } },
+  Z07: { kod: "Z07", ad: "İp Bükme", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [2.8, 1.0, 0.6], renk: "#C9B896" } },
 
 };
 
@@ -373,6 +387,16 @@ const MAHALLELER: Yerlesim[] = [
   { kod: "H04", pos: [-30, 0, -20], rotY: 0.5 },
   { kod: "H04", pos: [-18, 0, -12], rotY: 0.9 },
   { kod: "B17", pos: [-26, 0, -14], rotY: 1.3 },
+
+  /* ---------- ZANAAT SAHNELERİ ---------- */
+  { kod: "Z01", pos: [-25, 0, 10], rotY: 1.1 },
+  { kod: "Z01", pos: [-23, 0, 12], rotY: 0.4 },
+  { kod: "Z02", pos: [-16, 0, 15], rotY: 0.3 },
+  { kod: "Z03", pos: [-19, 0, 17], rotY: 1.4 },
+  { kod: "Z04", pos: [-14, 0, 8], rotY: 0.7 },
+  { kod: "Z07", pos: [-6, 0, 20], rotY: 0.2 },
+  { kod: "Z05", pos: [14, 0, -20], rotY: 0 },
+  { kod: "Z06", pos: [22, 0, -26], rotY: 0 },
 
   /* ============================================================
      PAZARYERİ — beşinci bölge, obanın güneydoğusunda

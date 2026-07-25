@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { ahsapDokusu, kilimDokusu, tamgaDokusu } from "@/lib/textures";
+import { ahsapDokusu, keceDokusu, kilimDokusu, tamgaDokusu } from "@/lib/textures";
 
 /* ============================================================
    BALBAL SIRTI
@@ -680,6 +681,214 @@ export function AsikOyunuModel() {
           </mesh>
         );
       })}
+    </group>
+  );
+}
+
+/* ============================================================
+   ZANAAT SAHNELERİ — işin yapıldığı yer görünsün
+   ============================================================ */
+
+export function OkYapimTezgahiModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      <mesh position={[0, 0.55, 0]} castShadow>
+        <boxGeometry args={[1.9, 0.12, 0.75]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {([[-0.8, 0.3], [0.8, 0.3], [-0.8, -0.3], [0.8, -0.3]] as const).map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.28, z]}>
+          <cylinderGeometry args={[0.05, 0.055, 0.55, 6]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+      {/* düzeltilen ok gövdeleri */}
+      {[0, 1, 2, 3, 4].map((i) => (
+        <mesh key={`o${i}`} position={[-0.6 + i * 0.3, 0.63, 0.16]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.014, 0.014, 0.8, 5]} />
+          <meshStandardMaterial color="#8A6A3E" roughness={0.9} />
+        </mesh>
+      ))}
+      {/* tüy demeti */}
+      <mesh position={[0.7, 0.66, -0.2]}>
+        <coneGeometry args={[0.1, 0.22, 7]} />
+        <meshStandardMaterial color="#E4DCC8" roughness={1} />
+      </mesh>
+      {/* yay kalıbı */}
+      <mesh position={[-0.55, 0.72, -0.2]} rotation={[Math.PI / 2, 0, 0.3]}>
+        <torusGeometry args={[0.3, 0.035, 6, 16, Math.PI]} />
+        <meshStandardMaterial color="#6E4B26" roughness={0.85} />
+      </mesh>
+    </group>
+  );
+}
+
+export function KeceBasmaModel() {
+  const kece = useMemo(() => keceDokusu(2), []);
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      {/* serili yün tabakası */}
+      <mesh rotation={[-Math.PI / 2, 0, 0.2]} position={[0, 0.05, 0]} receiveShadow>
+        <planeGeometry args={[3.2, 2.2]} />
+        <meshStandardMaterial map={kece} roughness={1} side={THREE.DoubleSide} />
+      </mesh>
+      {/* sarma silindiri */}
+      <mesh position={[1.4, 0.28, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+        <cylinderGeometry args={[0.26, 0.26, 2.4, 12]} />
+        <meshStandardMaterial map={kece} roughness={1} />
+      </mesh>
+      {/* su kovası ve sopa */}
+      <mesh position={[-1.5, 0.18, 0.9]} castShadow>
+        <cylinderGeometry args={[0.2, 0.17, 0.36, 10]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      <mesh position={[-1.1, 0.1, -0.9]} rotation={[0, 0.5, Math.PI / 2]}>
+        <cylinderGeometry args={[0.045, 0.045, 1.5, 6]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+    </group>
+  );
+}
+
+export function DeriGerdirmeModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      {/* gerdirme çerçevesi */}
+      {([[-1.1, 0], [1.1, 0]] as const).map(([x], i) => (
+        <mesh key={i} position={[x, 0.85, 0]} castShadow>
+          <cylinderGeometry args={[0.06, 0.07, 1.7, 6]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+      <mesh position={[0, 1.62, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.05, 0.05, 2.3, 6]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      <mesh position={[0, 0.12, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.05, 0.05, 2.3, 6]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {/* gerilmiş deri */}
+      <mesh position={[0, 0.87, 0.02]}>
+        <planeGeometry args={[1.9, 1.4]} />
+        <meshStandardMaterial color="#B08858" roughness={0.92} side={THREE.DoubleSide} />
+      </mesh>
+      {/* gerdirme ipleri */}
+      {[-0.6, -0.2, 0.2, 0.6].map((y, i) => (
+        <mesh key={i} position={[-1.05, 0.87 + y, 0]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.012, 0.012, 0.2, 4]} />
+          <meshStandardMaterial color="#8A7A5C" roughness={1} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+export function ComlekCarkiModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  const carkRef = useRef<THREE.Mesh>(null);
+  useFrame(({ clock }) => {
+    if (carkRef.current) carkRef.current.rotation.y = clock.elapsedTime * 1.6;
+  });
+  return (
+    <group>
+      <mesh position={[0, 0.3, 0]} castShadow>
+        <cylinderGeometry args={[0.34, 0.4, 0.6, 12]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      <mesh ref={carkRef} position={[0, 0.66, 0]} castShadow>
+        <cylinderGeometry args={[0.42, 0.42, 0.1, 18]} />
+        <meshStandardMaterial color="#5A4632" roughness={0.95} />
+      </mesh>
+      {/* şekillenen kap */}
+      <mesh position={[0, 0.86, 0]} castShadow>
+        <cylinderGeometry args={[0.16, 0.2, 0.3, 12]} />
+        <meshStandardMaterial color="#9A6E4E" roughness={0.95} />
+      </mesh>
+      {/* kurumaya bırakılmış kaplar */}
+      {[[-0.9, 0.5], [-1.2, 0.1], [-0.7, -0.5]].map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.16, z]} castShadow>
+          <sphereGeometry args={[0.18, 10, 8, 0, Math.PI * 2, 0, Math.PI * 0.62]} />
+          <meshStandardMaterial color="#8A6248" roughness={0.95} side={THREE.DoubleSide} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+export function GuresAlaniModel() {
+  return (
+    <group>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.04, 0]} receiveShadow>
+        <circleGeometry args={[4.2, 26]} />
+        <meshStandardMaterial color="#4A4030" roughness={1} />
+      </mesh>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.06, 0]}>
+        <ringGeometry args={[4.0, 4.3, 30]} />
+        <meshStandardMaterial color="#B8433A" roughness={1} side={THREE.DoubleSide} />
+      </mesh>
+      {/* seyirci taşları */}
+      {Array.from({ length: 12 }).map((_, i) => {
+        const a = (i / 12) * Math.PI * 2;
+        return (
+          <mesh key={i} position={[Math.cos(a) * 5.2, 0.22, Math.sin(a) * 5.2]} castShadow>
+            <boxGeometry args={[0.7, 0.4, 0.5]} />
+            <meshStandardMaterial color="#5A6470" roughness={1} flatShading />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
+
+export function AtEgitimCemberiModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      {Array.from({ length: 22 }).map((_, i) => {
+        const a = (i / 22) * Math.PI * 2;
+        return (
+          <mesh key={i} position={[Math.cos(a) * 6, 0.6, Math.sin(a) * 6]} castShadow>
+            <cylinderGeometry args={[0.055, 0.07, 1.2, 5]} />
+            <meshStandardMaterial map={ahsap} roughness={0.92} />
+          </mesh>
+        );
+      })}
+      {/* orta direk ve ip */}
+      <mesh position={[0, 0.9, 0]} castShadow>
+        <cylinderGeometry args={[0.1, 0.13, 1.8, 8]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+    </group>
+  );
+}
+
+export function IpBukmeModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      {[-1.3, 1.3].map((x) => (
+        <mesh key={x} position={[x, 0.5, 0]} castShadow>
+          <cylinderGeometry args={[0.07, 0.08, 1.0, 6]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+      {[0.05, -0.05].map((z, i) => (
+        <mesh key={i} position={[0, 0.95, z]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.02, 0.02, 2.6, 5]} />
+          <meshStandardMaterial color="#C9B896" roughness={1} />
+        </mesh>
+      ))}
+      {/* yün yumakları */}
+      {[[-1.6, 0.4], [1.7, -0.3]].map(([x, z], i) => (
+        <mesh key={`y${i}`} position={[x, 0.22, z]} castShadow>
+          <sphereGeometry args={[0.24, 10, 8]} />
+          <meshStandardMaterial color="#D8CCB0" roughness={1} />
+        </mesh>
+      ))}
     </group>
   );
 }

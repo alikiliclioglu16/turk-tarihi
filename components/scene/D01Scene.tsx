@@ -76,6 +76,11 @@ export function D01Scene() {
         <GirilebilirOtag pos={[36, 23]} rotY={-0.6} olcek={1.25} tur="aile" />
         <GirilebilirOtag pos={[-84, 52]} rotY={2.0} olcek={1.2} tur="usta" />
         <GirilebilirOtag pos={[52, -76]} rotY={1.4} olcek={1.2} tur="aile" />
+        {/* ileri gelenlerin otağları — dördü de gezilebilir */}
+        <GirilebilirOtag pos={[0, 20]} rotY={0.2} olcek={1.8} tur="hakan" />
+        <GirilebilirOtag pos={[46, -30]} rotY={-1.1} olcek={1.45} tur="bey" />
+        <GirilebilirOtag pos={[-44, 72]} rotY={2.4} olcek={1.35} tur="bey" />
+        <GirilebilirOtag pos={[70, 26]} rotY={0.9} olcek={1.35} tur="usta" />
         <Suru />
         <Canlilar />
         <SinirKusagi />
