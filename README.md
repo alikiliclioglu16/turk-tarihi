@@ -1,8 +1,7 @@
 # Dede Korkut ile Türk Tarihi Discovery Tour
-## Teknik Görev Paketi 1.4 — D01 Oynanabilir Omurga + Sinematik Katman
+## D01 — 2.5D Sahne Motoru · Sprint 1 Dikey Kesit
 
-Bu paket, D01 bölümünün **oynanabilir çekirdeğidir**. Tam ürün değil; üzerine
-varlıkların, durakların ve seslerin eklendiği çalışan iskelet.
+Model A: **ChatGPT** içerik, veri ve 2B görselleri üretir · **Claude** motoru ve kodu kurar.
 
 ---
 
@@ -13,129 +12,116 @@ npm install
 npm run dev
 ```
 
-Tarayıcıda `http://localhost:3000` açın → "Keşfe Başla".
-
-**Kontroller:** Ok tuşları veya WASD ile yürüyün · fareyle sürükleyerek kamerayı
-çevirin · dokunmatik cihazlarda sol alttaki joystick.
+`http://localhost:3000` → "Keşfe Başla"
 
 ---
 
-## Bu pakette çalışan şeyler
+## Kabul kriterleri — durum
 
-| Sistem | Durum |
-|---|---|
-| Dönem haritası, D01 kilidi ve ilerleme göstergesi | ✅ |
-| React Three Fiber sahnesi, gece gökyüzü, ay, ocak ateşi | ✅ |
-| Yükselti fonksiyonlu arazi (karakter araziyi takip eder) | ✅ |
-| Üçüncü şahıs Dede Korkut kontrolcüsü + takip kamerası | ✅ |
-| Klavye + fare + mobil joystick | ✅ |
-| GLB yükleme altyapısı (greybox yedekli) | ✅ |
-| JSON'dan beslenen durak sistemi | ✅ |
-| Işık sütunlu hedef gösterimi ve yakınlık tetikleyicisi | ✅ |
-| Anlatı paneli (daktilo efekti, atlanabilir) | ✅ |
-| Hotspot keşif sistemi ve zorunlu nokta kontrolü | ✅ |
-| Görev paneli — `secim` tipi tam çalışır | ✅ |
-| Kademeli ipucu (2. ve 4. deneme) | ✅ |
-| Kart ödülü ve kapanış repliği | ✅ |
-| Yerel ilerleme kaydı (localStorage) | ✅ |
-| Prosedürel detaylı modeller (otağ, ocak, sandık, balbal, kopuz) | ✅ |
-| **Render teknolojisi** | |
-| PCSS yumuşak gölgeler (4K gölge haritası) | ✅ |
-| N8AO ortam örtüşmesi (temas gölgeleri) | ✅ |
-| IBL / prosedürel ortam haritası (küresel aydınlatma yaklaşımı) | ✅ |
-| Katmanlı zemin sisi (hacimsel sis karşılığı) | ✅ |
-| **Sinematografi** | |
-| Bloom + ACES ton eşleme | ✅ |
-| Gece renk derecelendirmesi (lacivert gölge / kehribar ışık) | ✅ |
-| Film greni, S eğrisi kontrast, doygunluk | ✅ |
-| Kromatik sapma (lens karakteri) | ✅ |
-| Alan derinliği + vinyet + SMAA | ✅ |
-| Elde çekim kamera nefesi | ✅ |
-| Kıvılcım, duman, ot, kaya, dağ silüetleri | ✅ |
-| İnsan oranlı Dede Korkut + tam yürüyüş döngüsü | ✅ |
-| Ses katmanı (sentez ambiyans + gerçek kayıt desteği) | ✅ |
-| 3 durak (kopuz · ocak · sandık) | ✅ |
-| Sınıflandırma / eşleştirme görev tipleri | ✅ |
-| Kalan görev tipleri (sırala, bağlantı) | ⏳ Paket 5 |
-| Supabase senkronizasyonu | ⏳ Paket 6 |
+| # | Kriter | Durum |
+|---|---|---|
+| 1 | `/d01` route'u çalışır | ✅ |
+| 2 | `d01-node-01.json` doğrudan okunur | ✅ |
+| 3 | intro → main_a → main_b akışı | ✅ |
+| 4 | Üç required hotspot tamamlanmadan görev açılmaz | ✅ |
+| 5 | Doğru/yanlış feedback + 2. ve 4. deneme ipuçları | ✅ |
+| 6 | Kart kazanılır | ✅ |
+| 7 | Progress sayfa yenilemesinde korunur | ✅ |
+| 8 | Masaüstü ve mobil düzen | ✅ |
+| 9 | Node 02 eklemek bileşen değiştirmez | ✅ |
+| 10 | Statik worksheet değil; keşif hissi | ✅ |
+
+Node 02 ve 03 de yüklü ve oynanabilir (eşleştirme + sınıflandırma görevleri).
 
 ---
 
-## Yeni durak eklemek
-
-1. ChatGPT'nin ürettiği JSON'u `public/data/d01/d01-node-02.json` olarak kaydedin.
-2. `app/d01/page.tsx` içindeki `NODE_DOSYALARI` listesine dosya yolunu ekleyin.
-
-Kod değişikliği gerekmez. Duraklar `order` alanına göre otomatik sıralanır.
-
----
-
-## GLB varlık eklemek
-
-Bir model hazır olduğunda:
-
-1. Dosyayı `public/assets/d01/` klasörüne koyun (örn. `a02_kopuz.glb`).
-2. `lib/assets.ts` içindeki ilgili kaydı güncelleyin:
-
-```ts
-A02: {
-  kod: "A02", ad: "Kopuz",
-  path: "/assets/d01/a02_kopuz.glb",   // ← dosya yolu
-  hazir: true,                          // ← false yerine true
-  greybox: { ... }                      // dokunmayın, yedek olarak kalsın
-},
-```
-
-Sahne otomatik olarak greybox yerine gerçek modeli yükler. Model yüklenemezse
-greybox'a düşer — yani hiçbir zaman boş ekran görmezsiniz.
-
-**Varlığın sahnedeki yeri** `lib/assets.ts` içindeki `D01_YERLESIM` dizisinden
-ayarlanır. Konumlar metre cinsindendir; ateş `[0,0,0]` noktasındadır.
-
----
-
-## Klasör düzeni
+## Mimari
 
 ```
-app/
-  page.tsx              Dönem haritası
-  d01/page.tsx          D01 bölümü — faz yönetimi burada
-  globals.css           Tüm stiller ve renk değişkenleri
-components/
-  scene/                3B: arazi, karakter, atmosfer, hotspot, varlık yükleyici
-  ui/                   2B: anlatı, görev, kart, HUD, joystick
+app/d01/page.tsx              Faz yönetimi — hangi fazda hangi bileşen
+components/discovery2d/
+  DiscoveryStage2D.tsx        Katmanlı sahne, parallax, kamera pan/zoom
+  ParallaxLayer.tsx           Tek derinlik katmanı
+  Hotspot2D.tsx               Etkileşim nesnesi (klavye erişimli)
+  DedeKorkutGuide.tsx         Poz + anlatı + altyazı + tekrar dinle
+  QuestEngine.tsx             Tüm görev tipleri, JSON'dan
+  HintController.tsx          2./4. deneme ipuçları
+  HistoryCardReward.tsx       Kart ödülü
+  NodeProgress.tsx            Üst şerit ve erişilebilirlik anahtarları
+  Efektler.tsx                Canvas 2D kıvılcım ve ocak parıltısı
+  Placeholder.tsx             Görsel gelmeden önceki kontrollü yer tutucular
 lib/
-  types.ts              Tur veri şemasının TypeScript karşılığı
-  store.ts              Oyun akışı (zustand) — faz makinesi burada
-  terrain.ts            Arazi yükseklik fonksiyonu (sahne + oyuncu ortak kullanır)
-  assets.ts             Varlık kayıt defteri ve yerleşim planı
-  input.ts              Klavye/joystick girdisi (React state dışında)
-  progress.ts           Yerel ilerleme kaydı
+  manifest.ts                 TÜM görsel yolları burada — bileşene gömülü yok
+  koordinat.ts                3B JSON koordinatı → 2B sahne yüzdesi adapteri
+  store.ts                    Faz makinesi
+  audio.ts                    Anlatı + ambiyans
+  progress.ts                 localStorage (Supabase'e taşınabilir arayüz)
 public/
-  data/d01/             Durak JSON dosyaları
-  assets/d01/           GLB modeller (şimdilik boş)
-  audio/d01/            Ses dosyaları (şimdilik boş)
+  data/d01/                   Node JSON'ları
+  assets/d01/zones|hotspots|dede-korkut|cards|ui
 ```
+
+**Faz makinesi:** `gezinti → anlati → kesif → gorev → odul → kapanis → (sonraki) → bolumBitti`
 
 ---
 
-## Faz makinesi
+## GÖRSEL EKLEME — ChatGPT teslimleri buraya
 
-Bölüm akışı `lib/store.ts` içinde tek yerden yönetilir:
+Her görsel için **iki adım**, kod değişikliği yok:
 
+1. Dosyayı doğru klasöre koyun (aşağıdaki tabloya bakın).
+2. `lib/manifest.ts` içinde ilgili kaydın `hazir: false` → `hazir: true` yapın.
+
+| Varlık | Klasör | Beklenen dosya adı |
+|---|---|---|
+| Bölge gökyüzü | `public/assets/d01/zones/oba/` | `d01_zone_oba_sky.webp` |
+| Bölge arka planı | aynı | `d01_zone_oba_bg.webp` |
+| Orta plan | aynı | `d01_zone_oba_mid.webp` |
+| Yakın orta plan | aynı | `d01_zone_oba_mid2.webp` |
+| Ön plan | aynı | `d01_zone_oba_fg.webp` |
+| Hotspot nesnesi | `public/assets/d01/hotspots/` | `d01_n01_hs_kopuz.webp` |
+| Dede Korkut pozu | `public/assets/d01/dede-korkut/` | `dede_korkut_idle.webp` |
+| Kart | `public/assets/d01/cards/` | `d01_card_01.webp` |
+
+Manifestte tanımlı **tüm** dosya adları `lib/manifest.ts` içinde listelidir; ChatGPT'ye
+üretim yaparken o dosyayı referans verin.
+
+**Sahne katmanları:** 2560×1440, gökyüzü opak, diğerleri şeffaf PNG/WebP.
+**Hotspot nesneleri:** 1024×1024 veya 1536×1536, şeffaf, sahneyle aynı ışık yönü.
+**Dede Korkut:** 1536×2048, şeffaf, tam boy.
+
+Görsel yoksa sahne çökmez; SVG yer tutucu gösterilir.
+
+---
+
+## Hotspot konumlandırma
+
+Node JSON'ları 3B koordinatlarla yazıldı. `lib/koordinat.ts` bunları otomatik
+olarak sahne yüzdesine çevirir. Bir hotspot yanlış yerde duruyorsa iki seçenek:
+
+**A)** JSON'a opsiyonel `visual` alanı ekleyin (şema bozulmaz):
+```json
+"visual": {
+  "hotspots": { "hs_kopuz": { "x": 68, "y": 74 } },
+  "camera": { "x": 60, "y": 70, "zoom": 1.25 }
+}
 ```
-gezinti → anlati → kesif → gorev → odul → kapanis → (sonraki durak) → bolumBitti
-```
 
-Her fazda hangi panelin görüneceği `app/d01/page.tsx` içinde belirlenir.
-Yeni bir faz eklemek gerekirse tek değişiklik noktası bu ikilidir.
+**B)** `lib/koordinat.ts` içindeki `BOLGE_SINIRLARI` değerlerini ayarlayın.
+
+---
+
+## Erişilebilirlik
+
+Altyazı varsayılan açık (üst şeritten kapatılabilir) · tekrar dinle düğmesi ·
+klavyeyle hotspot gezinme (Tab + Enter) · `prefers-reduced-motion` desteği
+(parallax ve daktilo efekti kapanır) · durum hiçbir yerde yalnız renkle
+bildirilmez (ikon + metin) · tüm etkileşimli öğelerde ARIA etiketi.
 
 ---
 
 ## Notlar
 
-- Faz 0'da hesap sistemi ve kişisel veri toplama **yoktur**. İlerleme yalnızca
-  kullanıcının cihazında, anonim olarak tutulur.
-- Olay kayıtları geliştirme modunda yalnız konsola yazılır (`lib/progress.ts`).
-- Karakter ve nesneler prosedürel yer tutucudur. GLB modeller geldiğinde
-  `lib/assets.ts` içinden tek satırla devreye girerler.
+- R3F ve 3B sahne kritik yoldan çıkarıldı. Eski 3B kodu bu pakette yok;
+  ileride tekil kahraman nesne için isteğe bağlı eklenebilir.
+- Hesap sistemi ve kişisel veri toplama yok; ilerleme yalnız cihazda, anonim.

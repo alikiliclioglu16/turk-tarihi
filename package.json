@@ -12,6 +12,7 @@
     "@react-three/drei": "^10.0.4",
     "@react-three/fiber": "^9.1.0",
     "@react-three/postprocessing": "^3.0.4",
+    "motion": "^12.42.2",
     "next": "^15.2.0",
     "postprocessing": "^6.39.3",
     "react": "^19.0.0",
