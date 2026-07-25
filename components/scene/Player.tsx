@@ -1,28 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { araziYukseklik, DUNYA_YARICAP } from "@/lib/terrain";
 import { hareketVektoru, klavyeyiBagla } from "@/lib/input";
 import { useOyun } from "@/lib/store";
-import { DedeKorkutModel } from "./models/DedeKorkutModel";
+import { DedeKorkutBillboard } from "./models/DedeKorkutBillboard";
+import { pozSec } from "@/lib/pozSecici";
 
 const HIZ = 3.6;          // yaşlı bir adamın ölçülü yürüyüşü
 const ADIM_TEMPO = 6.4;   // adım frekansı
 
 export function Player({ baslangic = [0, 0, 14] as [number, number, number] }) {
   const grup = useRef<THREE.Group>(null);
-  const govde = useRef<THREE.Group>(null);
-  const bas = useRef<THREE.Group>(null);
-  const solKol = useRef<THREE.Group>(null);
-  const sagKol = useRef<THREE.Group>(null);
-  const solDirsek = useRef<THREE.Group>(null);
-  const sagDirsek = useRef<THREE.Group>(null);
-  const solBacak = useRef<THREE.Group>(null);
-  const sagBacak = useRef<THREE.Group>(null);
-  const solDiz = useRef<THREE.Group>(null);
-  const sagDiz = useRef<THREE.Group>(null);
 
   const { camera, gl } = useThree();
   const yaw = useRef(Math.PI);
@@ -30,6 +21,8 @@ export function Player({ baslangic = [0, 0, 14] as [number, number, number] }) {
   const hedefAci = useRef(0);
   const adimFaz = useRef(0);
   const yuruyusYogunluk = useRef(0);
+  const [yuruyorState, setYuruyorState] = useState(false);
+  const sonYuruyor = useRef(false);
   const kameraHedef = useRef(new THREE.Vector3());
   const yon = useRef(new THREE.Vector3());
 
@@ -92,6 +85,10 @@ export function Player({ baslangic = [0, 0, 14] as [number, number, number] }) {
 
     // yürüyüş yoğunluğu yumuşak geçiş (dur ↔ yürü arası ani zıplama olmasın)
     yuruyusYogunluk.current = THREE.MathUtils.lerp(yuruyusYogunluk.current, yuruyor ? guc : 0, dt * 8);
+    if (yuruyor !== sonYuruyor.current) {
+      sonYuruyor.current = yuruyor;
+      setYuruyorState(yuruyor);
+    }
     const y = yuruyusYogunluk.current;
     const faz = adimFaz.current;
 
@@ -100,48 +97,7 @@ export function Player({ baslangic = [0, 0, 14] as [number, number, number] }) {
     fark = Math.atan2(Math.sin(fark), Math.cos(fark));
     g.rotation.y += fark * Math.min(1, dt * 8);
 
-    /* ---------- YÜRÜYÜŞ ANİMASYONU ---------- */
-    const salinim = Math.sin(faz);
-    const karsiSalinim = Math.sin(faz + Math.PI);
-
-    // bacaklar: kalçadan salınım
-    if (solBacak.current) solBacak.current.rotation.x = salinim * 0.52 * y;
-    if (sagBacak.current) sagBacak.current.rotation.x = karsiSalinim * 0.52 * y;
-    // diz: bacak geriye giderken bükülür
-    if (solDiz.current) solDiz.current.rotation.x = -Math.max(0, -salinim) * 0.75 * y;
-    if (sagDiz.current) sagDiz.current.rotation.x = -Math.max(0, -karsiSalinim) * 0.75 * y;
-
-    // kollar: bacakların tersi, yaşlı adam için kısıtlı genlik
-    if (solKol.current) {
-      solKol.current.rotation.x = THREE.MathUtils.lerp(solKol.current.rotation.x, karsiSalinim * 0.34 * y, 0.3);
-    }
-    if (solDirsek.current) {
-      solDirsek.current.rotation.x = -0.25 - Math.max(0, karsiSalinim) * 0.3 * y;
-    }
-    // sağ kol asayı tutuyor: dirsek bükük, asa yere vurur gibi hafif hareket
-    if (sagKol.current) {
-      sagKol.current.rotation.x = THREE.MathUtils.lerp(sagKol.current.rotation.x, -0.22 + salinim * 0.12 * y, 0.3);
-    }
-    if (sagDirsek.current) {
-      sagDirsek.current.rotation.x = -0.62 + salinim * 0.08 * y;
-    }
-
-    // gövde: adım başına hafif yükselme ve yana yalpalama
-    if (govde.current) {
-      govde.current.position.y = Math.abs(Math.sin(faz)) * 0.028 * y + Math.sin(t * 1.5) * 0.006;
-      govde.current.rotation.z = Math.sin(faz) * 0.028 * y;
-      govde.current.rotation.y = Math.sin(faz) * 0.05 * y;
-    }
-    // baş: yürürken hafif sallanır, dururken çevreye bakar
-    if (bas.current) {
-      bas.current.rotation.z = -Math.sin(faz) * 0.035 * y;
-      bas.current.rotation.y = THREE.MathUtils.lerp(
-        bas.current.rotation.y,
-        y > 0.1 ? 0 : Math.sin(t * 0.35) * 0.22,
-        dt * 2
-      );
-      bas.current.rotation.x = 0.05 + Math.sin(t * 1.5) * 0.012;
-    }
+    // (yürüyüş animasyonu billboard içinde yönetiliyor)
 
     /* ---------- KAMERA ---------- */
     const mesafe = 5.4;
@@ -177,23 +133,23 @@ export function Player({ baslangic = [0, 0, 14] as [number, number, number] }) {
     }
   });
 
+  const { faz, anlatiIndex, aktifHotspotId, ipucu } = useOyun();
+  const poz = pozSec({
+    faz,
+    anlatiIndex,
+    hotspotAcik: Boolean(aktifHotspotId),
+    ipucuVar: Boolean(ipucu),
+    sonCevapDogru: null,
+  });
+
   return (
     <group ref={grup}>
-      <DedeKorkutModel
-        govdeRef={govde}
-        basRef={bas}
-        solKolRef={solKol}
-        sagKolRef={sagKol}
-        solDirsekRef={solDirsek}
-        sagDirsekRef={sagDirsek}
-        solBacakRef={solBacak}
-        sagBacakRef={sagBacak}
-        solDizRef={solDiz}
-        sagDizRef={sagDiz}
-      />
+      <Suspense fallback={null}>
+        <DedeKorkutBillboard poz={poz} yuruyor={yuruyorState} yon={hedefAci.current} />
+      </Suspense>
       {/* karakteri geceden ayıran yumuşak dolgu ışığı */}
-      <pointLight position={[0.6, 2.2, 1.2]} intensity={3.2} distance={5} decay={2} color="#cfd8ee" />
-      <pointLight position={[-0.8, 1.4, -1.0]} intensity={1.6} distance={4} decay={2} color="#f0a44a" />
+      <pointLight position={[0.6, 2.2, 1.2]} intensity={2.6} distance={5} decay={2} color="#cfd8ee" />
+      <pointLight position={[-0.8, 1.4, -1.0]} intensity={1.4} distance={4} decay={2} color="#f0a44a" />
     </group>
   );
 }
