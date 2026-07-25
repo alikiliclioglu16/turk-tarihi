@@ -10,6 +10,7 @@ import { SahneAtmosferi } from "./Environment";
 import { Terrain } from "./Terrain";
 import { Player } from "./Player";
 import { YakinVarliklar } from "./YakinVarliklar";
+import { UzakSiluetler } from "./UzakSiluetler";
 import { Halk } from "./Halk";
 import { BuyukOba } from "./BuyukOba";
 import { GirilebilirOtag } from "./GirilebilirOtag";
@@ -62,6 +63,7 @@ export function D01Scene() {
         <AtesEfekti pos={[0, 0, 0]} />
 
         <YakinVarliklar />
+        <UzakSiluetler />
         <BuyukOba />
         <Halk />
         {/* girilebilir otağlar — kapıdan içeri girilir, çatı saydamlaşır */}

@@ -14,6 +14,7 @@ import { Joystick } from "@/components/ui/Joystick";
 import { ilerlemeSifirla } from "@/lib/progress";
 import { BonusPanel } from "@/components/ui/BonusPanel";
 import { KartSeridi } from "@/components/ui/KartSeridi";
+import { MiniHarita } from "@/components/ui/MiniHarita";
 import { KisiPanel } from "@/components/ui/KisiPanel";
 
 // R3F sunucuda render edilemez
@@ -97,6 +98,7 @@ export default function D01Page() {
         </div>
       )}
       {faz !== "yukleniyor" && <Hud />}
+      {faz !== "yukleniyor" && <MiniHarita />}
 
       <BonusPanel />
       <KisiPanel />
