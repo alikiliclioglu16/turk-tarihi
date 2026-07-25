@@ -1072,3 +1072,188 @@ export function AtBagiModel() {
     </group>
   );
 }
+
+/* ============================================================
+   OTAĞ ÇEVRESİ SAHNELERİ — dönem doğrulu günlük hayat
+   ============================================================ */
+
+/**
+ * KURUTMA SEHPASI — dönem doğrusu
+ *
+ * Not: Biber ve patlıcan bu dönemde bozkırda YOKTUR.
+ * Biber Amerika kökenlidir (1492 sonrası). Patlıcan Hindistan kökenli,
+ * o çağda İslam dünyasında bilinir ama göçebe kurutmalığı değildir.
+ *
+ * Dönemin doğrusu: ince dilimlenmiş et, kurut (kurutulmuş yoğurt topağı),
+ * peynir, yaban meyvesi ve deri.
+ */
+export function EtKurutmaModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      {[-1.2, 1.2].map((x) =>
+        [-0.35, 0.35].map((z) => (
+          <mesh key={`${x}${z}`} position={[x, 0.75, z]} rotation={[0, 0, x > 0 ? -0.1 : 0.1]} castShadow>
+            <cylinderGeometry args={[0.05, 0.06, 1.5, 6]} />
+            <meshStandardMaterial map={ahsap} roughness={0.92} />
+          </mesh>
+        ))
+      )}
+      {[0, 1].map((i) => (
+        <mesh key={i} position={[0, 1.46, i ? 0.35 : -0.35]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.035, 0.035, 2.6, 6]} />
+          <meshStandardMaterial map={ahsap} roughness={0.92} />
+        </mesh>
+      ))}
+      {/* asılı et dilimleri */}
+      {[-0.9, -0.5, -0.1, 0.35, 0.8].map((x, i) => (
+        <mesh key={`e${i}`} position={[x, 1.16, -0.35]} rotation={[0, i * 0.3, 0]}>
+          <planeGeometry args={[0.2, 0.5]} />
+          <meshStandardMaterial color={i % 2 ? "#8A4438" : "#7A3B30"} roughness={1} side={THREE.DoubleSide} />
+        </mesh>
+      ))}
+      {/* kurut topakları — kurutulmuş yoğurt */}
+      {[-0.7, -0.25, 0.2, 0.7].map((x, i) => (
+        <mesh key={`k${i}`} position={[x, 1.32, 0.35]} castShadow>
+          <sphereGeometry args={[0.09, 8, 8]} />
+          <meshStandardMaterial color="#EFE7D2" roughness={1} />
+        </mesh>
+      ))}
+      {/* altta serili hasır */}
+      <mesh rotation={[-Math.PI / 2, 0, 0.2]} position={[0, 0.03, 0]} receiveShadow>
+        <planeGeometry args={[2.4, 1.3]} />
+        <meshStandardMaterial color="#B9A473" roughness={1} />
+      </mesh>
+    </group>
+  );
+}
+
+/** Sohbet halkası — minderler ve ortada kap */
+export function SohbetHalkasiModel() {
+  const kilim = useMemo(() => kilimDokusu(3), []);
+  return (
+    <group>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]} receiveShadow>
+        <circleGeometry args={[2.1, 20]} />
+        <meshStandardMaterial map={kilim} roughness={1} />
+      </mesh>
+      {Array.from({ length: 5 }).map((_, i) => {
+        const a = (i / 5) * Math.PI * 2;
+        return (
+          <mesh key={i} position={[Math.cos(a) * 1.5, 0.11, Math.sin(a) * 1.5]} castShadow>
+            <boxGeometry args={[0.6, 0.16, 0.5]} />
+            <meshStandardMaterial color={i % 2 ? "#A8382F" : "#8A6A24"} roughness={1} />
+          </mesh>
+        );
+      })}
+      {/* ortada ikram kabı */}
+      <mesh position={[0, 0.12, 0]} castShadow>
+        <cylinderGeometry args={[0.3, 0.24, 0.16, 12]} />
+        <meshStandardMaterial color="#8A6238" roughness={0.9} />
+      </mesh>
+    </group>
+  );
+}
+
+/** Süt sağma yeri — üç ayaklı tabure ve kova */
+export function SutSagmaModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      {/* tabure */}
+      <mesh position={[0, 0.3, 0]} castShadow>
+        <cylinderGeometry args={[0.22, 0.2, 0.08, 10]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {Array.from({ length: 3 }).map((_, i) => {
+        const a = (i / 3) * Math.PI * 2;
+        return (
+          <mesh key={i} position={[Math.cos(a) * 0.14, 0.14, Math.sin(a) * 0.14]}
+            rotation={[Math.cos(a) * 0.18, 0, -Math.sin(a) * 0.18]}>
+            <cylinderGeometry args={[0.028, 0.032, 0.3, 5]} />
+            <meshStandardMaterial map={ahsap} roughness={0.9} />
+          </mesh>
+        );
+      })}
+      {/* süt kovası */}
+      <mesh position={[0.45, 0.16, 0.2]} castShadow>
+        <cylinderGeometry args={[0.19, 0.16, 0.32, 12]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {/* yayık */}
+      <mesh position={[-0.6, 0.36, -0.3]} rotation={[0, 0, 0.12]} castShadow>
+        <cylinderGeometry args={[0.16, 0.2, 0.72, 10]} />
+        <meshStandardMaterial map={ahsap} color="#7A5A3A" roughness={0.92} />
+      </mesh>
+    </group>
+  );
+}
+
+/** Bebek beşiği ve gölgelik — otağ önü aile sahnesi */
+export function OtagOnuModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  const kilim = useMemo(() => kilimDokusu(2), []);
+  return (
+    <group>
+      {/* serili kilim */}
+      <mesh rotation={[-Math.PI / 2, 0, 0.35]} position={[0, 0.03, 0]} receiveShadow>
+        <planeGeometry args={[2.6, 1.8]} />
+        <meshStandardMaterial map={kilim} roughness={1} />
+      </mesh>
+      {/* gölgelik */}
+      {([[-1.4, -0.9], [1.4, -0.9]] as const).map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.95, z]} castShadow>
+          <cylinderGeometry args={[0.05, 0.06, 1.9, 6]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+      <mesh position={[0, 1.92, -0.5]} rotation={[0.22, 0, 0]}>
+        <planeGeometry args={[3.0, 1.5]} />
+        <meshStandardMaterial color="#C9BA98" roughness={0.97} side={THREE.DoubleSide} />
+      </mesh>
+      {/* beşik */}
+      <mesh position={[0.7, 0.38, 0.3]} rotation={[0, 0.4, 0]} castShadow>
+        <boxGeometry args={[0.75, 0.3, 0.4]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {/* su tulumu ve kaplar */}
+      <mesh position={[-0.9, 0.16, 0.5]} castShadow>
+        <sphereGeometry args={[0.17, 10, 8]} />
+        <meshStandardMaterial color="#6B4A2E" roughness={0.92} />
+      </mesh>
+      <mesh position={[-0.5, 0.13, 0.7]} castShadow>
+        <cylinderGeometry args={[0.14, 0.11, 0.26, 10]} />
+        <meshStandardMaterial color="#8A6238" roughness={0.92} />
+      </mesh>
+    </group>
+  );
+}
+
+/** Yün tarama ve eğirme yeri */
+export function YunEgirmeModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]} receiveShadow>
+        <circleGeometry args={[1.5, 16]} />
+        <meshStandardMaterial color="#8A7A5C" roughness={1} />
+      </mesh>
+      {/* yün yığınları */}
+      {[[-0.6, 0.3], [0.5, -0.4], [0.2, 0.6]].map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.2, z]} castShadow>
+          <sphereGeometry args={[0.26, 10, 8]} />
+          <meshStandardMaterial color={i === 1 ? "#C9BEA0" : "#E0D8C2"} roughness={1} />
+        </mesh>
+      ))}
+      {/* iğ ve sepet */}
+      <mesh position={[0.85, 0.2, 0.2]} rotation={[0, 0, 0.4]} castShadow>
+        <cylinderGeometry args={[0.02, 0.03, 0.4, 6]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      <mesh position={[-1.0, 0.16, -0.4]} castShadow>
+        <cylinderGeometry args={[0.28, 0.22, 0.3, 12]} />
+        <meshStandardMaterial color="#A08A5E" roughness={1} />
+      </mesh>
+    </group>
+  );
+}

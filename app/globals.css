@@ -360,13 +360,14 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--cini); outline-
   color: #F7EBD388; font-weight: 700; flex: 1;
 }
 .anlati-seridi-metin { font-size: 15.5px; line-height: 1.5; color: #F7EBD3; min-height: 2.6em; }
-.anlati-seridi-dugme {
+.anlati-seridi-atla {
   flex: 0 0 auto; align-self: center;
-  background: linear-gradient(135deg, var(--alev), var(--kilim)); color: #fff;
-  border: none; border-radius: 12px; padding: 12px 18px; font-weight: 700; font-size: 14.5px;
-  box-shadow: 0 5px 16px rgba(184,67,58,.4);
+  width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(10,16,26,.7); border: 1px solid rgba(255,207,114,.35);
+  color: #F7EBD3AA; font-size: 15px;
+  transition: background .2s, color .2s;
 }
-.anlati-seridi-dugme.bekliyor { opacity: .4; }
+.anlati-seridi-atla:hover { background: rgba(255,207,114,.2); color: #FFCF72; }
 
 /* ---------- Keşif kartı ---------- */
 .kesif-karti {

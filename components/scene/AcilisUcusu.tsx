@@ -32,7 +32,12 @@ const ROTA: Nokta[] = [
   { pos: [8, 22, 70], bak: [0, 3, 46] },
 ];
 
-const SURE = 21; // saniye
+/**
+ * Uçuş süresi anlatının uzunluğuna göre ayarlanır.
+ * Önceden sabit 21 saniyeydi; anlatı bitmeden sahne geçiyordu.
+ * AcilisAnlatisi bileşeni gerçek süreyi buraya bildirir.
+ */
+export const acilisSuresi = { saniye: 21, anlatiBitti: false };
 
 function kubik(p0: number, p1: number, p2: number, p3: number, t: number) {
   const t2 = t * t, t3 = t2 * t;
@@ -67,7 +72,7 @@ export function AcilisUcusu() {
 
   useFrame((_, delta) => {
     if (faz !== "acilis") return;
-    t.current = Math.min(1, t.current + delta / SURE);
+    t.current = Math.min(1, t.current + delta / acilisSuresi.saniye);
     // yumuşak giriş-çıkış
     const k = t.current < 0.5
       ? 2 * t.current * t.current
@@ -82,7 +87,8 @@ export function AcilisUcusu() {
     camera.lookAt(bakis.current);
     camera.rotation.z += Math.sin(t.current * 9) * 0.006;
 
-    if (t.current >= 1) acilisBitti();
+    // uçuş bitse bile anlatı sürüyorsa bekle — son karede yumuşakça asılı kal
+    if (t.current >= 1 && acilisSuresi.anlatiBitti) acilisBitti();
   });
 
   return null;

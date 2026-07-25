@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useOyun } from "@/lib/store";
-import { anlatiCal, anlatiDurdur } from "@/lib/audio";
+import { anlatiCal, anlatiDurdur, anlatiSuresi } from "@/lib/audio";
 import { DedeYuz } from "./DedeYuz";
 
 /**
@@ -28,22 +28,39 @@ export function AnlatiSeridi() {
     return () => anlatiDurdur();
   }, [blok]);
 
+  /**
+   * Metin daktiloyla yazılır, konuşma bitince ŞERİT KENDİLİĞİNDEN KAPANIR.
+   * "Devam" düğmesi kaldırıldı; öğrenci dinlemeye odaklanır, tıklamaz.
+   */
   useEffect(() => {
     if (!blok) return;
     setGorunen(""); setBitti(false);
     const azalt = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (azalt) { setGorunen(blok.text); setBitti(true); return; }
-    let i = 0;
-    const z = setInterval(() => {
-      i += 1;
-      setGorunen(blok.text.slice(0, i));
-      if (i >= blok.text.length) { setBitti(true); clearInterval(z); }
-    }, 15);
-    return () => clearInterval(z);
-  }, [blok]);
+    const zamanlar: number[] = [];
+
+    if (azalt) {
+      setGorunen(blok.text);
+      setBitti(true);
+    } else {
+      let i = 0;
+      const z = window.setInterval(() => {
+        i += 1;
+        setGorunen(blok.text.slice(0, i));
+        if (i >= blok.text.length) { setBitti(true); window.clearInterval(z); }
+      }, 15);
+      zamanlar.push(z);
+    }
+
+    // konuşma süresi kadar bekle, sonra bir sonrakine geç
+    const sure = anlatiSuresi(blok.text) + 500;
+    zamanlar.push(window.setTimeout(() => { anlatiDurdur(); sonraki(); }, sure));
+
+    return () => zamanlar.forEach((z) => { window.clearTimeout(z); window.clearInterval(z); });
+  }, [blok, sonraki]);
 
   if (!nod || !blok) return null;
   const son = anlatiIndex + 1 >= nod.narration.length;
+  void bitti;
 
   return (
     <div className="anlati-seridi">
@@ -64,14 +81,15 @@ export function AnlatiSeridi() {
           {gorunen}{!bitti && <span className="imlec">▌</span>}
         </p>
       </div>
+      {/* Düğme yok — anlatı bitince kendiliğinden ilerler.
+          Yalnız acele edenler için küçük bir geç işareti var. */}
       <button
         type="button"
-        className={`anlati-seridi-dugme ${bitti ? "" : "bekliyor"}`}
+        className="anlati-seridi-atla"
         onClick={() => { anlatiDurdur(); sonraki(); }}
-        disabled={!bitti}
-      >
-        {son ? "Keşfet ✨" : "Devam →"}
-      </button>
+        aria-label={son ? "Keşfe geç" : "Sonraki anlatı"}
+        title="Geç"
+      >⏭</button>
     </div>
   );
 }

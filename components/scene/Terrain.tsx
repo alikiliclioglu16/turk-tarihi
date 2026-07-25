@@ -23,7 +23,7 @@ import { useFrame } from "@react-three/fiber";
  * harmanlama `onBeforeCompile` ile içine enjekte edilir.
  */
 
-const BOYUT = 880;
+const BOYUT = 1180;
 const BOLME = 200;
 
 /** Bölge merkezleri arası rota — patika buradan geçer */

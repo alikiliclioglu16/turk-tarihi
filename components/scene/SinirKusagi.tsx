@@ -23,10 +23,11 @@ export function SinirKusagi() {
     const adet = 260;
     for (let i = 0; i < adet; i++) {
       const a = (i / adet) * Math.PI * 2 + r() * 0.06;
-      const d = DUNYA_YARICAP + 6 + r() * 55;
+      // kayalar arazinin İÇİNDE kalmalı — dışına taşarsa havada asılı görünür
+      const d = DUNYA_YARICAP - 26 + r() * 46;
       const x = Math.cos(a) * d;
       const z = Math.sin(a) * d;
-      const s0 = 5 + r() * 9;
+      const s0 = 4 + r() * 7;
       liste.push({
         // kayanın YARISI toprağa gömülü olmalı — yoksa havada asılı durur
         p: [x, araziYukseklik(x, z) - s0 * 0.34, z],

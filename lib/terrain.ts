@@ -93,9 +93,9 @@ export function araziYukseklik(gx: number, gz: number): number {
   if (merkezUz > SINIR_IC) {
     const k = Math.min(1, (merkezUz - SINIR_IC) / (SINIR_DIS - SINIR_IC));
     const yumusak = k * k * (3 - 2 * k);
-    y += yumusak * 26;
+    y += yumusak * 13;
     // tepe sırtında dalgalanma
-    y += yumusak * Math.sin(Math.atan2(z, x) * 7) * 4;
+    y += yumusak * Math.sin(Math.atan2(z, x) * 7) * 2.4;
   }
 
   // kamp alanı tamamen düz olsun

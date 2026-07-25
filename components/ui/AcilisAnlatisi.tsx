@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { anlatiCal, anlatiDurdur, anlatiSuresi } from "@/lib/audio";
+import { acilisSuresi } from "@/components/scene/AcilisUcusu";
 import { DedeYuz } from "./DedeYuz";
 
 interface Replik { id: string; audio: string; text: string }
@@ -40,6 +41,11 @@ export function AcilisAnlatisi() {
     setGorunur(true);
     let iptal = false;
 
+    // Uçuş süresini anlatının gerçek uzunluğuna eşitle
+    const toplam = replikler.reduce((t, r) => t + anlatiSuresi(r.text) + 700, 600);
+    acilisSuresi.saniye = Math.max(18, toplam / 1000);
+    acilisSuresi.anlatiBitti = false;
+
     const cal = (i: number) => {
       if (iptal || i >= replikler.length) return;
       setIndex(i);
@@ -47,7 +53,13 @@ export function AcilisAnlatisi() {
       anlatiCal(r.audio, r.text);
       // konuşma bitince bir sonrakine geç; kısa bir nefes payı bırak
       const sure = anlatiSuresi(r.text) + 700;
-      zamanlar.current.push(window.setTimeout(() => cal(i + 1), sure));
+      zamanlar.current.push(window.setTimeout(() => {
+        if (i + 1 >= replikler.length) {
+          // son replik bitti; uçuş artık sonlanabilir
+          acilisSuresi.anlatiBitti = true;
+        }
+        cal(i + 1);
+      }, sure));
     };
 
     // ilk replik kısa bir gecikmeyle başlasın (sahne otursun)
@@ -55,6 +67,7 @@ export function AcilisAnlatisi() {
 
     return () => {
       iptal = true;
+      acilisSuresi.anlatiBitti = true;
       zamanlar.current.forEach(clearTimeout);
       zamanlar.current = [];
       anlatiDurdur();

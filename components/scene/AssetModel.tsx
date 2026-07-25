@@ -23,6 +23,7 @@ import {
   GuresAlaniModel, AtEgitimCemberiModel, IpBukmeModel,
   CadirSirasiModel, SilahRafiModel, AtliTalimDiregiModel,
   TugSancakModel, NobetKulesiModel, AtBagiModel,
+  EtKurutmaModel, SohbetHalkasiModel, SutSagmaModel, OtagOnuModel, YunEgirmeModel,
 } from "./models/BolgeProps";
 
 interface Props {
@@ -102,6 +103,12 @@ function Prosedurel({ kod, olcek = 1, varyant = 0 }: { kod: string; olcek?: numb
     case "O04": return <TugSancakModel olcek={olcek} />;
     case "O05": return <NobetKulesiModel />;
     case "O06": return <AtBagiModel />;
+    /* --- otağ çevresi günlük hayat --- */
+    case "Y01": return <EtKurutmaModel />;
+    case "Y02": return <SohbetHalkasiModel />;
+    case "Y03": return <SutSagmaModel />;
+    case "Y04": return <OtagOnuModel />;
+    case "Y05": return <YunEgirmeModel />;
     default: {
       const v = varlik(kod);
       if (!v) return null;

@@ -66,9 +66,9 @@ export function Dekor() {
 
     for (let i = 0; i < DAG_SAYISI; i++) {
       const a = (i / DAG_SAYISI) * Math.PI * 2 + rnd() * 0.3;
-      const r = 430 + rnd() * 90;
+      const r = 480 + rnd() * 70;
       const s = 1 + rnd() * 1.1;
-      gecici.position.set(Math.cos(a) * r, -8, Math.sin(a) * r);
+      gecici.position.set(Math.cos(a) * r, -22, Math.sin(a) * r);
       gecici.rotation.set(0, rnd() * Math.PI, 0);
       gecici.scale.set(46 * s, 40 * s, 46 * s);
       gecici.updateMatrix();

@@ -18,7 +18,6 @@ import { FinalSinavi } from "@/components/ui/FinalSinavi";
 import { KartKoleksiyonu } from "@/components/ui/KartKoleksiyonu";
 import { MobilKontroller } from "@/components/ui/MobilKontroller";
 import { KaliteAyari } from "@/components/ui/KaliteAyari";
-import { Pusula } from "@/components/ui/Pusula";
 import { FotoModu } from "@/components/ui/FotoModu";
 import { YuklemeEkrani } from "@/components/ui/YuklemeEkrani";
 import { yuklemeDinle } from "@/lib/yuklemeYoneticisi";
@@ -126,7 +125,6 @@ export default function D01Page() {
       {faz !== "yukleniyor" && !foto && <MiniHarita />}
       {faz !== "yukleniyor" && !foto && <MobilKontroller />}
       {faz !== "yukleniyor" && !foto && <KaliteAyari />}
-      {!foto && <Pusula />}
       {faz !== "yukleniyor" && faz !== "acilis" && <BolgeGirisi />}
 
       <KisiPanel />
