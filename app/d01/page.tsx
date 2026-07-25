@@ -14,6 +14,7 @@ import { ClosingPanel } from "@/components/ui/ClosingPanel";
 import { Joystick } from "@/components/ui/Joystick";
 import { ilerlemeSifirla } from "@/lib/progress";
 import { BonusPanel } from "@/components/ui/BonusPanel";
+import { KisiPanel } from "@/components/ui/KisiPanel";
 
 // R3F sunucuda render edilemez
 const D01Scene = dynamic(
@@ -82,6 +83,7 @@ export default function D01Page() {
       {faz !== "yukleniyor" && <Hud />}
 
       <BonusPanel />
+      <KisiPanel />
 
       {faz === "anlati" && <NarrationPanel />}
       {faz === "kesif" && <HotspotPanel />}

@@ -1,3 +1,5 @@
+import { DUNYA_OLCEK } from "./dunyaOlcek";
+
 /**
  * ARAZİ
  *
@@ -51,7 +53,10 @@ function dereyeUzaklik(x: number, z: number): number {
   return en;
 }
 
-export function araziYukseklik(x: number, z: number): number {
+export function araziYukseklik(gx: number, gz: number): number {
+  // dünya ölçeğinden tasarım ölçeğine dön
+  const x = gx / DUNYA_OLCEK;
+  const z = gz / DUNYA_OLCEK;
   // temel dalgalı bozkır
   const temel =
     Math.sin(x * 0.032) * Math.cos(z * 0.026) * 2.4 +
@@ -87,15 +92,15 @@ export function araziYukseklik(x: number, z: number): number {
     y *= 1 - k * k * 0.95;
   }
 
-  return y;
+  return y * DUNYA_OLCEK;
 }
 
 /** Su yüzeyi kotu — dere bu seviyede akar */
-export const SU_KOTU = -3.4;
+export const SU_KOTU = -3.4 * DUNYA_OLCEK;
 
-export function dereIcindeMi(x: number, z: number): boolean {
-  return dereyeUzaklik(x, z) < 4.2;
+export function dereIcindeMi(gx: number, gz: number): boolean {
+  return dereyeUzaklik(gx / DUNYA_OLCEK, gz / DUNYA_OLCEK) < 4.2;
 }
 
 /** Dünya sınırı (metre) */
-export const DUNYA_YARICAP = 130;
+export const DUNYA_YARICAP = 130 * DUNYA_OLCEK;

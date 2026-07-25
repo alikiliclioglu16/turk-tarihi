@@ -17,7 +17,7 @@ export function NarrationPanel() {
   const blok = nod?.narration[anlatiIndex];
 
   useEffect(() => {
-    if (blok?.audio) anlatiCal(blok.audio);
+    if (blok) anlatiCal(blok.audio, blok.text);
     return () => anlatiDurdur();
   }, [blok?.audio]);
 
@@ -37,7 +37,7 @@ export function NarrationPanel() {
             className="mini-dugme"
             title="Tekrar dinle"
             aria-label="Tekrar dinle"
-            onClick={() => anlatiCal(blok.audio)}
+            onClick={() => anlatiCal(blok.audio, blok.text)}
           >
             🔁
           </button>

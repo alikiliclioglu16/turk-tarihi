@@ -8,6 +8,8 @@
  * Kod hiçbir yerde değişmez; sahne otomatik olarak gerçek modeli yükler.
  */
 
+import { DUNYA_OLCEK } from "./dunyaOlcek";
+
 export type GreyboxSekil = "kutu" | "silindir" | "koni" | "kure" | "tas";
 
 export interface VarlikTanimi {
@@ -167,6 +169,14 @@ export const VARLIKLAR: Record<string, VarlikTanimi> = {
   /* ---------- ORTAK ---------- */
   H04: { kod: "H04", ad: "Yön Direği", path: null, hazir: false,
     greybox: { sekil: "silindir", boyut: [0.16, 2.2, 0.16], renk: "#6E4B26" } },
+  P01: { kod: "P01", ad: "Pazar Tezgâhı", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [2.4, 2.3, 0.9], renk: "#6E4B26" } },
+  P02: { kod: "P02", ad: "Demirci Ocağı", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [1.9, 1.0, 1.9], renk: "#4A4038" } },
+  P03: { kod: "P03", ad: "Talim Hedefi", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [1.2, 1.8, 0.3], renk: "#C9A863" } },
+  P04: { kod: "P04", ad: "Aşık Oyunu", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [2.2, 0.1, 2.2], renk: "#3A3226" } },
 
 };
 
@@ -182,7 +192,7 @@ export interface Yerlesim {
   olcek?: number;
 }
 
-export const D01_YERLESIM: Yerlesim[] = [
+const HAM_YERLESIM: Yerlesim[] = [
   { kod: "A04", pos: [-6.5, 0, -3.2], rotY: 0.75 },
   { kod: "A04", pos: [8.5, 0, -6.5], rotY: -0.6, olcek: 0.8 },
   { kod: "A05", pos: [0, 0, 0] },
@@ -300,3 +310,69 @@ export const D01_YERLESIM: Yerlesim[] = [
   { kod: "B21", pos: [-3.5, 0, -93], olcek: 0.9 },
   { kod: "B21", pos: [3.5, 0, -93], olcek: 0.9 },
 ];
+
+/** Tasarım koordinatlarını dünya ölçeğine çevir */
+const OLCEKLI: Yerlesim[] = HAM_YERLESIM.map((y) => ({
+  ...y,
+  pos: [y.pos[0] * DUNYA_OLCEK, y.pos[1] * DUNYA_OLCEK, y.pos[2] * DUNYA_OLCEK],
+}));
+
+/**
+ * OBA MAHALLELERİ — doğrudan dünya koordinatlarında yazıldı.
+ * Oba artık dört mahalleye yayılıyor; alan yaklaşık 130×130 metre.
+ */
+const MAHALLELER: Yerlesim[] = [
+  /* --- MEYDAN (ozan, dans, sohbet) --- */
+  { kod: "A08", pos: [3, 0, 28], rotY: 0.3 },
+  { kod: "A08", pos: [-3, 0, 30], rotY: 1.2 },
+  { kod: "B07", pos: [1, 0, 30.5], rotY: 0.6 },
+  { kod: "B07", pos: [6, 0, 28], rotY: 2.1 },
+  { kod: "B21", pos: [0, 0, 24], olcek: 1.1 },
+  { kod: "A05", pos: [0, 0, 33] },
+
+  /* --- ZANAAT SOKAĞI --- */
+  { kod: "P02", pos: [-26, 0, 6], rotY: 1.2 },
+  { kod: "A04", pos: [-30, 0, 12], rotY: 2.0, olcek: 0.85 },
+  { kod: "B16", pos: [-20, 0, 22], rotY: -0.35 },
+  { kod: "B16", pos: [-23, 0, 25], rotY: 0.4 },
+  { kod: "A08", pos: [-18, 0, 20], rotY: 0.2 },
+  { kod: "B18", pos: [-24, 0, 3], rotY: 0.4 },
+  { kod: "B17", pos: [-14, 0, 12], rotY: 1.0 },
+  { kod: "B06", pos: [-17, 0, 16], rotY: 0.7 },
+  { kod: "A06", pos: [-11, 0, 2] },
+  { kod: "A05", pos: [-11, 0, 2] },
+
+  /* --- PAZAR YERİ --- */
+  { kod: "P01", pos: [24, 0, 20], rotY: 3.4 },
+  { kod: "P01", pos: [29, 0, 23], rotY: 3.7 },
+  { kod: "P01", pos: [33, 0, 18], rotY: 2.6 },
+  { kod: "P01", pos: [27, 0, 14], rotY: 0.4 },
+  { kod: "B15", pos: [36, 0, 26], rotY: 1.1 },
+  { kod: "A04", pos: [32, 0, 30], rotY: -0.8, olcek: 0.8 },
+  { kod: "B06", pos: [25, 0, 17], rotY: 1.4 },
+  { kod: "B19", pos: [31, 0, 12], rotY: 0.3 },
+
+  /* --- TALİM ALANI --- */
+  { kod: "P03", pos: [16, 0, -30], rotY: 0 },
+  { kod: "P03", pos: [20, 0, -30], rotY: 0 },
+  { kod: "P03", pos: [12, 0, -30], rotY: 0 },
+  { kod: "B20", pos: [17, 0, -14], rotY: 0.2 },
+  { kod: "B20", pos: [21, 0, -15], rotY: 0.5 },
+  { kod: "A04", pos: [26, 0, -18], rotY: 1.6, olcek: 0.75 },
+
+  /* --- ÇOCUK OYUN ALANI --- */
+  { kod: "P04", pos: [10.5, 0, 13.5] },
+  { kod: "C01", pos: [13, 0, 11], olcek: 1.2 },
+
+  /* --- OTLAK VE AĞILLAR --- */
+  { kod: "B13", pos: [42, 0, -4], rotY: 2.4 },
+  { kod: "B13", pos: [-32, 0, 32], rotY: 0.8 },
+  { kod: "B19", pos: [40, 0, 6], rotY: 0.9 },
+
+  /* --- AV DÖNÜŞ YOLU --- */
+  { kod: "H04", pos: [-30, 0, -20], rotY: 0.5 },
+  { kod: "H04", pos: [-18, 0, -12], rotY: 0.9 },
+  { kod: "B17", pos: [-26, 0, -14], rotY: 1.3 },
+];
+
+export const D01_YERLESIM: Yerlesim[] = [...OLCEKLI, ...MAHALLELER];

@@ -5,6 +5,8 @@
  * Dünya yaklaşık 160 × 180 metre, dört bölge tek kesintisiz arazide.
  */
 
+import { DUNYA_OLCEK } from "./dunyaOlcek";
+
 export type BolgeId = "oba" | "balbal_sirti" | "su_basi" | "eski_yurt";
 
 export interface Bolge {
@@ -53,12 +55,17 @@ export const BOLGELER: Record<BolgeId, Bolge> = {
 export const BOLGE_SIRASI: BolgeId[] = ["oba", "balbal_sirti", "su_basi", "eski_yurt"];
 
 /** Oyuncunun hangi bölgede olduğunu bulur (en yakın merkez) */
+function m(b: Bolge): [number, number] {
+  return [b.merkez[0] * DUNYA_OLCEK, b.merkez[1] * DUNYA_OLCEK];
+}
+
 export function bolgeBul(x: number, z: number): BolgeId {
   let enIyi: BolgeId = "oba";
   let enKisa = Infinity;
   for (const id of BOLGE_SIRASI) {
     const b = BOLGELER[id];
-    const d = Math.hypot(x - b.merkez[0], z - b.merkez[1]);
+    const [mx, mz] = m(b);
+    const d = Math.hypot(x - mx, z - mz);
     if (d < enKisa) { enKisa = d; enIyi = id; }
   }
   return enIyi;
@@ -70,8 +77,9 @@ export function bolgeAgirliklari(x: number, z: number): Record<BolgeId, number> 
   let toplam = 0;
   for (const id of BOLGE_SIRASI) {
     const b = BOLGELER[id];
-    const d = Math.hypot(x - b.merkez[0], z - b.merkez[1]);
-    const w = 1 / (1 + Math.pow(d / b.yaricap, 3));
+    const [mx, mz] = m(b);
+    const d = Math.hypot(x - mx, z - mz);
+    const w = 1 / (1 + Math.pow(d / (b.yaricap * DUNYA_OLCEK), 3));
     ham[id] = w;
     toplam += w;
   }

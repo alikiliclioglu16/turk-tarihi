@@ -4,6 +4,30 @@ import { create } from "zustand";
 import type { TourNode, RewardCard } from "./types";
 import { input } from "./input";
 import { ilerlemeYukle, ilerlemeKaydet, olayKaydet } from "./progress";
+import { DUNYA_OLCEK } from "./dunyaOlcek";
+
+/**
+ * JSON koordinatları tasarım ölçeğinde yazıldı. Dünya 2.6 katına
+ * çıkarıldığı için yükleme anında ölçeklenir. JSON dosyalarına dokunulmaz.
+ */
+function nodOlcekle(n: TourNode): TourNode {
+  const k = DUNYA_OLCEK;
+  const w3 = (n as TourNode & { world3d?: { guidePosition: [number,number,number]; triggerRadius: number; hotspotPositions?: Record<string,[number,number,number]> } }).world3d;
+  const kaynak = w3 ?? n.world;
+  const hs = w3?.hotspotPositions;
+  return {
+    ...n,
+    world: {
+      guidePosition: [kaynak.guidePosition[0]*k, kaynak.guidePosition[1]*k, kaynak.guidePosition[2]*k],
+      triggerRadius: Math.max(3.5, kaynak.triggerRadius * k * 0.62),
+      cameraFocus: n.world.cameraFocus,
+    },
+    hotspots: n.hotspots.map((h) => {
+      const p = hs?.[h.id] ?? h.position;
+      return { ...h, position: [p[0]*k, p[1]*k, p[2]*k] as [number,number,number] };
+    }),
+  };
+}
 
 export type Faz =
   | "yukleniyor"
@@ -29,6 +53,7 @@ interface Durum {
   dogruSecilenler: string[];
   bulunanBonuslar: string[];
   aktifBonusId: string | null;
+  kisiBilgi: { id: string; ad: string; metin: string } | null;
 
   nodlariYukle: (n: TourNode[]) => void;
   duragiBaslat: () => void;
@@ -40,6 +65,8 @@ interface Durum {
   cokluCevapVer: (secenekId: string) => void;
   bonusBul: (id: string) => void;
   bonusKapat: () => void;
+  kisiBilgiAc: (id: string, ad: string, metin: string) => void;
+  kisiBilgiKapat: () => void;
   odulAlindi: () => void;
   kapanisBitti: () => void;
   sifirla: () => void;
@@ -59,8 +86,10 @@ export const useOyun = create<Durum>((set, get) => ({
   dogruSecilenler: [],
   bulunanBonuslar: [],
   aktifBonusId: null,
+  kisiBilgi: null,
 
-  nodlariYukle: (nodlar) => {
+  nodlariYukle: (hamNodlar) => {
+    const nodlar = hamNodlar.map(nodOlcekle);
     const kayit = ilerlemeYukle();
     const tamam = kayit.tamamlananNodlar;
     // kaldığı yerden devam
@@ -151,6 +180,9 @@ export const useOyun = create<Durum>((set, get) => ({
   },
 
   bonusKapat: () => set({ aktifBonusId: null }),
+
+  kisiBilgiAc: (id, ad, metin) => set({ kisiBilgi: { id, ad, metin } }),
+  kisiBilgiKapat: () => set({ kisiBilgi: null }),
 
   cokluCevapVer: (secenekId) => {
     const { nodlar, aktifIndex, denemeSayisi, dogruSecilenler } = get();

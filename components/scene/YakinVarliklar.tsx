@@ -7,7 +7,7 @@ import { D01_YERLESIM } from "@/lib/assets";
 import { oyuncuKonumu } from "@/lib/oyuncuKonum";
 
 /** Bu uzaklığın ötesindeki nesneler hiç çizilmez */
-const CIZIM_MESAFESI = 78;
+const CIZIM_MESAFESI = 90;
 
 /**
  * MESAFE TABANLI GÖRÜNÜRLÜK

@@ -111,6 +111,7 @@ export function sesDurdur(): void {
 
 export function sessizAyarla(deger: boolean): void {
   sessiz = deger;
+  if (deger) seslendirmeyiDurdur();
   if (anaKazanc && ctx) anaKazanc.gain.setTargetAtTime(deger ? 0 : 1, ctx.currentTime, 0.05);
   if (aktifAnlati) aktifAnlati.muted = deger;
 }
@@ -158,12 +159,74 @@ export function tik(): void {
 let aktifAnlati: HTMLAudioElement | null = null;
 const bulunamayan = new Set<string>();
 
+/* ---------- Geçici seslendirme: tarayıcı sesi (TTS) ---------- */
+
+let tercihEdilenSes: SpeechSynthesisVoice | null = null;
+let sesListesiHazir = false;
+
+function turkceSesBul(): SpeechSynthesisVoice | null {
+  if (typeof window === "undefined" || !window.speechSynthesis) return null;
+  const hepsi = window.speechSynthesis.getVoices();
+  if (!hepsi.length) return null;
+  sesListesiHazir = true;
+  // önce Türkçe, sonra erkek olabilecek adlar
+  const tr = hepsi.filter((v) => v.lang?.toLowerCase().startsWith("tr"));
+  if (!tr.length) return null;
+  const erkek = tr.find((v) => /tolga|ahmet|male|erkek/i.test(v.name));
+  return erkek ?? tr[0];
+}
+
+if (typeof window !== "undefined" && window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = () => {
+    tercihEdilenSes = turkceSesBul();
+  };
+}
+
+/** Gerçek kayıt gelene kadar metni bilgisayar sesiyle okur */
+export function seslendir(metin: string): boolean {
+  if (typeof window === "undefined" || !window.speechSynthesis) return false;
+  if (sessiz || !metin) return false;
+  try {
+    window.speechSynthesis.cancel();
+    if (!tercihEdilenSes && !sesListesiHazir) tercihEdilenSes = turkceSesBul();
+    const s = new SpeechSynthesisUtterance(metin);
+    s.lang = "tr-TR";
+    if (tercihEdilenSes) s.voice = tercihEdilenSes;
+    s.rate = 0.92;   // Dede Korkut ağırbaşlı konuşur
+    s.pitch = 0.85;  // yaşlı ve derin
+    s.volume = 1;
+    // konuşurken ambiyansı kıs
+    if (ambiyansKazanc && ctx) ambiyansKazanc.gain.setTargetAtTime(0.22, ctx.currentTime, 0.2);
+    const geriAc = () => {
+      if (ambiyansKazanc && ctx) ambiyansKazanc.gain.setTargetAtTime(0.5, ctx.currentTime, 0.4);
+    };
+    s.onend = geriAc;
+    s.onerror = geriAc;
+    window.speechSynthesis.speak(s);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function seslendirmeyiDurdur(): void {
+  if (typeof window !== "undefined" && window.speechSynthesis) {
+    try { window.speechSynthesis.cancel(); } catch { /* yoksay */ }
+  }
+}
+
 /**
- * Anlatı sesini çalar. Dosya yoksa sessizce atlar ve bir daha denemez.
- * @returns dosya bulunup çalınmaya başladıysa true
+ * Anlatı sesini çalar.
+ * Gerçek kayıt varsa onu çalar; yoksa metni tarayıcı sesiyle okur.
+ * @param yedekMetin kayıt bulunamazsa okunacak metin
  */
-export function anlatiCal(dosyaAdi: string): boolean {
-  if (!dosyaAdi || bulunamayan.has(dosyaAdi)) return false;
+export function anlatiCal(dosyaAdi: string, yedekMetin?: string): boolean {
+  if (bulunamayan.has(dosyaAdi) && yedekMetin) {
+    return seslendir(yedekMetin);
+  }
+  if (!dosyaAdi) {
+    return yedekMetin ? seslendir(yedekMetin) : false;
+  }
   anlatiDurdur();
   try {
     const a = new Audio(`/audio/d01/${dosyaAdi}`);
@@ -172,6 +235,7 @@ export function anlatiCal(dosyaAdi: string): boolean {
     a.onerror = () => {
       bulunamayan.add(dosyaAdi);
       if (aktifAnlati === a) aktifAnlati = null;
+      if (yedekMetin) seslendir(yedekMetin);
     };
     // anlatı çalarken ambiyansı kıs
     a.onplay = () => {
@@ -185,6 +249,7 @@ export function anlatiCal(dosyaAdi: string): boolean {
     aktifAnlati = a;
     void a.play().catch(() => {
       bulunamayan.add(dosyaAdi);
+      if (yedekMetin) seslendir(yedekMetin);
     });
     return true;
   } catch {
@@ -193,6 +258,7 @@ export function anlatiCal(dosyaAdi: string): boolean {
 }
 
 export function anlatiDurdur(): void {
+  seslendirmeyiDurdur();
   if (aktifAnlati) {
     try {
       aktifAnlati.pause();

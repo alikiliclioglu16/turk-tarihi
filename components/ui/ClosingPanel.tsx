@@ -16,7 +16,7 @@ export function ClosingPanel() {
   const nod = nodlar[aktifIndex];
   const kapanisSes = nod?.closing.audio;
   useEffect(() => {
-    if (kapanisSes) anlatiCal(kapanisSes);
+    if (nod) anlatiCal(nod.closing.audio, nod.closing.text);
     return () => anlatiDurdur();
   }, [kapanisSes]);
 

@@ -252,3 +252,5 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--cini); outline-
 }
 .bonus-panel { border-color: #F0D48A; box-shadow: 0 12px 36px #000d, 0 0 0 2px rgba(240,212,138,.25); }
 .anlati-metin.kucuk, .panel .kucuk { font-size: 14.5px; }
+
+.kisi-panel { border-color: #4BB3A9; box-shadow: 0 12px 36px #000d, 0 0 0 2px rgba(75,179,169,.22); }

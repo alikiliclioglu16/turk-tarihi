@@ -8,8 +8,9 @@ import { useOyun } from "@/lib/store";
 import { tik } from "@/lib/audio";
 import { oyuncuKonumu } from "@/lib/oyuncuKonum";
 import { lekeDokusu } from "@/lib/textures";
+import { DUNYA_OLCEK } from "@/lib/dunyaOlcek";
 
-const GORUNUR_MESAFE = 55; // metre — bu uzaklıktan öteye çizilmez
+const GORUNUR_MESAFE = 70; // metre — bu uzaklıktan öteye çizilmez
 
 /**
  * MERAKLI GÖZLER
@@ -53,11 +54,12 @@ export function BonusKesifler() {
     <group ref={grup}>
       {bonusKesifler.map((b) => {
         const acildi = bulunan.includes(b.id);
+        const p: [number, number, number] = [b.pos[0]*DUNYA_OLCEK, b.pos[1]*DUNYA_OLCEK, b.pos[2]*DUNYA_OLCEK];
         return (
           <group
             key={b.id}
-            position={b.pos}
-            userData={{ tx: b.pos[0], ty: b.pos[1], tz: b.pos[2] }}
+            position={p}
+            userData={{ tx: p[0], ty: p[1], tz: p[2] }}
             onClick={(e) => {
               if (!tiklanabilir) return;
               e.stopPropagation();

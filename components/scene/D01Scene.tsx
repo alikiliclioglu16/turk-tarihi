@@ -10,6 +10,8 @@ import { SahneAtmosferi } from "./Environment";
 import { Terrain } from "./Terrain";
 import { Player } from "./Player";
 import { YakinVarliklar } from "./YakinVarliklar";
+import { Halk } from "./Halk";
+import { Suru } from "./Suru";
 import { HotspotMarker } from "./HotspotMarker";
 import { HedefIsigi } from "./HedefIsigi";
 import { Dekor } from "./Dekor";
@@ -56,6 +58,8 @@ export function D01Scene() {
         <AtesEfekti pos={[0, 0, 0]} />
 
         <YakinVarliklar />
+        <Halk />
+        <Suru />
 
         <Player baslangic={[0, 0, 14]} />
         <BonusKesifler />

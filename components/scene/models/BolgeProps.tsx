@@ -535,3 +535,151 @@ export function SuYuzeyiModel() {
     </mesh>
   );
 }
+
+/* ============================================================
+   OBA MAHALLELERİ — pazar, zanaat, talim
+   ============================================================ */
+
+export function PazarTezgahiModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  const kilim = useMemo(() => kilimDokusu(), []);
+  return (
+    <group>
+      {/* tezgâh */}
+      <mesh position={[0, 0.72, 0]} castShadow receiveShadow>
+        <boxGeometry args={[2.4, 0.1, 0.9]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {[[-1.05, 0.38], [1.05, 0.38], [-1.05, -0.38], [1.05, -0.38]].map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.35, z]} castShadow>
+          <cylinderGeometry args={[0.055, 0.06, 0.72, 6]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+      {/* gölgelik direkleri ve bez */}
+      {[-1.1, 1.1].map((x) => (
+        <mesh key={`d${x}`} position={[x, 1.35, -0.42]} castShadow>
+          <cylinderGeometry args={[0.05, 0.055, 2.0, 6]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+      <mesh position={[0, 2.28, 0.05]} rotation={[0.32, 0, 0]}>
+        <planeGeometry args={[2.7, 1.35]} />
+        <meshStandardMaterial map={kilim} roughness={0.95} side={THREE.DoubleSide} />
+      </mesh>
+      {/* tezgâhtaki mal: kaplar, top kumaş, sepet */}
+      <mesh position={[-0.7, 0.87, 0]} castShadow>
+        <cylinderGeometry args={[0.17, 0.14, 0.2, 10]} />
+        <meshStandardMaterial color="#8A6238" roughness={0.9} />
+      </mesh>
+      <mesh position={[-0.2, 0.87, 0.15]} rotation={[0, 0, Math.PI / 2]} castShadow>
+        <cylinderGeometry args={[0.12, 0.12, 0.5, 10]} />
+        <meshStandardMaterial map={kilim} roughness={0.95} />
+      </mesh>
+      <mesh position={[0.45, 0.86, -0.1]} castShadow>
+        <sphereGeometry args={[0.16, 10, 8]} />
+        <meshStandardMaterial color="#7A5A3A" roughness={0.95} />
+      </mesh>
+      <mesh position={[0.95, 0.9, 0.1]} castShadow>
+        <boxGeometry args={[0.34, 0.26, 0.3]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+    </group>
+  );
+}
+
+export function DemirciOcagiModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      {/* ocak yığını */}
+      <mesh position={[0, 0.45, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[0.8, 0.95, 0.9, 10]} />
+        <meshStandardMaterial color="#4A4038" roughness={1} flatShading />
+      </mesh>
+      {/* köz */}
+      <mesh position={[0, 0.92, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[0.5, 14]} />
+        <meshBasicMaterial color="#E5703A" transparent opacity={0.9} />
+      </mesh>
+      <pointLight color="#ff8a3c" intensity={7} distance={9} decay={2} position={[0, 1.1, 0]} />
+      {/* körük */}
+      <mesh position={[-1.05, 0.7, 0]} rotation={[0, 0, 0.2]} castShadow>
+        <boxGeometry args={[0.7, 0.3, 0.45]} />
+        <meshStandardMaterial color="#6B4A2E" roughness={0.9} />
+      </mesh>
+      {/* örs ve kütük */}
+      <mesh position={[1.5, 0.4, 0.2]} castShadow>
+        <cylinderGeometry args={[0.28, 0.32, 0.8, 9]} />
+        <meshStandardMaterial map={ahsap} roughness={0.95} />
+      </mesh>
+      <mesh position={[1.5, 0.92, 0.2]} castShadow>
+        <boxGeometry args={[0.62, 0.24, 0.26]} />
+        <meshStandardMaterial color="#3C4048" metalness={0.65} roughness={0.45} />
+      </mesh>
+      {/* su teknesi */}
+      <mesh position={[0.4, 0.2, 1.3]} castShadow>
+        <cylinderGeometry args={[0.35, 0.3, 0.4, 10]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {/* duvara dayalı yapılmış uçlar */}
+      {[0, 1, 2].map((i) => (
+        <mesh key={i} position={[-1.7 + i * 0.22, 0.5, -0.9]} rotation={[0.25, 0, 0.12]} castShadow>
+          <cylinderGeometry args={[0.02, 0.02, 1.1, 5]} />
+          <meshStandardMaterial color="#8A93A6" metalness={0.6} roughness={0.5} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+export function TalimHedefiModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      {[-0.45, 0.45].map((x) => (
+        <mesh key={x} position={[x, 0.9, 0]} rotation={[0.12, 0, 0]} castShadow>
+          <cylinderGeometry args={[0.06, 0.07, 1.8, 6]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+      {/* saman hedef */}
+      <mesh position={[0, 1.45, 0.06]} rotation={[0.12, 0, 0]} castShadow>
+        <cylinderGeometry args={[0.55, 0.55, 0.22, 16]} />
+        <meshStandardMaterial color="#C9A863" roughness={1} />
+      </mesh>
+      <mesh position={[0, 1.45, 0.18]} rotation={[Math.PI / 2 + 0.12, 0, 0]}>
+        <ringGeometry args={[0.16, 0.24, 18]} />
+        <meshStandardMaterial color="#A8382F" side={THREE.DoubleSide} roughness={1} />
+      </mesh>
+      {/* saplanmış oklar */}
+      {[[0.1, 1.5], [-0.14, 1.38], [0.05, 1.62]].map(([x, y], i) => (
+        <mesh key={i} position={[x, y, 0.34]} rotation={[Math.PI / 2 + 0.12, 0, 0]}>
+          <cylinderGeometry args={[0.012, 0.012, 0.55, 5]} />
+          <meshStandardMaterial color="#6E4B26" roughness={0.9} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+export function AsikOyunuModel() {
+  return (
+    <group>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]} receiveShadow>
+        <circleGeometry args={[1.1, 18]} />
+        <meshStandardMaterial color="#3A3226" roughness={1} />
+      </mesh>
+      {Array.from({ length: 9 }).map((_, i) => {
+        const a = (i / 9) * Math.PI * 2;
+        const r = 0.25 + (i % 3) * 0.22;
+        return (
+          <mesh key={i} position={[Math.cos(a) * r, 0.07, Math.sin(a) * r]} rotation={[i, i * 1.4, 0]} castShadow>
+            <capsuleGeometry args={[0.045, 0.06, 3, 6]} />
+            <meshStandardMaterial color="#E8DCC0" roughness={0.9} />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}

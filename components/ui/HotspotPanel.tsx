@@ -24,9 +24,9 @@ export function HotspotPanel() {
   const aktifSes = aktif?.audio;
 
   useEffect(() => {
-    if (aktifSes) anlatiCal(aktifSes);
+    if (aktif) anlatiCal(aktif.audio, aktif.text);
     return () => anlatiDurdur();
-  }, [aktifSes]);
+  }, [aktif]);
 
   if (!nod) return null;
 
@@ -75,7 +75,7 @@ export function HotspotPanel() {
             className="mini-dugme"
             title="Tekrar dinle"
             aria-label="Tekrar dinle"
-            onClick={() => anlatiCal(aktif.audio)}
+            onClick={() => anlatiCal(aktif.audio, aktif.text)}
           >
             🔁
           </button>
