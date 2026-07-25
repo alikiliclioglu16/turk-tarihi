@@ -125,20 +125,40 @@ export function Dekor() {
     ruzgarZaman.current.value += delta;
   });
 
+  /**
+   * Matrisler karelere yayılarak yazılır — tek karede 2600 ot yazmak
+   * tarayıcıyı kilitliyordu. Kare başına 400 kayıt yazılıyor.
+   */
   const yazildi = useRef(false);
+  const imlec = useRef(0);
   useFrame(() => {
     if (yazildi.current) return;
-    const yaz = (im: THREE.InstancedMesh | null, m: THREE.Matrix4[]) => {
-      if (!im) return false;
-      m.forEach((mat, i) => im.setMatrixAt(i, mat));
-      im.instanceMatrix.needsUpdate = true;
-      im.computeBoundingSphere();
-      return true;
-    };
-    const a = yaz(otRef.current, veriler.ot);
-    const b = yaz(kayaRef.current, veriler.kaya);
-    const c = yaz(dagRef.current, veriler.dag);
-    if (a && b && c) yazildi.current = true;
+    const ot = otRef.current, kaya = kayaRef.current, dag = dagRef.current;
+    if (!ot || !kaya || !dag) return;
+
+    const PARCA = 400;
+    let kalan = PARCA;
+    while (kalan > 0) {
+      const i = imlec.current;
+      if (i < veriler.ot.length) {
+        ot.setMatrixAt(i, veriler.ot[i]);
+      } else if (i < veriler.ot.length + veriler.kaya.length) {
+        kaya.setMatrixAt(i - veriler.ot.length, veriler.kaya[i - veriler.ot.length]);
+      } else if (i < veriler.ot.length + veriler.kaya.length + veriler.dag.length) {
+        const j = i - veriler.ot.length - veriler.kaya.length;
+        dag.setMatrixAt(j, veriler.dag[j]);
+      } else {
+        [ot, kaya, dag].forEach((m) => {
+          m.instanceMatrix.needsUpdate = true;
+          m.computeBoundingSphere();
+        });
+        yazildi.current = true;
+        return;
+      }
+      imlec.current++;
+      kalan--;
+    }
+    [ot, kaya, dag].forEach((m) => { m.instanceMatrix.needsUpdate = true; });
   });
 
   return (

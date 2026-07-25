@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { KesifKarti } from "@/lib/kartlar";
-import { kesifGorseli } from "@/lib/kartlar";
+import { kesifGorseli, muzeReferansi } from "@/lib/kartlar";
 
 /**
  * KEŞİF KARTI — çevrilebilir
@@ -18,6 +18,7 @@ export function KesifKartiPaneli({
   const [arka, setArka] = useState(false);
   const onGorsel = kesifGorseli(kart.id, "on");
   const arkaGorsel = kesifGorseli(kart.id, "arka");
+  const referans = muzeReferansi(kart.id);
 
   useEffect(() => {
     setArka(false);
@@ -69,6 +70,23 @@ export function KesifKartiPaneli({
               )}
               {kart.kaynak?.startsWith("DOĞRULANMALI") && (
                 <span className="kesif-kaynak uyari">⚠ Bu bilgi doğrulanmayı bekliyor</span>
+              )}
+
+              {/* GERÇEK KAYNAK — müze eseri görseli */}
+              {referans && (
+                <span className="muze-referans">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={referans.gorsel} alt={referans.baslik} className="muze-gorsel" />
+                  <span className="muze-bilgi">
+                    <span className="muze-etiket">Gerçek kaynak</span>
+                    <span className="muze-baslik">{referans.baslik}</span>
+                    <span className="muze-kurum">
+                      {referans.kurum}
+                      {referans.envanter ? ` · ${referans.envanter}` : ""}
+                      {referans.yil ? ` · ${referans.yil}` : ""}
+                    </span>
+                  </span>
+                </span>
               )}
             </>
           )}

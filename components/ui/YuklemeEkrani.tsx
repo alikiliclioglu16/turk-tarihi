@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { yuklemeDinle } from "@/lib/yuklemeYoneticisi";
 
 /**
  * YÜKLEME EKRANI
@@ -32,6 +33,10 @@ const KONTROLLER: [string, string][] = [
 
 export function YuklemeEkrani({ ilerleme }: { ilerleme: number }) {
   const [bilgi, setBilgi] = useState(0);
+  const [sahne, setSahne] = useState(0);
+  const [durum, setDurum] = useState("Hazırlanıyor");
+
+  useEffect(() => yuklemeDinle((o, ad) => { setSahne(o); setDurum(ad); }), []);
 
   useEffect(() => {
     const z = window.setInterval(() => setBilgi((b) => (b + 1) % BILGILER.length), 4200);
@@ -57,13 +62,13 @@ export function YuklemeEkrani({ ilerleme }: { ilerleme: number }) {
         </div>
 
         <div className="yukleme-cubuk">
-          <div className="yukleme-dolgu" style={{ width: `${Math.round(ilerleme * 100)}%` }} />
+          <div
+            className="yukleme-dolgu"
+            style={{ width: `${Math.round((ilerleme * 0.35 + sahne * 0.65) * 100)}%` }}
+          />
         </div>
         <div className="yukleme-durum">
-          {ilerleme < 0.35 ? "Bozkır hazırlanıyor…"
-            : ilerleme < 0.7 ? "Oba kuruluyor…"
-            : ilerleme < 0.99 ? "Duraklar yerleştiriliyor…"
-            : "Hazır"}
+          {ilerleme < 1 ? "Duraklar okunuyor…" : `${durum}…`}
         </div>
 
         <div className="yukleme-kontroller">

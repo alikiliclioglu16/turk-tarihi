@@ -21,6 +21,7 @@ import { KaliteAyari } from "@/components/ui/KaliteAyari";
 import { Pusula } from "@/components/ui/Pusula";
 import { FotoModu } from "@/components/ui/FotoModu";
 import { YuklemeEkrani } from "@/components/ui/YuklemeEkrani";
+import { yuklemeDinle } from "@/lib/yuklemeYoneticisi";
 import { AcilisAnlatisi } from "@/components/ui/AcilisAnlatisi";
 import { BolgeGirisi } from "@/components/ui/BolgeGirisi";
 import { KisiPanel } from "@/components/ui/KisiPanel";
@@ -66,6 +67,10 @@ export default function D01Page() {
   const [koleksiyon, setKoleksiyon] = useState(false);
   const [foto, setFoto] = useState(false);
   const [ilerleme, setIlerleme] = useState(0);
+  const [sahneHazirDegil, setSahneHazirDegil] = useState(true);
+
+  // sahne kurulumu bitince yükleme ekranı kalkar
+  useEffect(() => yuklemeDinle((o) => { if (o >= 1) setSahneHazirDegil(false); }), []);
 
   useEffect(() => {
     let iptal = false;
@@ -103,7 +108,7 @@ export default function D01Page() {
       <D01Scene />
       <div className="vinyet" />
 
-      {faz === "yukleniyor" && <YuklemeEkrani ilerleme={ilerleme} />}
+      {(faz === "yukleniyor" || sahneHazirDegil) && <YuklemeEkrani ilerleme={ilerleme} />}
 
       {faz === "acilis" && (
         <div className="acilis-katman">

@@ -8,6 +8,7 @@ import { DUNYA_OLCEK } from "@/lib/dunyaOlcek";
 import {
   carpistiriciEkle, carpistiricilariTemizle, CARPISMA_YARICAP, carpistiriciSayisi,
 } from "@/lib/carpisma";
+import { kademeliCalistir, type Gorev } from "@/lib/yuklemeYoneticisi";
 
 /**
  * Sahnedeki nesnelerin çarpıştırıcılarını bir kez kaydeder.
@@ -16,26 +17,46 @@ import {
 export function CarpismaKurulumu() {
   useEffect(() => {
     carpistiricilariTemizle();
+    let iptal = false;
 
-    for (const y of D01_YERLESIM) {
-      const temel = CARPISMA_YARICAP[y.kod];
-      if (temel === undefined || temel <= 0) continue;
-      carpistiriciEkle({
-        x: y.pos[0],
-        z: y.pos[2],
-        r: temel * (y.olcek ?? 1),
-        alcak: temel < 0.6,
-      });
-    }
+    const cadirlar = obaCadirlari();
 
-    // BÜYÜK OBA ÇADIRLARI — 320 adet, önceden çarpışma listesinde yoktu
-    for (const o of obaCadirlari()) {
-      carpistiriciEkle({
-        x: o.x * DUNYA_OLCEK,
-        z: o.z * DUNYA_OLCEK,
-        r: (o.beyMi ? 3.3 : 2.75) * o.s,
-      });
-    }
+    const gorevler: Gorev[] = [
+      {
+        ad: "Nesneler yerleştiriliyor",
+        adim: D01_YERLESIM.length,
+        calistir: (i) => {
+          const y = D01_YERLESIM[i];
+          const temel = CARPISMA_YARICAP[y.kod];
+          if (temel === undefined || temel <= 0) return;
+          carpistiriciEkle({
+            x: y.pos[0], z: y.pos[2],
+            r: temel * (y.olcek ?? 1),
+            alcak: temel < 0.6,
+          });
+        },
+      },
+      {
+        ad: "Oba kuruluyor",
+        adim: cadirlar.length,
+        calistir: (i) => {
+          const o = cadirlar[i];
+          carpistiriciEkle({
+            x: o.x * DUNYA_OLCEK, z: o.z * DUNYA_OLCEK,
+            r: (o.beyMi ? 3.3 : 2.75) * o.s,
+          });
+        },
+      },
+      {
+        ad: "Oba halkı geliyor",
+        adim: HALK.length,
+        calistir: (i) => {
+          const k = HALK[i];
+          const [px, pz] = k.rota ? k.rota[0] : k.pos;
+          carpistiriciEkle({ x: px * DUNYA_OLCEK, z: pz * DUNYA_OLCEK, r: 0.42, alcak: true });
+        },
+      },
+    ];
 
     // girilebilir otağlar: kapı boşluklu halka — içeri girilebilsin
     const girilebilir: [number, number, number, number][] = [
@@ -48,11 +69,10 @@ export function CarpismaKurulumu() {
       const merkezX = gx * DUNYA_OLCEK;
       const merkezZ = gz * DUNYA_OLCEK;
       const R = 3.1 * olc;
-      // 16 parçalık halka; kapı yönünde üç parça atlanır
       for (let i = 0; i < 16; i++) {
         const a = (i / 16) * Math.PI * 2;
         const kapiFarki = Math.abs(((a - rot + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
-        if (kapiFarki < 0.42) continue; // kapı boşluğu
+        if (kapiFarki < 0.42) continue;
         carpistiriciEkle({
           x: merkezX + Math.cos(a) * R,
           z: merkezZ + Math.sin(a) * R,
@@ -61,15 +81,14 @@ export function CarpismaKurulumu() {
       }
     }
 
-    // oba halkı da katı — içinden geçilmez
-    for (const k of HALK) {
-      const [px, pz] = k.rota ? k.rota[0] : k.pos;
-      carpistiriciEkle({ x: px * DUNYA_OLCEK, z: pz * DUNYA_OLCEK, r: 0.42, alcak: true });
-    }
+    void kademeliCalistir(gorevler).then(() => {
+      if (iptal) return;
+      if (process.env.NODE_ENV === "development") {
+        console.log("[çarpışma] kayıtlı nesne:", carpistiriciSayisi());
+      }
+    });
 
-    if (process.env.NODE_ENV === "development") {
-      console.log("[çarpışma] kayıtlı nesne:", carpistiriciSayisi());
-    }
+    return () => { iptal = true; };
   }, []);
 
   return null;

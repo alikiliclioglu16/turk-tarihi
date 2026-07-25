@@ -70,6 +70,36 @@ export function kesifGorseli(id: string, yuz: "on" | "arka"): string | null {
   return `${KESIF_GORSEL_KOK}/${id}_${yuz}.webp`;
 }
 
+/* ============================================================
+   MÜZE REFERANSLARI
+   "Bu bilgi nereden geliyor?" sorusunun görsel cevabı.
+   Discovery Tour'da her durakta gerçek müze eseri gösterilir.
+   ============================================================ */
+
+export interface MuzeReferansi {
+  /** hangi keşif veya hotspot kimliğine bağlı */
+  hedefId: string;
+  gorsel: string;
+  baslik: string;
+  kurum: string;
+  envanter?: string;
+  yil?: string;
+  /** kaynağın kendi sayfası */
+  bag?: string;
+}
+
+export const MUZE_REFERANS_KOK = "/assets/d01/muze";
+
+/**
+ * Referanslar geldikçe buraya eklenir. Kart arka yüzünde
+ * "gerçek kaynak" bölümü olarak görünür.
+ */
+export const MUZE_REFERANSLARI: MuzeReferansi[] = [];
+
+export function muzeReferansi(hedefId: string): MuzeReferansi | null {
+  return MUZE_REFERANSLARI.find((m) => m.hedefId === hedefId) ?? null;
+}
+
 const IKONLAR: Record<string, string> = {
   hotspot: "🔍", bonus: "✨", kisi: "👤", ogrenme: "📜",
 };

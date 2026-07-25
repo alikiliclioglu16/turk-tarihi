@@ -44,13 +44,29 @@ export function BolgeAtmosferi() {
       sis.density += (sisY - sis.density) * dt * 1.4;
     }
 
-    // güneş gölge kamerası oyuncuyu takip etsin
+    /**
+     * GÖLGE KAMERASI KAMERAYA OTURTULUR
+     *
+     * Sabit 180 m kutu yerine, gölge kamerası oyuncunun ÖNÜNE kayar ve
+     * bakış yönüne göre daralır. Kameranın gördüğü alan gölge haritasının
+     * merkezinde olur; aynı çözünürlükle çok daha keskin gölge çıkar.
+     */
     if (gunes.current) {
-      // gölge kamerası oyuncuyu takip eder; kapsamın merkezinde kalır
-      gunes.current.position.set(p.x + konum[0] * 0.42, konum[1] * 0.42, p.z + konum[2] * 0.42);
-      gunes.current.target.position.set(p.x, p.y, p.z);
+      const ileri = 42;
+      const merkezX = p.x - Math.sin(p.aci) * ileri;
+      const merkezZ = p.z - Math.cos(p.aci) * ileri;
+      const gk = gunes.current.shadow.camera;
+      gk.left = -78; gk.right = 78; gk.top = 78; gk.bottom = -78;
+      gk.updateProjectionMatrix();
+      gunes.current.target.position.set(merkezX, p.y, merkezZ);
       gunes.current.target.updateMatrixWorld();
+      gunes.current.position.set(
+        merkezX + konum[0] * 0.42,
+        konum[1] * 0.42,
+        merkezZ + konum[2] * 0.42
+      );
     }
+
   });
 
   return (

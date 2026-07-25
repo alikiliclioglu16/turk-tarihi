@@ -576,3 +576,89 @@ export function mekanSesleriKapat(): void {
   }
   canliKaynaklar.clear();
 }
+
+
+/* ============================================================
+   AYAK SESLERİ VE MEKÂN YANKISI
+   ============================================================ */
+
+export type Zemin = "toprak" | "cim" | "tas" | "su" | "ahsap";
+
+let adimKazanc: GainNode | null = null;
+let yankiDugum: ConvolverNode | null = null;
+let yankiKazanc: GainNode | null = null;
+
+/** Küçük bir mekân yankısı (otağ içi) için darbe yanıtı üretir */
+function yankiHazirla(): void {
+  if (!ctx || yankiDugum) return;
+  const sure = 1.1;
+  const n = Math.floor(ctx.sampleRate * sure);
+  const buf = ctx.createBuffer(2, n, ctx.sampleRate);
+  for (let k = 0; k < 2; k++) {
+    const veri = buf.getChannelData(k);
+    for (let i = 0; i < n; i++) {
+      // erken yansımalar + üstel sönüm
+      const sonum = Math.pow(1 - i / n, 2.6);
+      veri[i] = (Math.random() * 2 - 1) * sonum * 0.55;
+    }
+  }
+  yankiDugum = ctx.createConvolver();
+  yankiDugum.buffer = buf;
+  yankiKazanc = ctx.createGain();
+  yankiKazanc.gain.value = 0;
+  yankiDugum.connect(yankiKazanc).connect(anaKazanc!);
+}
+
+/** Kapalı mekâna girince yankı açılır, çıkınca kapanır */
+export function yankiAyarla(icerideMi: boolean): void {
+  if (!ctx) return;
+  yankiHazirla();
+  if (yankiKazanc) {
+    yankiKazanc.gain.setTargetAtTime(icerideMi ? 0.32 : 0, ctx.currentTime, 0.4);
+  }
+}
+
+const ZEMIN_AYARI: Record<Zemin, { frek: number; q: number; sure: number; guc: number }> = {
+  toprak: { frek: 320, q: 1.1, sure: 0.13, guc: 0.30 },
+  cim:    { frek: 640, q: 0.8, sure: 0.16, guc: 0.22 },
+  tas:    { frek: 1500, q: 1.8, sure: 0.10, guc: 0.34 },
+  su:     { frek: 900, q: 0.6, sure: 0.24, guc: 0.30 },
+  ahsap:  { frek: 480, q: 2.4, sure: 0.11, guc: 0.28 },
+};
+
+/**
+ * Tek adım sesi. Zemine göre tını değişir:
+ * toprakta boğuk, taşta keskin, çimde yumuşak, suda sıçrama.
+ */
+export function adimSesi(zemin: Zemin = "toprak", kosu = false): void {
+  if (!ctx || sessiz) return;
+  if (!adimKazanc) {
+    adimKazanc = ctx.createGain();
+    adimKazanc.gain.value = 0.5;
+    adimKazanc.connect(anaKazanc!);
+    yankiHazirla();
+  }
+  const a = ZEMIN_AYARI[zemin];
+  const t0 = ctx.currentTime;
+  const n = Math.floor(ctx.sampleRate * a.sure);
+  const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+  const veri = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) {
+    veri[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2.2);
+  }
+  const kaynak = ctx.createBufferSource();
+  kaynak.buffer = buf;
+
+  const filtre = ctx.createBiquadFilter();
+  filtre.type = "bandpass";
+  filtre.frequency.value = a.frek * (0.88 + Math.random() * 0.24);
+  filtre.Q.value = a.q;
+
+  const g = ctx.createGain();
+  g.gain.value = a.guc * (kosu ? 1.35 : 1) * (0.85 + Math.random() * 0.3);
+
+  kaynak.connect(filtre).connect(g).connect(adimKazanc);
+  if (yankiDugum) g.connect(yankiDugum);
+  kaynak.start(t0);
+  kaynak.stop(t0 + a.sure + 0.05);
+}

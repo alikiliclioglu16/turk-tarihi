@@ -28,7 +28,7 @@ if (typeof globalThis !== "undefined") {
 }
 import { useOyun } from "@/lib/store";
 import { tik } from "@/lib/audio";
-import { oyuncuKonumu } from "@/lib/oyuncuKonum";
+import { oyuncuKonumu, kameraOdaklan } from "@/lib/oyuncuKonum";
 import { lekeDokusu } from "@/lib/textures";
 import { DUNYA_OLCEK } from "@/lib/dunyaOlcek";
 
@@ -92,6 +92,7 @@ export function BonusKesifler() {
               if (!tiklanabilir) return;
               e.stopPropagation();
               tik();
+              kameraOdaklan(p[0], p[1], p[2]);
               bonusBul(b.id);
             }}
             onPointerOver={() => tiklanabilir && (document.body.style.cursor = "pointer")}

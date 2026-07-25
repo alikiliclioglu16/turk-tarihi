@@ -727,3 +727,21 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--cini); outline-
   border-radius: 6px; padding: 3px 7px; font-size: 11px; font-family: inherit;
   color: #F7EBD3; white-space: nowrap;
 }
+
+/* ---------- Müze referansı ---------- */
+.muze-referans {
+  display: flex; gap: 10px; align-items: flex-start;
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid #E4D8BC;
+}
+.muze-gorsel {
+  width: 76px; height: 76px; object-fit: cover; border-radius: 8px;
+  border: 1px solid #D8C9A6; flex: 0 0 auto;
+}
+.muze-bilgi { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.muze-etiket {
+  font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--cini); font-weight: 800;
+}
+.muze-baslik { font-size: 12.5px; font-weight: 700; color: var(--murekkep); line-height: 1.3; }
+.muze-kurum { font-size: 10.5px; color: #2a211899; line-height: 1.35; }

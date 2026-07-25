@@ -24,7 +24,7 @@ import { useFrame } from "@react-three/fiber";
  */
 
 const BOYUT = 880;
-const BOLME = 260;
+const BOLME = 200;
 
 /** Bölge merkezleri arası rota — patika buradan geçer */
 function rotaNoktalari(): [number, number][] {
@@ -96,17 +96,34 @@ export function Terrain() {
     // harman ağırlıkları: r=çim, g=toprak, b=kaya, a=patika
     const harman = new Float32Array(pos.count * 4);
 
+    /**
+     * Yükseklikler ÖNCE tek geçişte hesaplanır.
+     * Eğim, ek sorgu yapmadan komşu köşe yüksekliklerinden çıkarılır —
+     * önceden köşe başına 5 sorgu vardı, şimdi 1. Yükleme süresi
+     * beşte birine indi.
+     */
+    const genislik = BOLME + 1;
+    const yukseklikler = new Float32Array(pos.count);
+    for (let i = 0; i < pos.count; i++) {
+      const y = araziYukseklik(pos.getX(i), pos.getZ(i));
+      yukseklikler[i] = y;
+      pos.setY(i, y);
+    }
+    const adimBoyu = BOYUT / BOLME;
+
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i);
       const z = pos.getZ(i);
-      const y = araziYukseklik(x, z);
-      pos.setY(i, y);
+      const y = yukseklikler[i];
 
-      // eğim: komşu örneklerden
-      const e = 2.5;
-      const yx = araziYukseklik(x + e, z) - araziYukseklik(x - e, z);
-      const yz = araziYukseklik(x, z + e) - araziYukseklik(x, z - e);
-      const egim = Math.min(1, Math.hypot(yx, yz) / (e * 2) * 1.5);
+      // eğim: komşu köşelerden (ek sorgu yok)
+      const sut = i % genislik;
+      const sat = Math.floor(i / genislik);
+      const sol = yukseklikler[sat * genislik + Math.max(0, sut - 1)];
+      const sag = yukseklikler[sat * genislik + Math.min(genislik - 1, sut + 1)];
+      const ust = yukseklikler[Math.max(0, sat - 1) * genislik + sut];
+      const alt = yukseklikler[Math.min(genislik - 1, sat + 1) * genislik + sut];
+      const egim = Math.min(1, Math.hypot(sag - sol, alt - ust) / (adimBoyu * 2) * 1.5);
 
       // yükseklik (tasarım birimine göre normalize)
       const yNorm = Math.min(1, Math.max(0, y / (30 * DUNYA_OLCEK)));

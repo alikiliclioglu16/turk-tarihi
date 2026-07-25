@@ -6,13 +6,23 @@ import * as THREE from "three";
 import { araziYukseklik, DUNYA_YARICAP } from "@/lib/terrain";
 import { hareketVektoru, klavyeyiBagla } from "@/lib/input";
 import { useOyun } from "@/lib/store";
-import { oyuncuKonumu } from "@/lib/oyuncuKonum";
+import { oyuncuKonumu, kameraOdak } from "@/lib/oyuncuKonum";
 import { hareketiCoz, kameraEngeli } from "@/lib/carpisma";
+import { adimSesi, yankiAyarla, type Zemin } from "@/lib/audio";
+import { SU_KOTU } from "@/lib/terrain";
 import { GezginModel } from "./models/GezginModel";
 
 const HIZ = 4.6;
 const KOSU_CARPAN = 2.1;    // Shift ile hızlı gezinme (büyük harita için)
 const ADIM_TEMPO = 6.6;
+
+/** Girilebilir otağların merkezleri ve iç yarıçapı (dünya birimi) */
+const OTAG_MERKEZLERI: [number, number, number][] = (
+  [
+    [-27, -14, 4.6], [36, 23, 3.9], [-84, 52, 3.7], [52, -76, 3.7],
+    [0, 20, 5.6], [46, -30, 4.5], [-44, 72, 4.2], [70, 26, 4.2],
+  ] as [number, number, number][]
+).map(([x, z, r]) => [x * 4.0, z * 4.0, r] as [number, number, number]);
 
 export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
   const grup = useRef<THREE.Group>(null);
@@ -43,6 +53,8 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
   const ziplamaHizi = useRef(0);
   const ziplamaYuk = useRef(0);
   const havada = useRef(false);
+  const sonAdimFazi = useRef(0);
+  const sonYanki = useRef(false);
   const kameraHedef = useRef(new THREE.Vector3());
   const yon = useRef(new THREE.Vector3());
 
@@ -149,6 +161,18 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
       g.position.z = hz;
       hedefAci.current = aci;
       adimFaz.current += dt * ADIM_TEMPO * guc * (kosuyor.current ? 1.5 : 1);
+
+      // her yarım döngüde bir adım sesi — zemine göre tını
+      const yariDongu = Math.floor(adimFaz.current / Math.PI);
+      if (yariDongu !== sonAdimFazi.current && !havada.current) {
+        sonAdimFazi.current = yariDongu;
+        const zeminY = araziYukseklik(g.position.x, g.position.z);
+        let zemin: Zemin = "toprak";
+        if (zeminY < SU_KOTU + 1.2) zemin = "su";
+        else if (zeminY > 22) zemin = "tas";
+        else if (Math.hypot(g.position.x, g.position.z) > 120) zemin = "cim";
+        adimSesi(zemin, kosuyor.current);
+      }
     }
     // zıplama
     const zemin = araziYukseklik(g.position.x, g.position.z);
@@ -166,6 +190,15 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
     oyuncuKonumu.y = g.position.y;
     oyuncuKonumu.z = g.position.z;
     oyuncuKonumu.aci = g.rotation.y;
+
+    // kapalı mekân yankısı: girilebilir otağların içinde
+    const iceride = OTAG_MERKEZLERI.some(
+      ([ox, oz, r]) => Math.hypot(g.position.x - ox, g.position.z - oz) < r
+    );
+    if (iceride !== sonYanki.current) {
+      sonYanki.current = iceride;
+      yankiAyarla(iceride);
+    }
 
     yuruyusYogunluk.current = THREE.MathUtils.lerp(
       yuruyusYogunluk.current, yuruyor ? guc : 0, dt * 8
@@ -273,12 +306,44 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
         araziYukseklik(kameraHedef.current.x, kameraHedef.current.z) + 0.8
       );
     }
+    /* ---------- KEŞİF ODAĞI ----------
+       Bir keşif açıldığında kamera kısa bir yay çizip nesneye bakar,
+       sonra yumuşakça oyuncunun arkasına döner. */
+    if (kameraOdak.aktif) {
+      const gecen = (performance.now() - kameraOdak.baslangic) / 1000;
+      // 0.4 sn giriş, 1.6 sn tut, 0.8 sn çıkış
+      const hedefGuc = gecen < 0.4 ? gecen / 0.4
+        : gecen < 2.0 ? 1
+        : gecen < 2.8 ? 1 - (gecen - 2.0) / 0.8
+        : 0;
+      kameraOdak.guc += (hedefGuc - kameraOdak.guc) * Math.min(1, dt * 6);
+      if (gecen > 2.9) kameraOdak.aktif = false;
+    } else {
+      kameraOdak.guc += (0 - kameraOdak.guc) * Math.min(1, dt * 4);
+    }
+
+    const o = kameraOdak.guc;
+    if (o > 0.01) {
+      // nesnenin çevresinde hafif yay: kamera biraz yana ve yukarı kayar
+      const yay = Math.sin(performance.now() / 900) * 1.6 * o;
+      const dx = kameraOdak.x - g.position.x;
+      const dz = kameraOdak.z - g.position.z;
+      const uz = Math.max(1, Math.hypot(dx, dz));
+      kameraHedef.current.x += (-dz / uz * yay - dx / uz * 1.2) * o;
+      kameraHedef.current.z += (dx / uz * yay - dz / uz * 1.2) * o;
+      kameraHedef.current.y += 0.8 * o;
+    }
+
     camera.position.lerp(kameraHedef.current, Math.min(1, dt * 5));
-    // bakış noktası: karakterin biraz önü — nereye gidiyorsa orayı görürsün
+
+    // bakış noktası: normalde karakterin önü, keşifte nesnenin kendisi
+    const bakX = g.position.x - Math.sin(camYaw.current) * 3.2;
+    const bakY = g.position.y + 1.5;
+    const bakZ = g.position.z - Math.cos(camYaw.current) * 3.2;
     camera.lookAt(
-      g.position.x - Math.sin(camYaw.current) * 3.2,
-      g.position.y + 1.5,
-      g.position.z - Math.cos(camYaw.current) * 3.2
+      bakX + (kameraOdak.x - bakX) * o,
+      bakY + (kameraOdak.y - bakY) * o,
+      bakZ + (kameraOdak.z - bakZ) * o
     );
     camera.rotation.z += Math.sin(t * 0.61) * 0.004;
 

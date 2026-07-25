@@ -6,7 +6,7 @@ import * as THREE from "three";
 import type { Hotspot } from "@/lib/types";
 import { araziYukseklik } from "@/lib/terrain";
 import { useOyun } from "@/lib/store";
-import { oyuncuKonumu } from "@/lib/oyuncuKonum";
+import { oyuncuKonumu, kameraOdaklan } from "@/lib/oyuncuKonum";
 import { tik } from "@/lib/audio";
 
 const ACILMA_MESAFESI = 5.5; // metre — bu kadar yaklaşınca kendiliğinden açılır
@@ -42,6 +42,7 @@ export function HotspotMarker({ hotspot, gezildi }: { hotspot: Hotspot; gezildi:
     if (!acildi.current && d < ACILMA_MESAFESI) {
       acildi.current = true;
       tik();
+      kameraOdaklan(x, yy, z);
       hotspotAc(hotspot.id);
     }
   });

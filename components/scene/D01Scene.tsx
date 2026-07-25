@@ -1,10 +1,10 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { SoftShadows, AdaptiveDpr, PerformanceMonitor } from "@react-three/drei";
-import { EffectComposer, Bloom, N8AO, Vignette, SMAA } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, N8AO, Vignette, SMAA, GodRays } from "@react-three/postprocessing";
 
 import { SahneAtmosferi } from "./Environment";
 import { Terrain } from "./Terrain";
@@ -19,6 +19,7 @@ import { Canlilar } from "./Canlilar";
 import { SinirKusagi } from "./SinirKusagi";
 import { CarpismaKurulumu } from "./CarpismaKurulumu";
 import { ZeminGolgeleri } from "./ZeminGolgeleri";
+import { YakinBitkiler } from "./YakinBitkiler";
 import { MekanSesleri } from "./MekanSesleri";
 import { HotspotMarker } from "./HotspotMarker";
 import { DurakIsigi } from "./DurakIsigi";
@@ -39,6 +40,12 @@ export function D01Scene() {
   const kalite = typeof window !== "undefined" ? kaliteYukle() : "yuksek";
   const dusuk = kalite === "dusuk";
   void kaliteDurumu;
+  const gunesKursu = useRef<THREE.Mesh>(null);
+  const [gunesHazir, setGunesHazir] = useState(false);
+  useEffect(() => {
+    const z = setTimeout(() => setGunesHazir(true), 400);
+    return () => clearTimeout(z);
+  }, []);
   const nodlar = useOyun((s) => s.nodlar);
   const aktifIndex = useOyun((s) => s.aktifIndex);
   const faz = useOyun((s) => s.faz);
@@ -66,11 +73,12 @@ export function D01Scene() {
         <IBL />
         {/* PCSS yumuşak gölgeler: temasta keskin, uzaklaştıkça yumuşayan */}
         {kalite === "yuksek" && <SoftShadows size={9} samples={8} focus={0.75} />}
-        <SahneAtmosferi />
+        <SahneAtmosferi gunesKursu={gunesKursu} />
         <BolgeAtmosferi />
         <Dere />
         <Terrain />
         <ZeminGolgeleri />
+        {kalite !== "dusuk" && <YakinBitkiler />}
         <Dekor />
         <Sis />
         <AtesEfekti pos={[0, 0, 0]} />
@@ -122,6 +130,20 @@ export function D01Scene() {
             <RenkDerecelendirme golgeMavi={1.0} isikSicak={1.0} kontrast={1.07} gren={0.012} doygunluk={1.1} />
             <Vignette offset={0.32} darkness={0.45} />
             <SMAA />
+          </EffectComposer>
+        )}
+        {kalite === "yuksek" && gunesHazir && gunesKursu.current && (
+          <EffectComposer multisampling={0}>
+            <GodRays
+              sun={gunesKursu.current}
+              samples={28}
+              density={0.93}
+              decay={0.92}
+              weight={0.28}
+              exposure={0.24}
+              clampMax={0.9}
+              blur
+            />
           </EffectComposer>
         )}
         {kalite === "orta" && (

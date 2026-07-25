@@ -9,7 +9,7 @@ import { GUN, gunesKonumu } from "@/lib/gunIsigi";
  * GÜNDÜZ ATMOSFERİ — öğlen 13:00
  * Gökyüzü kubbesi, güneş kursu, bulutlar ve ufuk pusu.
  */
-export function SahneAtmosferi() {
+export function SahneAtmosferi({ gunesKursu }: { gunesKursu?: React.RefObject<THREE.Mesh | null> }) {
   const bulutlar = useRef<THREE.Group>(null);
   const gunes = useMemo(() => gunesKonumu(), []);
 
@@ -48,17 +48,49 @@ export function SahneAtmosferi() {
     [gunes]
   );
 
+  /** Bulut dokusu — yumuşak kenarlı, katmanlı kütle */
+  const bulutDoku = useMemo(() => {
+    const B = 256;
+    const c = document.createElement("canvas");
+    c.width = c.height = B;
+    const g = c.getContext("2d")!;
+    let t = 991;
+    const r = () => { t = (t * 1103515245 + 12345) & 0x7fffffff; return t / 0x7fffffff; };
+    for (let i = 0; i < 34; i++) {
+      const x = 40 + r() * (B - 80);
+      const y = B * 0.42 + (r() - 0.5) * B * 0.34;
+      const rad = 22 + r() * 48;
+      const grad = g.createRadialGradient(x, y, 0, x, y, rad);
+      grad.addColorStop(0, "rgba(255,255,255,0.62)");
+      grad.addColorStop(0.55, "rgba(252,250,246,0.34)");
+      grad.addColorStop(1, "rgba(255,255,255,0)");
+      g.fillStyle = grad;
+      g.beginPath();
+      g.arc(x, y, rad, 0, Math.PI * 2);
+      g.fill();
+    }
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }, []);
+
+  /** Üç katman bulut — farklı yükseklik ve hızda, hacim hissi verir */
   const bulutVeri = useMemo(() => {
     let t = 4242;
     const r = () => { t = (t * 1103515245 + 12345) & 0x7fffffff; return t / 0x7fffffff; };
-    return Array.from({ length: 26 }, () => {
+    return Array.from({ length: 54 }, (_, i) => {
+      const katman = i % 3;
       const a = r() * Math.PI * 2;
-      const d = 240 + r() * 320;
+      const d = 260 + r() * 340 + katman * 70;
       return {
-        pos: [Math.cos(a) * d, 150 + r() * 110, Math.sin(a) * d] as [number, number, number],
-        olcek: 70 + r() * 130,
-        hiz: 0.15 + r() * 0.25,
-        opak: 0.5 + r() * 0.4,
+        pos: [
+          Math.cos(a) * d,
+          130 + katman * 55 + r() * 60,
+          Math.sin(a) * d,
+        ] as [number, number, number],
+        olcek: 90 + r() * 170 + katman * 40,
+        hiz: 0.1 + r() * 0.2 + katman * 0.06,
+        opak: 0.35 + r() * 0.4 - katman * 0.06,
       };
     });
   }, []);
@@ -79,18 +111,25 @@ export function SahneAtmosferi() {
         <sphereGeometry args={[760, 32, 20]} />
       </mesh>
 
-      {/* güneş kursu */}
-      <mesh position={gunes}>
-        <sphereGeometry args={[16, 20, 20]} />
-        <meshBasicMaterial color="#FFFBEF" />
+      {/* güneş kursu — ışın efektinin kaynağı */}
+      <mesh position={gunes} ref={gunesKursu}>
+        <sphereGeometry args={[18, 22, 22]} />
+        <meshBasicMaterial color="#FFFBEF" fog={false} />
       </mesh>
 
       {/* bulutlar */}
       <group ref={bulutlar}>
         {bulutVeri.map((b, i) => (
-          <mesh key={i} position={b.pos}>
-            <planeGeometry args={[b.olcek, b.olcek * 0.42]} />
-            <meshBasicMaterial color="#FFFFFF" transparent opacity={b.opak * 0.5} depthWrite={false} />
+          <mesh key={i} position={b.pos} renderOrder={-1}>
+            <planeGeometry args={[b.olcek, b.olcek * 0.46]} />
+            <meshBasicMaterial
+              map={bulutDoku}
+              color="#FFFFFF"
+              transparent
+              opacity={b.opak}
+              depthWrite={false}
+              fog={false}
+            />
           </mesh>
         ))}
       </group>
