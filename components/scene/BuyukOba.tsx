@@ -92,6 +92,19 @@ export function BuyukOba() {
         g.updateMatrix();
         km.setMatrixAt(i, g.matrix);
       });
+      // çatı renklerini çeşitlendir — tepeden bakınca tek tip görünmesin
+      if (!cm.instanceColor) {
+        const renkler = new Float32Array(veri.siradan.length * 3);
+        const c = new THREE.Color();
+        const paleti = ["#C9BA98", "#D6C8A6", "#BCAD8C", "#CFC0A0", "#B4A483", "#DCCFB0"];
+        veri.siradan.forEach((_, i) => {
+          c.set(paleti[i % paleti.length]);
+          c.toArray(renkler, i * 3);
+        });
+        cm.instanceColor = new THREE.InstancedBufferAttribute(renkler, 3);
+      }
+      cm.instanceColor.needsUpdate = true;
+
       [gm, cm, km].forEach((m) => {
         m.instanceMatrix.needsUpdate = true;
         m.computeBoundingSphere();
@@ -163,7 +176,7 @@ export function BuyukOba() {
       {/* çatılar */}
       <instancedMesh ref={catiRef} args={[undefined, undefined, veri.siradan.length]} castShadow frustumCulled>
         <coneGeometry args={[3.1, 1.9, 10]} />
-        <meshStandardMaterial color="#C9BA98" roughness={0.97} />
+        <meshStandardMaterial color="#FFFFFF" roughness={0.97} vertexColors />
       </instancedMesh>
       {/* kilim kuşakları */}
       <instancedMesh ref={kusakRef} args={[undefined, undefined, veri.siradan.length]} frustumCulled>

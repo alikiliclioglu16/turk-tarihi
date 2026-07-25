@@ -31,6 +31,7 @@ const KUTLE: Record<string, Kutle> = {
   G01: "yigin", G02: "yok", G03: "yigin", G04: "yok", G05: "yok",
   G06: "direk", G07: "yigin", G08: "yok",
   H04: "direk", P01: "otag", P02: "yigin", P03: "direk", P04: "yok",
+  O01: "otag", O02: "direk", O03: "direk", O04: "direk", O05: "yigin", O06: "yok",
   C01: "kaya", C05: "yok",
 };
 

@@ -68,7 +68,7 @@ export function Dekor() {
       const a = (i / DAG_SAYISI) * Math.PI * 2 + rnd() * 0.3;
       const r = 430 + rnd() * 90;
       const s = 1 + rnd() * 1.1;
-      gecici.position.set(Math.cos(a) * r, 2, Math.sin(a) * r);
+      gecici.position.set(Math.cos(a) * r, -8, Math.sin(a) * r);
       gecici.rotation.set(0, rnd() * Math.PI, 0);
       gecici.scale.set(46 * s, 40 * s, 46 * s);
       gecici.updateMatrix();
@@ -163,7 +163,8 @@ export function Dekor() {
 
       <instancedMesh ref={dagRef} args={[undefined, undefined, veriler.dag.length]} frustumCulled>
         <coneGeometry args={[1, 1, 5]} />
-        <meshBasicMaterial color="#101c30" />
+        {/* Gündüz ufku: uzaklıkla pusa karışan soğuk gri-mavi */}
+        <meshStandardMaterial color="#8C9AA8" roughness={1} flatShading fog />
       </instancedMesh>
     </>
   );

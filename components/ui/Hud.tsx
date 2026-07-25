@@ -3,14 +3,17 @@
 import { useEffect, useState } from "react";
 import { useOyun } from "@/lib/store";
 import { sesBaslat, sessizAyarla, sessizMi, tik } from "@/lib/audio";
-import { BONUS_TOPLAM } from "@/lib/bonusKesifler";
+import { bonusKesifler } from "@/lib/bonusKesifler";
+import { OGRENME_NOKTALARI } from "@/lib/ogrenmeNoktalari";
+
+const KESIF_TOPLAM = bonusKesifler.length + OGRENME_NOKTALARI.length;
 
 /** Meraklı Gözler sayacı */
 function BonusSayac() {
   const bulunan = useOyun((s) => s.bulunanBonuslar);
   return (
     <span className="bonus-sayac" title="Meraklı Gözler — obada bulunabilecek keşifler">
-      ✨ {bulunan.length}/{BONUS_TOPLAM}
+      ✨ {bulunan.length}/{KESIF_TOPLAM}
     </span>
   );
 }

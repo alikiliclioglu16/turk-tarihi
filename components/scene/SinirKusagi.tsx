@@ -26,10 +26,12 @@ export function SinirKusagi() {
       const d = DUNYA_YARICAP + 6 + r() * 55;
       const x = Math.cos(a) * d;
       const z = Math.sin(a) * d;
+      const s0 = 5 + r() * 9;
       liste.push({
-        p: [x, araziYukseklik(x, z) + 2 + r() * 5, z],
-        s: 6 + r() * 13,
-        rot: [r() * 0.5, r() * 3, r() * 0.5],
+        // kayanın YARISI toprağa gömülü olmalı — yoksa havada asılı durur
+        p: [x, araziYukseklik(x, z) - s0 * 0.34, z],
+        s: s0,
+        rot: [r() * 0.4, r() * 3, r() * 0.4],
       });
     }
     return liste;
@@ -43,7 +45,7 @@ export function SinirKusagi() {
     veri.forEach((k, i) => {
       g.position.set(...k.p);
       g.rotation.set(...k.rot);
-      g.scale.set(k.s, k.s * (0.7 + (i % 5) * 0.1), k.s);
+      g.scale.set(k.s, k.s * (0.55 + (i % 5) * 0.08), k.s);
       g.updateMatrix();
       im.setMatrixAt(i, g.matrix);
     });

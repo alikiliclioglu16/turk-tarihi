@@ -105,6 +105,8 @@ export const CARPISMA_YARICAP: Record<string, number> = {
   H04: 0.25, C01: 0.6, C05: 0.0,
   // zanaat sahneleri
   Z01: 1.0, Z02: 1.4, Z03: 1.2, Z04: 0.5, Z05: 0.0, Z06: 0.0, Z07: 1.4,
+  // ordugâh
+  O01: 1.8, O02: 1.0, O03: 0.35, O04: 0.25, O05: 1.5, O06: 0.0,
   // hayvanlar ve kağnı
   B14: 0.5, B15: 1.4,
 };

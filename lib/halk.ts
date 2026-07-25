@@ -302,4 +302,49 @@ export const BOLGE_HALKI: HalkKaydi[] = [
   { id: "ey_19", aktivite: "asci", pos: [-22.5, -62.1], yon: 4.44, renk: "#D8C4A0", kusak: "#4A6B6B", boy: 1.63, },
 ];
 
-export const HALK: HalkKaydi[] = [...HALK_ANA, ...OBA_DOLGU, ...BOLGE_HALKI];
+
+/* ---------- ORDUGÂH HALKI ---------- */
+export const ORDUGAH_HALKI: HalkKaydi[] = [
+  { id: "or_00", aktivite: "asker", pos: [11.4, -66.9], yon: 4.06, renk: "#B8A98C", kusak: "#5A3D20", boy: 1.67, rota: [[11.4,-66.9],[20.4,-63.9],[16.4,-55.9],[7.4,-60.9]], bilgi: { ad: "Ordugâh Düzeni", metin: "Çadırlar sıra sıra kurulurdu. Düzen, karanlıkta bile yerini bulmayı sağlardı." }, },
+  { id: "or_01", aktivite: "asker", pos: [16.1, -52.4], yon: 1.85, renk: "#B2A386", kusak: "#8A2C25", boy: 1.79, bilgi: { ad: "Ok Talimi", metin: "Hedefe isabet kadar duruş, nefes ve tempo da öğretilirdi." }, },
+  { id: "or_02", aktivite: "asker", pos: [11.3, -75.7], yon: 4.19, renk: "#BCAD90", kusak: "#4A6B6B", boy: 1.75, bilgi: { ad: "Atlı Talim", metin: "At üstünde ok atmak yıllar isterdi. Denge, elden çok bacakla kurulurdu." }, },
+  { id: "or_03", aktivite: "bekleyen", pos: [7.8, -65.7], yon: 2.55, renk: "#A99A7E", kusak: "#6B5636", boy: 1.73, bilgi: { ad: "Onluk Düzen", metin: "Birlikler onlu gruplara ayrılırdı. Her grubun kendi sorumlusu olurdu." }, },
+  { id: "or_04", aktivite: "sohbet", pos: [-7.8, -60.0], yon: 3.68, renk: "#C0B196", kusak: "#5A3D20", boy: 1.76, bilgi: { ad: "Nöbet", metin: "Yüksek kuleden ufuk gözlenirdi. Haber, ateş ve duman işaretiyle iletilebilirdi." }, },
+  { id: "or_05", aktivite: "atTerbiyecisi", pos: [25.8, -74.6], yon: 5.36, renk: "#B8A98C", kusak: "#8A2C25", boy: 1.77, bilgi: { ad: "Sancak", metin: "Sancak yalnız süs değildi. Uzaktan hangi birliğin nerede olduğunu gösterirdi." }, },
+  { id: "or_06", aktivite: "guresci", pos: [-13.9, -61.2], yon: 1.2, renk: "#B2A386", kusak: "#4A6B6B", boy: 1.68, bilgi: { ad: "At Bakımı", metin: "Savaş atı günlerce hazırlanırdı. Nal, koşum ve yem düzenli kontrol edilirdi." }, },
+  { id: "or_07", aktivite: "demirci", pos: [-5.3, -60.3], yon: 0.52, renk: "#BCAD90", kusak: "#6B5636", boy: 1.8, rota: [[-5.3,-60.3],[3.7,-57.3],[-0.3,-49.3],[-9.3,-54.3]], bilgi: { ad: "Yay Bakımı", metin: "Yay nemden korunurdu. Kiriş her gün gözden geçirilirdi." }, },
+  { id: "or_08", aktivite: "asker", pos: [-13.0, -58.8], yon: 2.41, renk: "#A99A7E", kusak: "#5A3D20", boy: 1.67, },
+  { id: "or_09", aktivite: "asker", pos: [-6.3, -45.8], yon: 5.24, renk: "#C0B196", kusak: "#8A2C25", boy: 1.73, },
+  { id: "or_10", aktivite: "asker", pos: [6.1, -56.1], yon: 2.62, renk: "#B8A98C", kusak: "#4A6B6B", boy: 1.77, },
+  { id: "or_11", aktivite: "bekleyen", pos: [17.1, -66.3], yon: 4.93, renk: "#B2A386", kusak: "#6B5636", boy: 1.69, },
+  { id: "or_12", aktivite: "sohbet", pos: [-13.0, -54.0], yon: 4.03, renk: "#BCAD90", kusak: "#5A3D20", boy: 1.82, },
+  { id: "or_13", aktivite: "atTerbiyecisi", pos: [20.5, -44.9], yon: 1.54, renk: "#A99A7E", kusak: "#8A2C25", boy: 1.77, },
+  { id: "or_14", aktivite: "guresci", pos: [-8.0, -69.7], yon: 5.37, renk: "#C0B196", kusak: "#4A6B6B", boy: 1.74, rota: [[-8.0,-69.7],[1.0,-66.7],[-3.0,-58.7],[-12.0,-63.7]], },
+  { id: "or_15", aktivite: "demirci", pos: [26.0, -51.9], yon: 1.23, renk: "#B8A98C", kusak: "#6B5636", boy: 1.81, },
+  { id: "or_16", aktivite: "asker", pos: [2.1, -65.9], yon: 4.7, renk: "#B2A386", kusak: "#5A3D20", boy: 1.74, },
+  { id: "or_17", aktivite: "asker", pos: [24.1, -56.5], yon: 3.62, renk: "#BCAD90", kusak: "#8A2C25", boy: 1.79, },
+  { id: "or_18", aktivite: "asker", pos: [2.0, -60.2], yon: 1.32, renk: "#A99A7E", kusak: "#4A6B6B", boy: 1.78, },
+  { id: "or_19", aktivite: "bekleyen", pos: [3.2, -69.3], yon: 1.21, renk: "#C0B196", kusak: "#6B5636", boy: 1.79, },
+  { id: "or_20", aktivite: "sohbet", pos: [-0.3, -69.6], yon: 2.34, renk: "#B8A98C", kusak: "#5A3D20", boy: 1.8, },
+  { id: "or_21", aktivite: "atTerbiyecisi", pos: [13.1, -56.7], yon: 1.73, renk: "#B2A386", kusak: "#8A2C25", boy: 1.78, rota: [[13.1,-56.7],[22.1,-53.7],[18.1,-45.7],[9.1,-50.7]], },
+  { id: "or_22", aktivite: "guresci", pos: [3.7, -64.2], yon: 4.12, renk: "#BCAD90", kusak: "#4A6B6B", boy: 1.68, },
+  { id: "or_23", aktivite: "demirci", pos: [3.8, -56.0], yon: 3.14, renk: "#A99A7E", kusak: "#6B5636", boy: 1.68, },
+  { id: "or_24", aktivite: "asker", pos: [-6.5, -72.6], yon: 1.79, renk: "#C0B196", kusak: "#5A3D20", boy: 1.72, },
+  { id: "or_25", aktivite: "asker", pos: [-1.3, -52.4], yon: 0.58, renk: "#B8A98C", kusak: "#8A2C25", boy: 1.7, },
+  { id: "or_26", aktivite: "asker", pos: [17.6, -54.3], yon: 0.93, renk: "#B2A386", kusak: "#4A6B6B", boy: 1.77, },
+  { id: "or_27", aktivite: "bekleyen", pos: [10.0, -48.2], yon: 1.85, renk: "#BCAD90", kusak: "#6B5636", boy: 1.68, },
+  { id: "or_28", aktivite: "sohbet", pos: [10.1, -57.0], yon: 5.37, renk: "#A99A7E", kusak: "#5A3D20", boy: 1.81, rota: [[10.1,-57.0],[19.1,-54.0],[15.1,-46.0],[6.1,-51.0]], },
+  { id: "or_29", aktivite: "atTerbiyecisi", pos: [4.5, -38.0], yon: 5.61, renk: "#C0B196", kusak: "#8A2C25", boy: 1.74, },
+  { id: "or_30", aktivite: "guresci", pos: [7.0, -61.9], yon: 0.59, renk: "#B8A98C", kusak: "#4A6B6B", boy: 1.68, },
+  { id: "or_31", aktivite: "demirci", pos: [13.3, -58.0], yon: 5.69, renk: "#B2A386", kusak: "#6B5636", boy: 1.76, },
+  { id: "or_32", aktivite: "asker", pos: [10.4, -56.1], yon: 5.24, renk: "#BCAD90", kusak: "#5A3D20", boy: 1.67, },
+  { id: "or_33", aktivite: "asker", pos: [13.9, -56.9], yon: 4.95, renk: "#A99A7E", kusak: "#8A2C25", boy: 1.76, },
+  { id: "or_34", aktivite: "asker", pos: [3.9, -42.3], yon: 3.07, renk: "#C0B196", kusak: "#4A6B6B", boy: 1.75, },
+  { id: "or_35", aktivite: "bekleyen", pos: [28.5, -52.2], yon: 5.13, renk: "#B8A98C", kusak: "#6B5636", boy: 1.74, rota: [[28.5,-52.2],[37.5,-49.2],[33.5,-41.2],[24.5,-46.2]], },
+  { id: "or_36", aktivite: "sohbet", pos: [12.9, -80.4], yon: 5.7, renk: "#B2A386", kusak: "#5A3D20", boy: 1.69, },
+  { id: "or_37", aktivite: "atTerbiyecisi", pos: [6.5, -56.7], yon: 1.2, renk: "#BCAD90", kusak: "#8A2C25", boy: 1.75, },
+  { id: "or_38", aktivite: "guresci", pos: [17.4, -56.8], yon: 2.01, renk: "#A99A7E", kusak: "#4A6B6B", boy: 1.8, },
+  { id: "or_39", aktivite: "demirci", pos: [9.0, -63.4], yon: 5.57, renk: "#C0B196", kusak: "#6B5636", boy: 1.81, },
+];
+
+export const HALK: HalkKaydi[] = [...HALK_ANA, ...OBA_DOLGU, ...BOLGE_HALKI, ...ORDUGAH_HALKI];

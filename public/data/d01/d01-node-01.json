@@ -27,14 +27,14 @@
       "type": "intro",
       "emotion": "sicak",
       "audio": "d01_n01_intro.wav",
-      "text": "Dur biraz yiğidim. Şu sesi duyuyor musun? O rüzgâr değil. Kopuz çalıyor. Bu gece seni bekleyen bir kapı var."
+      "text": "Dur biraz yiğidim. Şu sesi duyuyor musun? O yalnız rüzgâr değil. Kopuz çalıyor. Bu oba, ilk keşfini bekliyor."
     },
     {
       "id": "d01_n01_main_a",
       "type": "main_a",
       "emotion": "sicak",
       "audio": "d01_n01_main_a.wav",
-      "text": "Ben Dede Korkut. Nice obaya konuk oldum, nice çocuğa ad verdim. Bu gece de senin yoldaşınım. Şu ileride bir ateş yanıyor. Orası bir oba; yani çadır evlerden kurulu küçük bir yurt. Hadi, birlikte yaklaşalım."
+      "text": "Ben Dede Korkut. Nice obayı gördüm, nice yolculuğu hatırlarım. Buraya ilk kez geliyorsun. Şu ileride bir ocak tütüyor. Orası çadır evlerden kurulu küçük bir yurt. Oraya doğru yaklaş, yolcu."
     },
     {
       "id": "d01_n01_main_b",
@@ -70,7 +70,7 @@
       "label": "Bak",
       "audio": "d01_n01_hs_ates_isigi.wav",
       "required": true,
-      "text": "Ateşin ışığı karanlıkta uzaktan görünür. Obayı arayan, önce onu bulur. Bu ışık hem ısıtır hem de çağırır.",
+      "text": "Ocaktan yükselen duman gündüz uzaktan seçilebilir. Obayı arayan, önce bu işareti görebilir. Ateş hem ısıtır hem toplar.",
       "sourceNote": null
     },
     {

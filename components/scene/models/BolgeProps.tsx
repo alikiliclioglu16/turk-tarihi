@@ -892,3 +892,183 @@ export function IpBukmeModel() {
     </group>
   );
 }
+
+/* ============================================================
+   ORDUGÂH — askerî bölge
+   ============================================================ */
+
+export function CadirSirasiModel({ olcek = 1 }: { olcek?: number }) {
+  const kece = useMemo(() => keceDokusu(1), []);
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group scale={olcek}>
+      {/* sırt çadırı — üçgen kesitli, otağdan farklı */}
+      <mesh position={[0, 1.1, 0]} rotation={[0, 0, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[1.6, 1.6, 4.4, 3, 1, false]} />
+        <meshStandardMaterial map={kece} color="#B9AE92" roughness={0.97} />
+      </mesh>
+      <mesh position={[0, 2.35, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.06, 0.06, 4.6, 6]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {/* kazık ve gergi ipleri */}
+      {([[-2.4, 1.5], [2.4, 1.5], [-2.4, -1.5], [2.4, -1.5]] as const).map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.2, z]} castShadow>
+          <cylinderGeometry args={[0.05, 0.03, 0.5, 5]} />
+          <meshStandardMaterial color="#5A4126" roughness={1} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+export function SilahRafiModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      {[-1.3, 1.3].map((x) => (
+        <mesh key={x} position={[x, 0.85, 0]} castShadow>
+          <cylinderGeometry args={[0.07, 0.08, 1.7, 6]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+      <mesh position={[0, 1.6, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.05, 0.05, 2.7, 6]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {/* dayalı mızraklar */}
+      {[-0.9, -0.45, 0, 0.45, 0.9].map((x, i) => (
+        <group key={i} position={[x, 0, 0]} rotation={[0, 0, 0.13]}>
+          <mesh position={[0, 1.35, -0.06]} castShadow>
+            <cylinderGeometry args={[0.028, 0.028, 2.7, 6]} />
+            <meshStandardMaterial map={ahsap} color="#5A4126" roughness={0.9} />
+          </mesh>
+          <mesh position={[0, 2.75, -0.06]}>
+            <coneGeometry args={[0.06, 0.28, 6]} />
+            <meshStandardMaterial color="#8A93A6" metalness={0.65} roughness={0.4} />
+          </mesh>
+        </group>
+      ))}
+      {/* asılı kalkanlar */}
+      {[-0.75, 0.75].map((x, i) => (
+        <mesh key={`k${i}`} position={[x, 0.75, 0.22]} rotation={[Math.PI / 2, 0, 0]} castShadow>
+          <cylinderGeometry args={[0.42, 0.42, 0.08, 14]} />
+          <meshStandardMaterial color={i ? "#8A4A32" : "#5A6470"} roughness={0.8} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+export function AtliTalimDiregiModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      <mesh position={[0, 1.4, 0]} castShadow>
+        <cylinderGeometry args={[0.12, 0.16, 2.8, 8]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {/* dönen kol */}
+      <mesh position={[0, 2.55, 0]} rotation={[0, 0.4, Math.PI / 2]} castShadow>
+        <cylinderGeometry args={[0.06, 0.06, 2.6, 6]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {/* asılı hedef torbası */}
+      <mesh position={[1.1, 2.0, 0.45]} castShadow>
+        <sphereGeometry args={[0.3, 12, 10]} />
+        <meshStandardMaterial color="#9A8460" roughness={1} />
+      </mesh>
+    </group>
+  );
+}
+
+export function TugSancakModel({ olcek = 1 }: { olcek?: number }) {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  const kilim = useMemo(() => kilimDokusu(1), []);
+  const bayrak = useRef<THREE.Mesh>(null);
+  useFrame(({ clock }) => {
+    if (bayrak.current) {
+      bayrak.current.rotation.y = Math.sin(clock.elapsedTime * 1.6) * 0.22;
+      bayrak.current.rotation.z = Math.sin(clock.elapsedTime * 2.1) * 0.05;
+    }
+  });
+  return (
+    <group scale={olcek}>
+      <mesh position={[0, 2.4, 0]} castShadow>
+        <cylinderGeometry args={[0.07, 0.09, 4.8, 8]} />
+        <meshStandardMaterial map={ahsap} roughness={0.88} />
+      </mesh>
+      <mesh position={[0, 4.86, 0]}>
+        <sphereGeometry args={[0.13, 12, 10]} />
+        <meshStandardMaterial color="#C9A24B" metalness={0.72} roughness={0.3} />
+      </mesh>
+      {/* sancak bezi */}
+      <mesh ref={bayrak} position={[0.55, 4.1, 0]} castShadow>
+        <planeGeometry args={[1.1, 0.75]} />
+        <meshStandardMaterial map={kilim} roughness={0.95} side={THREE.DoubleSide} />
+      </mesh>
+      {/* at kılı püskül */}
+      {Array.from({ length: 9 }).map((_, i) => {
+        const a = (i / 9) * Math.PI * 2;
+        return (
+          <mesh key={i} position={[Math.cos(a) * 0.07, 4.5, Math.sin(a) * 0.07]}
+            rotation={[Math.cos(a) * 0.2, 0, -Math.sin(a) * 0.2]}>
+            <cylinderGeometry args={[0.014, 0.006, 0.7, 4]} />
+            <meshStandardMaterial color="#2B2118" roughness={1} />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
+
+export function NobetKulesiModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      {([[-1, -1], [1, -1], [-1, 1], [1, 1]] as const).map(([x, z], i) => (
+        <mesh key={i} position={[x * 1.1, 2.2, z * 1.1]} rotation={[z * 0.05, 0, -x * 0.05]} castShadow>
+          <cylinderGeometry args={[0.11, 0.14, 4.4, 6]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+      {/* platform */}
+      <mesh position={[0, 4.4, 0]} castShadow receiveShadow>
+        <boxGeometry args={[2.8, 0.18, 2.8]} />
+        <meshStandardMaterial map={ahsap} roughness={0.9} />
+      </mesh>
+      {/* korkuluk */}
+      {([[0, -1.35], [0, 1.35], [-1.35, 0], [1.35, 0]] as const).map(([x, z], i) => (
+        <mesh key={`k${i}`} position={[x, 4.95, z]} rotation={[0, x ? Math.PI / 2 : 0, 0]}>
+          <boxGeometry args={[2.7, 0.09, 0.09]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+      {/* çapraz destekler */}
+      {[0, 1].map((i) => (
+        <mesh key={`c${i}`} position={[0, 2.2, i ? 1.15 : -1.15]} rotation={[0, 0, 0.42]}>
+          <boxGeometry args={[0.08, 4.6, 0.08]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+export function AtBagiModel() {
+  const ahsap = useMemo(() => ahsapDokusu(), []);
+  return (
+    <group>
+      {Array.from({ length: 7 }).map((_, i) => (
+        <mesh key={i} position={[i * 1.6 - 4.8, 0.6, 0]} castShadow>
+          <cylinderGeometry args={[0.09, 0.11, 1.2, 6]} />
+          <meshStandardMaterial map={ahsap} roughness={0.9} />
+        </mesh>
+      ))}
+      <mesh position={[0, 1.12, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.045, 0.045, 10.2, 6]} />
+        <meshStandardMaterial color="#8A7A5C" roughness={1} />
+      </mesh>
+    </group>
+  );
+}
