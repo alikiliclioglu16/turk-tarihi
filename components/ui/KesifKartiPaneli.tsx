@@ -72,11 +72,24 @@ export function KesifKartiPaneli({
                 <span className="kesif-kaynak uyari">⚠ Bu bilgi doğrulanmayı bekliyor</span>
               )}
 
-              {/* GERÇEK KAYNAK — müze eseri görseli */}
+              {/* GERÇEK KAYNAK — müze eseri */}
               {referans && (
                 <span className="muze-referans">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={referans.gorsel} alt={referans.baslik} className="muze-gorsel" />
+                  <img
+                    src={referans.gorsel}
+                    alt={referans.baslik}
+                    className="muze-gorsel"
+                    onError={(e) => {
+                      // yerel dosya yoksa kurumun açık erişim ucundan dene
+                      const img = e.currentTarget;
+                      if (referans.gorselBag && img.src !== referans.gorselBag) {
+                        img.src = referans.gorselBag;
+                      } else {
+                        img.style.display = "none";
+                      }
+                    }}
+                  />
                   <span className="muze-bilgi">
                     <span className="muze-etiket">Gerçek kaynak</span>
                     <span className="muze-baslik">{referans.baslik}</span>
@@ -85,6 +98,26 @@ export function KesifKartiPaneli({
                       {referans.envanter ? ` · ${referans.envanter}` : ""}
                       {referans.yil ? ` · ${referans.yil}` : ""}
                     </span>
+
+                    {/* Dürüstlük işareti: sonraki dönem eseri kanıt değildir */}
+                    {referans.uygunluk && (
+                      <span className={`muze-uygunluk ${referans.dogrudanKanit ? "dogrudan" : "karsilastirma"}`}>
+                        {referans.dogrudanKanit ? "✓ " : "≈ "}
+                        {referans.uygunluk}
+                      </span>
+                    )}
+
+                    {referans.bag && (
+                      <a
+                        href={referans.bag}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="muze-bag"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Müze kaydını aç ↗
+                      </a>
+                    )}
                   </span>
                 </span>
               )}

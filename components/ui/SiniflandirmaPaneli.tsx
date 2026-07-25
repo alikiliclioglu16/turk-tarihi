@@ -34,6 +34,9 @@ interface Kart extends QuestOption {
   iddia?: string;
 }
 
+/** Yanlış ifadeler için otomatik eklenen sütun */
+const RED_SUTUNU = "Bu ifade yanlış";
+
 function kartHazirla(o: QuestOption): Kart {
   // "Biliyoruz — Su ve patika | Coğrafya ..." biçimini ayrıştır
   let metin = o.text;
@@ -45,13 +48,21 @@ function kartHazirla(o: QuestOption): Kart {
   const kaynak = boruIndex > -1 ? metin.slice(0, boruIndex).trim() : undefined;
   const iddia = boruIndex > -1 ? metin.slice(boruIndex + 1).trim() : undefined;
 
-  return {
-    ...o,
-    hedefSutun: o.dogruDuzey ?? o.sutun ?? "",
-    gosterim: metin,
-    kaynak,
-    iddia,
-  };
+  /**
+   * Hedef sütun üç kurala göre belirlenir:
+   *  1. `dogruDuzey` varsa o kullanılır (node 10: etiketi yanlış ama
+   *     gerçek düzeyi bilinen kartlar)
+   *  2. Kart doğruysa kendi `sutun` alanı hedeftir
+   *  3. Kart yanlışsa ve gerçek düzeyi bilinmiyorsa (node 03), kart
+   *     bir sütuna değil RED SÜTUNUNA aittir — çünkü ifade kendisi hatalı
+   */
+  const hedefSutun = o.dogruDuzey
+    ? o.dogruDuzey
+    : o.correct
+    ? o.sutun ?? ""
+    : RED_SUTUNU;
+
+  return { ...o, hedefSutun, gosterim: metin, kaynak, iddia };
 }
 
 function karistir<T>(dizi: T[]): T[] {
@@ -66,8 +77,22 @@ function karistir<T>(dizi: T[]): T[] {
 export function SiniflandirmaPaneli({
   gorev, denemeSayisi, ipucu, onTamamlandi, onYanlis,
 }: Props) {
-  const sutunlar = useMemo(() => gorev.arayuz?.sutunlar ?? [], [gorev]);
   const baglantiMi = gorev.type === "baglanti";
+
+  /**
+   * Görevde gerçek düzeyi bilinmeyen yanlış kart varsa, "Bu ifade yanlış"
+   * sütunu otomatik eklenir. Böylece çocuk hatalı ifadeyi bir kutuya
+   * zorla yerleştirmek yerine reddedebilir.
+   */
+  const redGerekli = useMemo(
+    () => gorev.options.some((o) => !o.correct && !o.dogruDuzey),
+    [gorev]
+  );
+
+  const sutunlar = useMemo(() => {
+    const temel = gorev.arayuz?.sutunlar ?? [];
+    return redGerekli ? [...temel, RED_SUTUNU] : temel;
+  }, [gorev, redGerekli]);
 
   const tumKartlar = useMemo(() => {
     const hazir = gorev.options.map(kartHazirla).filter((k) => k.hedefSutun);
@@ -165,7 +190,7 @@ export function SiniflandirmaPaneli({
           <button
             key={s}
             type="button"
-            className={`sinif-sutun ${seciliKart ? "aktif" : ""}`}
+            className={`sinif-sutun ${seciliKart ? "aktif" : ""} ${s === RED_SUTUNU ? "red" : ""}`}
             onClick={() => sutunaKoy(s)}
             disabled={!seciliKart}
             aria-label={`${s} sütununa yerleştir`}

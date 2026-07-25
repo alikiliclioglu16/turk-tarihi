@@ -10,15 +10,15 @@
   "sourceType": "maddi",
   "world": {
     "guidePosition": [
-      -3.2,
+      5.2,
       0.0,
-      -3.0
+      2.8
     ],
-    "triggerRadius": 2.8,
+    "triggerRadius": 3.0,
     "cameraFocus": [
-      -3.2,
-      1.0,
-      -4.6
+      5.6,
+      0.9,
+      3.4
     ]
   },
   "narration": [
@@ -49,71 +49,71 @@
       "id": "hs_sandik_kilidi",
       "assetRef": "A03",
       "position": [
-        -3.2,
-        1.0,
-        -4.2
+        5.6,
+        0.8,
+        3.8
       ],
       "label": "İncele",
       "audio": "d01_n03_hs_sandik_kilidi.wav",
       "required": true,
-      "text": "Demir kilit, sandığın kapalı tutulduğunu gösterir. Sahnedeki kilit biçimi temsili olarak tasarlanmıştır.",
+      "text": "Demir kilit, sandığın kapalı tutulduğunu gösterir. Biçimi, üretildiği dönem hakkında ipucu verebilir. Üzerindeki aşınma, uzun kullanımı düşündürebilir.",
       "sourceNote": "DOĞRULANMALI — D01 sandığındaki kilit biçimi, IX–XI. yüzyıl bozkır kültürüne ait müze örneğiyle doğrulanmalıdır."
     },
     {
       "id": "hs_tomar",
       "assetRef": "D01a",
       "position": [
-        -2.3,
-        0.7,
-        -4.2
+        5.4,
+        1.0,
+        3.3
       ],
       "label": "İncele",
       "audio": "d01_n03_hs_tomar.wav",
       "required": true,
-      "text": "Bu sarılı nesne yazılı bir kaynak olabilir. Malzemesi ve içeriği görünüşten bilinemez.",
+      "text": "Bu tomar yazılı bir kaynak olabilir. Ancak üzerindeki işaretler okunmadan içeriğini bilemeyiz. Malzemesi ve sarılma biçimi ayrıca incelenmelidir.",
       "sourceNote": "DOĞRULANMALI — D01 sahnesinde kullanılacak tomarın malzemesi ve biçimi, dönemsel yazılı kaynak örnekleriyle doğrulanmalıdır."
     },
     {
       "id": "hs_deri_kese",
       "assetRef": "D03a",
       "position": [
-        -4.1,
-        0.7,
-        -4.2
+        5.8,
+        0.9,
+        3.1
       ],
       "label": "İncele",
       "audio": "d01_n03_hs_deri_kese.wav",
       "required": true,
       "text": "Deri kese, küçük ve değerli eşyaları taşımaya yarayabilir. İçeriği bilinmeden kesin yorum yapılamaz. Dikişleri, nasıl üretildiğini araştırmamıza yardım edebilir.",
-      "sourceNote": "Encyclopaedia Iranica, 'Central Asia x. Economy Before the Timurids', https://www.iranicaonline.org/articles/central-asia-x/"
+      "sourceNote": "DOĞRULANMALI — Deri kesenin biçimi ve kullanım yorumu, güvenilir bozkır maddi kültürü referansıyla karşılaştırılmalıdır."
     },
     {
       "id": "hs_bakir_ayna",
       "assetRef": "D04a",
       "position": [
-        -3.7,
-        0.6,
-        -3.6
+        5.2,
+        0.9,
+        3.5
       ],
       "label": "İncele",
       "audio": "d01_n03_hs_bakir_ayna.wav",
       "required": false,
-      "text": "Bakır aynanın yüzeyi zamanla kararmış. Bu sahne, bölgesel metal ayna örneklerinden esinlenmiştir.",
-      "sourceNote": "The Metropolitan Museum of Art, bronze Mirror, 11th–12th century, Object 1976.158.1, https://www.metmuseum.org/art/collection/search/452809"
+      "text": "Bakır aynanın yüzeyi zamanla kararmış. Kullanım izleri, onun kişisel bir eşya olabileceğini bize düşündürür. Yüzeyindeki aşınma ayrıca kullanım biçimini araştırmaya yöneltir.",
+      "sourceNote": "DOĞRULANMALI — Bakır ayna tipi, IX–XI. yüzyıl Orta Asya veya erken Türk müze buluntularıyla doğrulanmalıdır."
     },
     {
       "id": "hs_kilim_parcasi",
       "assetRef": "D05a",
       "position": [
-        -2.6,
-        0.5,
-        -3.6
+        5.9,
+        0.7,
+        3.6
       ],
       "label": "İncele",
       "audio": "d01_n03_hs_kilim_parcasi.wav",
       "required": false,
-      "text": "Solmuş dokuma parçası, tekstil üretimi hakkında ipucu taşıyabilir. Desenleri güvenilir örneklerle karşılaştırılmalıdır.",
-      "sourceNote": "British Museum, Central Asian plain-weave textile, 8th–9th century, Museum no. 1907,1111.216, https://www.britishmuseum.org/collection/object/A_1907-1111-216"
+      "text": "Solmuş kilim parçası, dokuma geleneği hakkında ipucu taşıyabilir. Desenleri, kullanılan teknik ve renkleri araştırmaya yöneltir.",
+      "sourceNote": "DOĞRULANMALI — Kilim parçasının motifleri ve dokuma tekniği, seçilecek müze tekstiliyle birebir eşleştirilmelidir."
     }
   ],
   "quest": {
@@ -122,39 +122,45 @@
     "options": [
       {
         "id": "a",
-        "text": "Gördüğüm — Sandığın demir kuşakları var.",
+        "text": "Sandığın demir kuşakları var.",
         "correct": true,
-        "feedback": "Doğru evlat. Demir kuşakları doğrudan görebiliriz; bu bir gözlemdir."
+        "feedback": "Doğru evlat. Demir kuşakları doğrudan görebiliriz; bu bir gözlemdir.",
+        "sutun": "Gördüğüm"
       },
       {
         "id": "b",
-        "text": "Gördüğüm — Tomarın üzerinde işaretler bulunuyor.",
+        "text": "Tomarın üzerinde işaretler bulunuyor.",
         "correct": true,
-        "feedback": "Evet yiğidim. Görünen işaretleri söylemek, dikkatli bir gözlemdir."
+        "feedback": "Evet yiğidim. Görünen işaretleri söylemek, dikkatli bir gözlemdir.",
+        "sutun": "Gördüğüm"
       },
       {
         "id": "c",
-        "text": "Yorum — Deri kese, küçük eşyaları saklamış olabilir.",
+        "text": "Deri kese, küçük eşyaları saklamış olabilir.",
         "correct": true,
-        "feedback": "Güzel düşündün. Olabilir sözü, bunun kesin bilgi değil yorum olduğunu gösterir."
+        "feedback": "Güzel düşündün. Olabilir sözü, bunun kesin bilgi değil yorum olduğunu gösterir.",
+        "sutun": "Yorum"
       },
       {
         "id": "d",
-        "text": "Gördüğüm — Sandık kesinlikle bir hükümdara aitti.",
+        "text": "Sandık kesinlikle bir hükümdara aitti.",
         "correct": false,
-        "feedback": "Bu bir gözlem değildir. Sahibinin kim olduğunu yalnız sandığa bakarak bilemeyiz."
+        "feedback": "Bu bir gözlem değildir. Sahibinin kim olduğunu yalnız sandığa bakarak bilemeyiz.",
+        "sutun": "Gördüğüm"
       },
       {
         "id": "e",
-        "text": "Yorum — Tomarda savaş planı yazıyordu.",
+        "text": "Tomarda savaş planı yazıyordu.",
         "correct": false,
-        "feedback": "Bu tahmin için kanıtımız yok. Tomarın içeriğini okumadan karar veremeyiz."
+        "feedback": "Bu tahmin için kanıtımız yok. Tomarın içeriğini okumadan karar veremeyiz.",
+        "sutun": "Yorum"
       },
       {
         "id": "f",
-        "text": "Gördüğüm — Ayna sihirli bir tören için yapılmıştı.",
+        "text": "Ayna sihirli bir tören için yapılmıştı.",
         "correct": false,
-        "feedback": "Bu cümle görüleni değil, kanıtsız bir hikâyeyi anlatıyor. Yeniden düşün."
+        "feedback": "Bu cümle görüleni değil, kanıtsız bir hikâyeyi anlatıyor. Yeniden düşün.",
+        "sutun": "Gördüğüm"
       }
     ],
     "hints": [
@@ -167,7 +173,15 @@
         "text": "Var sözü gözlemi gösterir. Olabilir sözü yorum için kullanılır."
       }
     ],
-    "successFeedback": "Gözlemle yorumu ayırdın. Tarihî eşyaları anlamanın ilk adımı budur."
+    "successFeedback": "Gözlemle yorumu ayırdın. Tarihî eşyaları anlamanın ilk adımı budur.",
+    "arayuz": {
+      "sutunlar": [
+        "Gördüğüm",
+        "Yorum"
+      ],
+      "yonerge": "Kartları doğru sütuna sürükle.",
+      "karistir": true
+    }
   },
   "reward": {
     "cardId": "card_03",

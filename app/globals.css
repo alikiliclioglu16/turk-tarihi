@@ -854,3 +854,21 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--cini); outline-
   .sinif-sutun { min-height: 76px; }
   .gorev-panel-genis { max-height: 78dvh; }
 }
+
+.sinif-sutun.red { border-color: #C99A9A; background: rgba(184,67,58,.05); }
+.sinif-sutun.red.aktif { border-color: var(--kilim); background: rgba(184,67,58,.11); }
+.sinif-sutun.red .sinif-sutun-baslik { color: var(--kilim); }
+.sinif-sutun.red .sinif-yerlesen {
+  background: rgba(184,67,58,.14); border-color: rgba(184,67,58,.4);
+}
+
+.muze-uygunluk {
+  display: inline-block; font-size: 10px; font-weight: 800; margin-top: 4px;
+  padding: 2px 8px; border-radius: 999px; letter-spacing: .02em;
+}
+.muze-uygunluk.dogrudan { background: rgba(75,179,169,.2); color: #2C7A72; }
+.muze-uygunluk.karsilastirma { background: rgba(240,164,74,.22); color: #8A5A1E; }
+.muze-bag {
+  display: block; font-size: 11px; color: var(--cini); font-weight: 700;
+  margin-top: 5px; text-decoration: underline;
+}
