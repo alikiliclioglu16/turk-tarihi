@@ -158,6 +158,12 @@ export function Player({ baslangic = [0, 0, 14] as [number, number, number] }) {
     camera.position.lerp(kameraHedef.current, Math.min(1, dt * 5));
     camera.lookAt(g.position.x, g.position.y + 1.35, g.position.z);
 
+    // elde çekim nefesi — neredeyse fark edilmez, ama sahneyi "canlı" yapar
+    camera.rotation.z += Math.sin(t * 0.63) * 0.0045 + Math.sin(t * 1.7) * 0.0018;
+    camera.rotation.x += Math.sin(t * 0.81) * 0.0028;
+    // yürürken hafif adım sarsıntısı
+    camera.rotation.z += Math.sin(faz * 0.5) * 0.006 * y;
+
     /* ---------- DURAK TETİKLEME ---------- */
     const { nodlar, aktifIndex, faz: oyunFazi, duragiBaslat } = useOyun.getState();
     if (oyunFazi === "gezinti") {

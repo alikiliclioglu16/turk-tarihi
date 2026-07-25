@@ -57,17 +57,21 @@ export function SahneAtmosferi() {
       <fogExp2 attach="fog" args={["#0b1322", 0.015]} />
       {/* kenar ışığı: nesneleri geceden ayıran soğuk kontur */}
       <directionalLight color="#7794cf" intensity={0.45} position={[38, 16, -46]} />
-      <ambientLight color="#2c3d63" intensity={0.8} />
+      <ambientLight color="#2c3d63" intensity={0.35} />
       <directionalLight
         color="#93abda"
         intensity={0.6}
         position={[-45, 55, -35]}
         castShadow
-        shadow-mapSize={[2048, 2048]}
-        shadow-camera-left={-30}
-        shadow-camera-right={30}
-        shadow-camera-top={30}
-        shadow-camera-bottom={-30}
+        shadow-mapSize={[4096, 4096]}
+        shadow-camera-left={-22}
+        shadow-camera-right={22}
+        shadow-camera-top={22}
+        shadow-camera-bottom={-22}
+        shadow-camera-near={1}
+        shadow-camera-far={140}
+        shadow-bias={-0.0004}
+        shadow-normalBias={0.022}
       />
     </>
   );

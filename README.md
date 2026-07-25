@@ -1,5 +1,5 @@
 # Dede Korkut ile Türk Tarihi Discovery Tour
-## Teknik Görev Paketi 1.3 — D01 Oynanabilir Omurga
+## Teknik Görev Paketi 1.4 — D01 Oynanabilir Omurga + Sinematik Katman
 
 Bu paket, D01 bölümünün **oynanabilir çekirdeğidir**. Tam ürün değil; üzerine
 varlıkların, durakların ve seslerin eklendiği çalışan iskelet.
@@ -39,7 +39,18 @@ Tarayıcıda `http://localhost:3000` açın → "Keşfe Başla".
 | Kart ödülü ve kapanış repliği | ✅ |
 | Yerel ilerleme kaydı (localStorage) | ✅ |
 | Prosedürel detaylı modeller (otağ, ocak, sandık, balbal, kopuz) | ✅ |
-| Bloom, ACES ton eşleme, vinyet (sinematik katman) | ✅ |
+| **Render teknolojisi** | |
+| PCSS yumuşak gölgeler (4K gölge haritası) | ✅ |
+| N8AO ortam örtüşmesi (temas gölgeleri) | ✅ |
+| IBL / prosedürel ortam haritası (küresel aydınlatma yaklaşımı) | ✅ |
+| Katmanlı zemin sisi (hacimsel sis karşılığı) | ✅ |
+| **Sinematografi** | |
+| Bloom + ACES ton eşleme | ✅ |
+| Gece renk derecelendirmesi (lacivert gölge / kehribar ışık) | ✅ |
+| Film greni, S eğrisi kontrast, doygunluk | ✅ |
+| Kromatik sapma (lens karakteri) | ✅ |
+| Alan derinliği + vinyet + SMAA | ✅ |
+| Elde çekim kamera nefesi | ✅ |
 | Kıvılcım, duman, ot, kaya, dağ silüetleri | ✅ |
 | İnsan oranlı Dede Korkut + tam yürüyüş döngüsü | ✅ |
 | Ses katmanı (sentez ambiyans + gerçek kayıt desteği) | ✅ |
