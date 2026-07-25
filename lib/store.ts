@@ -7,6 +7,12 @@ import { ilerlemeYukle, ilerlemeKaydet, olayKaydet } from "./progress";
 import { DUNYA_OLCEK } from "./dunyaOlcek";
 import { kesifKartiYap, type KesifKarti } from "./kartlar";
 
+/** Öğrenme noktası türlerinin ekranda görünen adı */
+const TIP_ETIKET: Record<string, string> = {
+  zanaat: "Zanaat", kultur: "Kültür", yasam: "Günlük Hayat",
+  yapi: "Yapı", doga: "Doğa", tarih: "Tarih",
+};
+
 /**
  * JSON koordinatları tasarım ölçeğinde yazıldı. Dünya 2.6 katına
  * çıkarıldığı için yükleme anında ölçeklenir. JSON dosyalarına dokunulmaz.
@@ -221,11 +227,27 @@ export const useOyun = create<Durum>((set, get) => ({
       olayKaydet("bonus_kesif", { id });
       ilerlemeKaydet({ ...kayit, kartlar: kayit.kartlar });
     }
-    const bk = (globalThis as { __bonusMetin?: (id: string) => { ad: string; metin: string } | null }).__bonusMetin?.(id);
+    type BonusBilgi = { ad: string; metin: string; kaynakNotu?: string | null; tip?: string };
+    const bk = (globalThis as { __bonusMetin?: (id: string) => BonusBilgi | null }).__bonusMetin?.(id);
+    const kesifKoleksiyon = get().kesifKoleksiyonu;
+    const kart = bk
+      ? kesifKartiYap(
+          id, bk.ad,
+          bk.tip ? TIP_ETIKET[bk.tip] ?? "Keşif" : "Meraklı Gözler",
+          bk.metin,
+          bk.tip ? "ogrenme" : "bonus",
+          null,
+          bk.kaynakNotu ?? null
+        )
+      : null;
     set({
       bulunanBonuslar: yeni,
       aktifBonusId: id,
-      aktifKesifKarti: bk ? kesifKartiYap(id, bk.ad, "Meraklı Gözler", bk.metin, "bonus") : null,
+      aktifKesifKarti: kart,
+      kesifKoleksiyonu:
+        kart && !kesifKoleksiyon.some((k) => k.id === kart.id)
+          ? [...kesifKoleksiyon, kart]
+          : kesifKoleksiyon,
     });
   },
 

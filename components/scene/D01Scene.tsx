@@ -31,8 +31,12 @@ import { BolgeAtmosferi } from "./BolgeAtmosferi";
 import { Dere } from "./Dere";
 import { RenkDerecelendirme } from "./RenkDerecelendirme";
 import { useOyun } from "@/lib/store";
+import { kaliteDurumu, kaliteYukle } from "@/components/ui/KaliteAyari";
 
 export function D01Scene() {
+  const kalite = typeof window !== "undefined" ? kaliteYukle() : "yuksek";
+  const dusuk = kalite === "dusuk";
+  void kaliteDurumu;
   const nodlar = useOyun((s) => s.nodlar);
   const aktifIndex = useOyun((s) => s.aktifIndex);
   const faz = useOyun((s) => s.faz);
@@ -42,8 +46,8 @@ export function D01Scene() {
 
   return (
     <Canvas
-      shadows
-      dpr={[1, 1.6]}
+      shadows={!dusuk}
+      dpr={kalite === "dusuk" ? [1, 1] : kalite === "orta" ? [1, 1.3] : [1, 1.6]}
       camera={{ fov: 54, near: 0.1, far: 900, position: [0, 6, 20] }}
       gl={{
         antialias: false, // SMAA devrede
@@ -58,7 +62,7 @@ export function D01Scene() {
         <CarpismaKurulumu />
         <IBL />
         {/* PCSS yumuşak gölgeler: temasta keskin, uzaklaştıkça yumuşayan */}
-        <SoftShadows size={9} samples={8} focus={0.75} />
+        {kalite === "yuksek" && <SoftShadows size={9} samples={8} focus={0.75} />}
         <SahneAtmosferi />
         <BolgeAtmosferi />
         <Dere />
@@ -106,21 +110,23 @@ export function D01Scene() {
           ))}
 
         {/* ---------- SİNEMATİK BORU HATTI ---------- */}
-        <EffectComposer multisampling={0}>
-          {/* ortam örtüşmesi: nesneleri zemine oturtur, köşelere derinlik verir */}
-          <N8AO aoRadius={1.6} intensity={1.5} distanceFalloff={1.0} color="#2a2418" halfRes quality="low" />
-          {/* ateş, ay ve ışık sütunlarının halelenmesi */}
-          <Bloom
-            intensity={0.35}
-            luminanceThreshold={0.72}
-            luminanceSmoothing={0.3}
-            mipmapBlur
-          />
-          {/* gece derecelendirmesi + film greni */}
-          <RenkDerecelendirme golgeMavi={1.0} isikSicak={1.0} kontrast={1.07} gren={0.012} doygunluk={1.1} />
-          <Vignette offset={0.32} darkness={0.45} />
-          <SMAA />
-        </EffectComposer>
+        {/* Sinematik boru hattı — kaliteye göre iki ayrı zincir */}
+        {kalite === "yuksek" && (
+          <EffectComposer multisampling={0}>
+            <N8AO aoRadius={1.6} intensity={1.5} distanceFalloff={1.0} color="#2a2418" halfRes quality="low" />
+            <Bloom intensity={0.35} luminanceThreshold={0.72} luminanceSmoothing={0.3} mipmapBlur />
+            <RenkDerecelendirme golgeMavi={1.0} isikSicak={1.0} kontrast={1.07} gren={0.012} doygunluk={1.1} />
+            <Vignette offset={0.32} darkness={0.45} />
+            <SMAA />
+          </EffectComposer>
+        )}
+        {kalite === "orta" && (
+          <EffectComposer multisampling={0}>
+            <Bloom intensity={0.3} luminanceThreshold={0.75} luminanceSmoothing={0.3} mipmapBlur />
+            <RenkDerecelendirme golgeMavi={1.0} isikSicak={1.0} kontrast={1.06} gren={0.01} doygunluk={1.08} />
+            <Vignette offset={0.34} darkness={0.4} />
+          </EffectComposer>
+        )}
       </Suspense>
     </Canvas>
   );

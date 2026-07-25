@@ -15,7 +15,7 @@ function BonusSayac() {
   );
 }
 
-export function Hud() {
+export function Hud({ onKoleksiyon }: { onKoleksiyon: () => void }) {
   const nodlar = useOyun((s) => s.nodlar);
   const aktifIndex = useOyun((s) => s.aktifIndex);
   const faz = useOyun((s) => s.faz);
@@ -53,7 +53,15 @@ export function Hud() {
               />
             ))}
           </div>
-          <div className="kart-sayaci">🃏 {kartlar.length}</div>
+          <button
+            type="button"
+            className="kart-sayaci kart-dugme"
+            onClick={onKoleksiyon}
+            title="Kart koleksiyonu (C)"
+            aria-label="Kart koleksiyonunu aç"
+          >
+            🃏 {kartlar.length}
+          </button>
           <BonusSayac />
           <button
             className="mini-dugme"

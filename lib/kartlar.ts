@@ -39,23 +39,50 @@ export function durakKarti(cardId: string): DurakKarti | null {
   return DURAK_KARTLARI.find((k) => k.cardId === cardId) ?? null;
 }
 
-/** Keşif kartı — hotspot ve bonus keşiflerden üretilir */
+/** Keşif kartı — hotspot, bonus ve öğrenme noktalarından üretilir */
 export interface KesifKarti {
   id: string;
   baslik: string;
   altBaslik: string;
+  /** ön yüz: kısa tanım */
   metin: string;
+  /** arka yüz: açıklama ve kaynak (varsa) */
+  aciklama?: string | null;
+  kaynak?: string | null;
   ikon: string;
-  tur: "hotspot" | "bonus" | "kisi";
+  tur: "hotspot" | "bonus" | "kisi" | "ogrenme";
+  /** görsel hazırsa yolu; yoksa null */
+  gorsel?: string | null;
+}
+
+/**
+ * Keşif kartı görseli.
+ * ChatGPT görselleri `public/assets/d01/kesif/` klasörüne kimlikle
+ * kaydedildiğinde otomatik devreye girer: `<id>_on.webp` / `<id>_arka.webp`
+ */
+export const KESIF_GORSEL_KOK = "/assets/d01/kesif";
+export const HAZIR_KESIF_GORSELLERI = new Set<string>([
+  // görseller geldikçe buraya kimlik eklenir, örn: "og_ok"
+]);
+
+export function kesifGorseli(id: string, yuz: "on" | "arka"): string | null {
+  if (!HAZIR_KESIF_GORSELLERI.has(id)) return null;
+  return `${KESIF_GORSEL_KOK}/${id}_${yuz}.webp`;
 }
 
 const IKONLAR: Record<string, string> = {
-  hotspot: "🔍", bonus: "✨", kisi: "👤",
+  hotspot: "🔍", bonus: "✨", kisi: "👤", ogrenme: "📜",
 };
 
 export function kesifKartiYap(
   id: string, baslik: string, altBaslik: string, metin: string,
-  tur: KesifKarti["tur"] = "hotspot"
+  tur: KesifKarti["tur"] = "hotspot",
+  aciklama: string | null = null,
+  kaynak: string | null = null
 ): KesifKarti {
-  return { id, baslik, altBaslik, metin, ikon: IKONLAR[tur] ?? "🔍", tur };
+  return {
+    id, baslik, altBaslik, metin, aciklama, kaynak,
+    ikon: IKONLAR[tur] ?? "🔍", tur,
+    gorsel: kesifGorseli(id, "on"),
+  };
 }

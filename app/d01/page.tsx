@@ -15,6 +15,9 @@ import { KesifKartiPaneli } from "@/components/ui/KesifKartiPaneli";
 import { AnlatiSeridi } from "@/components/ui/AnlatiSeridi";
 import { MiniHarita } from "@/components/ui/MiniHarita";
 import { FinalSinavi } from "@/components/ui/FinalSinavi";
+import { KartKoleksiyonu } from "@/components/ui/KartKoleksiyonu";
+import { MobilKontroller } from "@/components/ui/MobilKontroller";
+import { KaliteAyari } from "@/components/ui/KaliteAyari";
 import { AcilisAnlatisi } from "@/components/ui/AcilisAnlatisi";
 import { BolgeGirisi } from "@/components/ui/BolgeGirisi";
 import { KisiPanel } from "@/components/ui/KisiPanel";
@@ -57,6 +60,7 @@ export default function D01Page() {
   const bulunan = zorunlu.filter((id) => gezilen.includes(id)).length;
   const hepsiGezildi = zorunlu.length > 0 && bulunan >= zorunlu.length;
   const [hata, setHata] = useState<string | null>(null);
+  const [koleksiyon, setKoleksiyon] = useState(false);
 
   useEffect(() => {
     let iptal = false;
@@ -107,8 +111,10 @@ export default function D01Page() {
           <AcilisAnlatisi />
         </div>
       )}
-      {faz !== "yukleniyor" && <Hud />}
+      {faz !== "yukleniyor" && <Hud onKoleksiyon={() => setKoleksiyon(true)} />}
       {faz !== "yukleniyor" && <MiniHarita />}
+      {faz !== "yukleniyor" && <MobilKontroller />}
+      {faz !== "yukleniyor" && <KaliteAyari />}
       {faz !== "yukleniyor" && faz !== "acilis" && <BolgeGirisi />}
 
       <KisiPanel />
@@ -147,6 +153,7 @@ export default function D01Page() {
       )}
       {faz === "kapanis" && <ClosingPanel />}
       {faz === "sinav" && <FinalSinavi />}
+      {koleksiyon && <KartKoleksiyonu onKapat={() => setKoleksiyon(false)} />}
 
       {faz === "bolumBitti" && (
         <div className="ortu">

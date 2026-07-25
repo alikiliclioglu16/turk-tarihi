@@ -11,10 +11,19 @@ const TUM_KESIFLER = [...bonusKesifler, ...OGRENME_NOKTALARI];
 
 // store'un keşif kartı üretebilmesi için köprü
 if (typeof globalThis !== "undefined") {
-  (globalThis as { __bonusMetin?: (id: string) => { ad: string; metin: string } | null }).__bonusMetin =
+  (globalThis as {
+    __bonusMetin?: (id: string) => {
+      ad: string; metin: string; kaynakNotu: string | null; tip: string | null;
+    } | null;
+  }).__bonusMetin =
     (id: string) => {
       const b = TUM_KESIFLER.find((x) => x.id === id) ?? bonusKesifBul(id);
-      return b ? { ad: b.ad, metin: b.metin } : null;
+      if (!b) return null;
+      return {
+        ad: b.ad, metin: b.metin,
+        kaynakNotu: b.kaynakNotu ?? null,
+        tip: (b as { tip?: string }).tip ?? null,
+      };
     };
 }
 import { useOyun } from "@/lib/store";

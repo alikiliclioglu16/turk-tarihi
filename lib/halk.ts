@@ -64,6 +64,8 @@ const HALK_ANA: HalkKaydi[] = [
     bilgi: { ad: "Pazar Yeri", metin: "Kervanlar uzaktan ipek, baharat ve kap getirirdi. Karşılığında deri, at ve dokuma verilirdi." },
   },
   { id: "h_pazarci_2", aktivite: "pazarci", pos: [29, 21], yon: 3.9, renk: "#CDBB98", kusak: "#8A2C25" },
+  { id: "h_tartan", aktivite: "tartan", pos: [26.5, 19], yon: 3.4, renk: "#D9C9A6", kusak: "#8A6A24",
+    bilgi: { ad: "Ölçü ve Tartı", metin: "Tartı güven meselesiydi. Anlaşmazlık pazar büyüğüne götürülürdü." } },
   { id: "h_musteri_1", aktivite: "sohbet", pos: [26, 15], yon: 0.6, renk: "#C4B292" },
   { id: "h_musteri_2", aktivite: "bekleyen", pos: [31, 16.5], yon: 1.1, renk: "#BDAB8C", kusak: "#6B5636" },
   { id: "h_kervanci", aktivite: "sohbet", pos: [34, 24], yon: 4.4, renk: "#CFC0A0", kusak: "#8A6A24" },
@@ -77,13 +79,39 @@ const HALK_ANA: HalkKaydi[] = [
   { id: "h_asker_3", aktivite: "asker", pos: [12.5, -24], yon: 3.1, renk: "#BCAD90", kusak: "#5A3D20" },
   { id: "h_egitmen", aktivite: "sohbet", pos: [17, -16], yon: 0.2, renk: "#C9B896", kusak: "#A8382F" },
 
-  /* ---------- ÇOCUKLAR ---------- */
+  /* ---------- ÇOCUKLAR: aşık oyunu (P04 alanı: 10.5, 13.5) ---------- */
   {
-    id: "h_cocuk_1", aktivite: "cocuk", pos: [10, 12], renk: "#E0D0AE", kusak: "#4BB3A9", boy: 1.15,
+    id: "h_cocuk_1", aktivite: "asikAtan", pos: [10.5, 12.5], yon: 3.14,
+    renk: "#E0D0AE", kusak: "#4BB3A9", boy: 1.15,
     bilgi: { ad: "Aşık Oyunu", metin: "Çocuklar koyun aşık kemikleriyle oynardı. Oyun, sırasını beklemeyi ve kuralı öğretirdi." },
   },
-  { id: "h_cocuk_2", aktivite: "cocuk", pos: [12.5, 14], renk: "#DBC9A6", kusak: "#B8433A", boy: 1.1 },
-  { id: "h_cocuk_3", aktivite: "cocuk", pos: [8.5, 15.5], renk: "#D6C3A0", kusak: "#8A6A24", boy: 1.2 },
+  { id: "h_cocuk_2", aktivite: "asikIzleyen", pos: [11.6, 14.4], yon: 4.2, renk: "#DBC9A6", kusak: "#B8433A", boy: 1.1 },
+  { id: "h_cocuk_3", aktivite: "asikIzleyen", pos: [9.4, 14.4], yon: 2.1, renk: "#D6C3A0", kusak: "#8A6A24", boy: 1.2 },
+  { id: "h_cocuk_4", aktivite: "asikIzleyen", pos: [10.5, 15.0], yon: 0.0, renk: "#E4D6B4", kusak: "#6B5636", boy: 1.05 },
+
+  /* ---------- ZANAAT SAHNELERİNİN BAŞINDAKİLER ---------- */
+  { id: "h_okcu_1", aktivite: "okYapan", pos: [-25, 8.9], yon: 1.1, renk: "#C9B896", kusak: "#5A3D20",
+    bilgi: { ad: "Ok Yapımı", metin: "Ok gövdesi düzgün olmalıydı. Tüy yerleşimi uçuşu etkileyebilirdi." } },
+  { id: "h_okcu_2", aktivite: "okYapan", pos: [-23, 10.9], yon: 0.4, renk: "#BFAE93", kusak: "#6B5636" },
+  { id: "h_kececi", aktivite: "keceBasan", pos: [-16, 13.3], yon: 0.3, renk: "#D8C4A0", kusak: "#A8382F",
+    bilgi: { ad: "Keçe Basma", metin: "Yün, su ve emekle keçeye dönüşür. Basmak saatler sürerdi." } },
+  { id: "h_kececi_2", aktivite: "keceBasan", pos: [-14.6, 16.4], yon: 3.4, renk: "#CDBB98", kusak: "#4BB3A9" },
+  { id: "h_derici", aktivite: "deriGeren", pos: [-19, 15.6], yon: 1.4, renk: "#C4B292", kusak: "#8A6A24",
+    bilgi: { ad: "Deri İşleme", metin: "Deri gerdirilip kurutulurdu. Gergi eşit olmazsa deri buruşurdu." } },
+  { id: "h_comlekci", aktivite: "comlekci", pos: [-14, 7.2], yon: 0.7, renk: "#D2C09C", kusak: "#8A2C25",
+    bilgi: { ad: "Çömlekçilik", metin: "Çark döner, eller kabı şekillendirir. Denge bozulursa kap eğrilir." } },
+  { id: "h_ipbuken", aktivite: "ipBuken", pos: [-6, 18.7], yon: 0.2, renk: "#DCCBA6", kusak: "#4A6B6B",
+    bilgi: { ad: "İp Bükme", metin: "Kıl ve yünden ip bükülürdü. Çadırın gergisi de yükün bağı da ipe emanetti." } },
+
+  /* ---------- GÜREŞ VE AT EĞİTİMİ ---------- */
+  { id: "h_guresci_1", aktivite: "guresci", pos: [13.2, -20], yon: 1.57, renk: "#C9B896", kusak: "#8A2C25",
+    bilgi: { ad: "Güreş", metin: "Güreş güç kadar denge işiydi. Toplu şölenlerde seyredilirdi." } },
+  { id: "h_guresci_2", aktivite: "guresci", pos: [14.8, -20], yon: 4.71, renk: "#BFAE93", kusak: "#4A6B6B" },
+  { id: "h_gures_seyirci_1", aktivite: "bekleyen", pos: [11, -23], yon: 0.9, renk: "#CDBB98", kusak: "#6B5636" },
+  { id: "h_gures_seyirci_2", aktivite: "sohbet", pos: [17.5, -22], yon: 3.6, renk: "#D2C09C", kusak: "#8A6A24" },
+  { id: "h_atterbiye", aktivite: "atTerbiyecisi", pos: [22, -26], yon: 0, renk: "#C4B292", kusak: "#A8382F",
+    bilgi: { ad: "At Eğitimi", metin: "Genç at sabırla alıştırılırdı. Binici ile hayvan birbirini tanımadan iş görmezdi." } },
+  { id: "h_atterbiye_2", aktivite: "bekleyen", pos: [26.5, -26], yon: 3.14, renk: "#BDAB8C", kusak: "#5A3D20" },
 
   /* ---------- OTLAK, ÇOBAN, AVCILAR ---------- */
   {
