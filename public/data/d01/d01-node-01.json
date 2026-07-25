@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "1.0",
+  "periodId": "d01",
+  "nodeId": "d01_n01",
+  "order": 1,
+  "zoneId": "oba",
+  "title": "Kopuzun Çağrısı",
+  "estimatedSeconds": 210,
+  "learningObjective": "Çocuk, insanların geçmişte birbirine iz ve işaret bıraktığını fark eder; bu izlerin okunabileceğini sezer.",
+  "sourceType": "sozlu",
+  "world": {
+    "guidePosition": [
+      0.0,
+      0.0,
+      12.5
+    ],
+    "triggerRadius": 3.2,
+    "cameraFocus": [
+      0.0,
+      1.6,
+      6.0
+    ]
+  },
+  "narration": [
+    {
+      "id": "d01_n01_intro",
+      "type": "intro",
+      "emotion": "sicak",
+      "audio": "d01_n01_intro.wav",
+      "text": "Dur biraz yiğidim. Şu sesi duyuyor musun? O rüzgâr değil. Kopuz çalıyor. Bu gece seni bekleyen bir kapı var."
+    },
+    {
+      "id": "d01_n01_main_a",
+      "type": "main_a",
+      "emotion": "sicak",
+      "audio": "d01_n01_main_a.wav",
+      "text": "Ben Dede Korkut. Nice obaya konuk oldum, nice çocuğa ad verdim. Bu gece de senin yoldaşınım. Şu ileride bir ateş yanıyor. Orası bir oba; yani çadır evlerden kurulu küçük bir yurt. Hadi, birlikte yaklaşalım."
+    },
+    {
+      "id": "d01_n01_main_b",
+      "type": "main_b",
+      "emotion": "sicak",
+      "audio": "d01_n01_main_b.wav",
+      "text": "Ama acele etme evlat. Yol, koşana değil, bakana açılır. Tarih dediğimiz şey uzakta durmaz. Bir taşta, bir telde, toprakta kalmış bir izde saklanır. Sen bakmayı öğrenirsen, hepsi seninle konuşur."
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "hs_yol_taslari",
+      "assetRef": "C01",
+      "position": [
+        -1.8,
+        0.6,
+        9.4
+      ],
+      "label": "İncele",
+      "audio": "d01_n01_hs_yol_taslari.wav",
+      "required": true,
+      "text": "Bu taşları buraya rüzgâr dizmedi. Birileri, gelen konuk yolunu şaşırmasın diye koymuş. İşaret bırakmak, insanın en eski âdetlerinden biridir.",
+      "sourceNote": "Genel ifade; belirli bir arkeolojik yol işareti iddiası içermez. Kaynak gerekmez."
+    },
+    {
+      "id": "hs_ates_isigi",
+      "assetRef": "A05",
+      "position": [
+        0.0,
+        1.4,
+        0.0
+      ],
+      "label": "Bak",
+      "audio": "d01_n01_hs_ates_isigi.wav",
+      "required": true,
+      "text": "Ateşin ışığı karanlıkta uzaktan görünür. Obayı arayan, önce onu bulur. Bu ışık hem ısıtır hem de çağırır.",
+      "sourceNote": null
+    },
+    {
+      "id": "hs_kopuz",
+      "assetRef": "A02",
+      "position": [
+        5.6,
+        0.9,
+        3.4
+      ],
+      "label": "Dinle",
+      "audio": "d01_n01_hs_kopuz.wav",
+      "required": true,
+      "text": "İşte kopuzum. İki teli var, ama binlerce sözü. Ona her dokunduğumda, çoktan gitmiş insanların sesi uyanır.",
+      "sourceNote": "DOĞRULANMALI — Kopuzun tel sayısı döneme ve bölgeye göre değişir. Müze referansı seçildikten sonra metindeki 'iki tel' ifadesi ya doğrulanmalı ya da 'birkaç teli var' olarak yumuşatılmalıdır."
+    },
+    {
+      "id": "hs_otag_kapisi",
+      "assetRef": "A04",
+      "position": [
+        -6.5,
+        1.2,
+        -0.4
+      ],
+      "label": "İncele",
+      "audio": "d01_n01_hs_otag_kapisi.wav",
+      "required": false,
+      "text": "Şu otağın kapısına bak. Nereye baktığını görüyor musun? Bir evin kapısının yönü bile, o evde yaşayanlar hakkında bir şey söyleyebilir.",
+      "sourceNote": "DOĞRULANMALI — Otağ kapısının yönüne dair yaygın bir bilgi vardır ancak dönem ve topluluğa göre değişir. Kaynak bulunana kadar metin, yön belirtmeden bu hâliyle kalacak. Kaynak bulunursa yön eklenebilir."
+    }
+  ],
+  "quest": {
+    "type": "secim",
+    "prompt": "Karanlıkta obayı bulmak istiyorsun. Sana hangisi yol gösterir?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Yere dizilmiş yol taşları",
+        "correct": true,
+        "feedback": "Aferin yiğidim! O taşları oraya bir insan koydu. İnsan eliyle bırakılan her iz, sana bir şey anlatır."
+      },
+      {
+        "id": "b",
+        "text": "Gökyüzündeki bulutlar",
+        "correct": false,
+        "feedback": "Bulutlar geçicidir evlat, yön tutmazlar. Sen insanın bıraktığı ize bak."
+      },
+      {
+        "id": "c",
+        "text": "Uzaktaki dağların rengi",
+        "correct": false,
+        "feedback": "Dağ çok uzakta; karanlıkta rengi de kaybolur. Biraz daha yakınına bak."
+      }
+    ],
+    "hints": [
+      {
+        "afterAttempt": 2,
+        "text": "Yerdeki taşlara dikkatli bak. Rastgele mi duruyorlar, yoksa biri onları özenle mi dizmiş?"
+      },
+      {
+        "afterAttempt": 4,
+        "text": "Yol taşlarını seç. Onları buraya bir insan dizdi; konuklar yolunu bulsun diye."
+      }
+    ],
+    "successFeedback": "İşte tarihçiler de böyle çalışır. Önce bakarlar, sonra sorarlar: bunu buraya kim, niçin koymuş?"
+  },
+  "reward": {
+    "cardId": "card_01",
+    "title": "Kopuzun Sesi",
+    "concept": "Söz ve çağrı",
+    "icon": "🪕",
+    "shortText": "Söz, en eski hatıradır. Bir ezgi, onu ilk söyleyenin sesini yüzlerce yıl taşıyabilir."
+  },
+  "closing": {
+    "id": "d01_n01_closing",
+    "audio": "d01_n01_closing.wav",
+    "text": "İlk işareti buldun. Tarihin kapısı da böyle açılır zaten: bakarak, sorarak, iz sürerek. Gel şimdi, ateşin başına oturalım."
+  },
+  "completion": {
+    "requiredHotspots": [
+      "hs_yol_taslari",
+      "hs_ates_isigi",
+      "hs_kopuz"
+    ],
+    "requiredQuest": true,
+    "events": [
+      "node_01_completed",
+      "tutorial_controls_seen",
+      "card_01_earned"
+    ]
+  },
+  "assets": [
+    "A01",
+    "A02",
+    "A04",
+    "A05",
+    "C01",
+    "C05",
+    "H01"
+  ],
+  "audioFiles": [
+    "d01_n01_intro.wav",
+    "d01_n01_main_a.wav",
+    "d01_n01_main_b.wav",
+    "d01_n01_hs_yol_taslari.wav",
+    "d01_n01_hs_ates_isigi.wav",
+    "d01_n01_hs_kopuz.wav",
+    "d01_n01_hs_otag_kapisi.wav",
+    "d01_n01_fb_correct.wav",
+    "d01_n01_fb_wrong_b.wav",
+    "d01_n01_fb_wrong_c.wav",
+    "d01_n01_hint_2.wav",
+    "d01_n01_hint_4.wav",
+    "d01_n01_success.wav",
+    "d01_n01_closing.wav"
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "schemaVersion": "1.0",
+  "periodId": "d01",
+  "nodeId": "d01_n03",
+  "order": 3,
+  "zoneId": "oba",
+  "title": "Tarih Sandığı",
+  "estimatedSeconds": 270,
+  "learningObjective": "Çocuk, eşyaların geçmiş hakkında bilgi ve hatıra taşıyabileceğini kavrar.",
+  "sourceType": "maddi",
+  "world": {
+    "guidePosition": [
+      -3.2,
+      0.0,
+      -3.0
+    ],
+    "triggerRadius": 2.8,
+    "cameraFocus": [
+      -3.2,
+      1.0,
+      -4.6
+    ]
+  },
+  "narration": [
+    {
+      "id": "d01_n03_intro",
+      "type": "intro",
+      "emotion": "sicak",
+      "audio": "d01_n03_intro.wav",
+      "text": "Gel evlat, sandığın yanına yaklaş. Dışındaki izler uzun bir yolculuk anlatıyor. İçinde ise farklı türde eşyalar saklı. Her eşya aynı bilgiyi taşımaz. Şimdi onları dikkatle ayıralım."
+    },
+    {
+      "id": "d01_n03_main_a",
+      "type": "main_a",
+      "emotion": "sicak",
+      "audio": "d01_n03_main_a.wav",
+      "text": "Sandığın tahtası çizilmiş, demir kuşakları aşınmış. Bu izler, eşyanın uzun süre kullanıldığını düşündürebilir. Fakat her çizik bize kesin bir hikâye vermez. Önce gördüğümüzü söyleriz. Sonra kaynaklara bakar, ihtimalleri dikkatle değerlendiririz. Tarih, aceleyle kurulan hikâyelerden daha sabırlıdır. Bu yüzden her ayrıntıyı önce dikkatle kaydederiz."
+    },
+    {
+      "id": "d01_n03_main_b",
+      "type": "main_b",
+      "emotion": "sicak",
+      "audio": "d01_n03_main_b.wav",
+      "text": "Şimdi içindeki parçalara bakalım. Tomar, kese, ayna ve kilim parçası farklı amaçlar taşır. Bazısı günlük yaşamı, bazısı kişisel hatırayı gösterebilir. Bir nesnenin değeri yalnız malzemesinde değildir. Bulunduğu yer, yanındaki eşyalar ve kullanım izleri önemlidir. Bu bilgiler birlikte okunduğunda geçmiş daha anlaşılır olur."
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "hs_sandik_kilidi",
+      "assetRef": "A03",
+      "position": [
+        -3.2,
+        1.0,
+        -4.2
+      ],
+      "label": "İncele",
+      "audio": "d01_n03_hs_sandik_kilidi.wav",
+      "required": true,
+      "text": "Demir kilit, sandığın kapalı tutulduğunu gösterir. Biçimi, üretildiği dönem hakkında ipucu verebilir. Üzerindeki aşınma, uzun kullanımı düşündürebilir.",
+      "sourceNote": "DOĞRULANMALI — D01 sandığındaki kilit biçimi, IX–XI. yüzyıl bozkır kültürüne ait müze örneğiyle doğrulanmalıdır."
+    },
+    {
+      "id": "hs_tomar",
+      "assetRef": "D01a",
+      "position": [
+        -2.3,
+        0.7,
+        -4.2
+      ],
+      "label": "İncele",
+      "audio": "d01_n03_hs_tomar.wav",
+      "required": true,
+      "text": "Bu tomar yazılı bir kaynak olabilir. Ancak üzerindeki işaretler okunmadan içeriğini bilemeyiz. Malzemesi ve sarılma biçimi ayrıca incelenmelidir.",
+      "sourceNote": "DOĞRULANMALI — D01 sahnesinde kullanılacak tomarın malzemesi ve biçimi, dönemsel yazılı kaynak örnekleriyle doğrulanmalıdır."
+    },
+    {
+      "id": "hs_deri_kese",
+      "assetRef": "D03a",
+      "position": [
+        -4.1,
+        0.7,
+        -4.2
+      ],
+      "label": "İncele",
+      "audio": "d01_n03_hs_deri_kese.wav",
+      "required": true,
+      "text": "Deri kese, küçük ve değerli eşyaları taşımaya yarayabilir. İçeriği bilinmeden kesin yorum yapılamaz. Dikişleri, nasıl üretildiğini araştırmamıza yardım edebilir.",
+      "sourceNote": "DOĞRULANMALI — Deri kesenin biçimi ve kullanım yorumu, güvenilir bozkır maddi kültürü referansıyla karşılaştırılmalıdır."
+    },
+    {
+      "id": "hs_bakir_ayna",
+      "assetRef": "D04a",
+      "position": [
+        -3.7,
+        0.6,
+        -3.6
+      ],
+      "label": "İncele",
+      "audio": "d01_n03_hs_bakir_ayna.wav",
+      "required": false,
+      "text": "Bakır aynanın yüzeyi zamanla kararmış. Kullanım izleri, onun kişisel bir eşya olabileceğini bize düşündürür. Yüzeyindeki aşınma ayrıca kullanım biçimini araştırmaya yöneltir.",
+      "sourceNote": "DOĞRULANMALI — Bakır ayna tipi, IX–XI. yüzyıl Orta Asya veya erken Türk müze buluntularıyla doğrulanmalıdır."
+    },
+    {
+      "id": "hs_kilim_parcasi",
+      "assetRef": "D05a",
+      "position": [
+        -2.6,
+        0.5,
+        -3.6
+      ],
+      "label": "İncele",
+      "audio": "d01_n03_hs_kilim_parcasi.wav",
+      "required": false,
+      "text": "Solmuş kilim parçası, dokuma geleneği hakkında ipucu taşıyabilir. Desenleri, kullanılan teknik ve renkleri araştırmaya yöneltir.",
+      "sourceNote": "DOĞRULANMALI — Kilim parçasının motifleri ve dokuma tekniği, seçilecek müze tekstiliyle birebir eşleştirilmelidir."
+    }
+  ],
+  "quest": {
+    "type": "siniflandir",
+    "prompt": "İfadeleri doğru başlıklarıyla eşleştir.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Gördüğüm — Sandığın demir kuşakları var.",
+        "correct": true,
+        "feedback": "Doğru evlat. Demir kuşakları doğrudan görebiliriz; bu bir gözlemdir."
+      },
+      {
+        "id": "b",
+        "text": "Gördüğüm — Tomarın üzerinde işaretler bulunuyor.",
+        "correct": true,
+        "feedback": "Evet yiğidim. Görünen işaretleri söylemek, dikkatli bir gözlemdir."
+      },
+      {
+        "id": "c",
+        "text": "Yorum — Deri kese, küçük eşyaları saklamış olabilir.",
+        "correct": true,
+        "feedback": "Güzel düşündün. Olabilir sözü, bunun kesin bilgi değil yorum olduğunu gösterir."
+      },
+      {
+        "id": "d",
+        "text": "Gördüğüm — Sandık kesinlikle bir hükümdara aitti.",
+        "correct": false,
+        "feedback": "Bu bir gözlem değildir. Sahibinin kim olduğunu yalnız sandığa bakarak bilemeyiz."
+      },
+      {
+        "id": "e",
+        "text": "Yorum — Tomarda savaş planı yazıyordu.",
+        "correct": false,
+        "feedback": "Bu tahmin için kanıtımız yok. Tomarın içeriğini okumadan karar veremeyiz."
+      },
+      {
+        "id": "f",
+        "text": "Gördüğüm — Ayna sihirli bir tören için yapılmıştı.",
+        "correct": false,
+        "feedback": "Bu cümle görüleni değil, kanıtsız bir hikâyeyi anlatıyor. Yeniden düşün."
+      }
+    ],
+    "hints": [
+      {
+        "afterAttempt": 2,
+        "text": "Gözlem, doğrudan gördüğündür. Yorum ise gördüğünden çıkardığın dikkatli sonuçtur."
+      },
+      {
+        "afterAttempt": 4,
+        "text": "Var sözü gözlemi gösterir. Olabilir sözü yorum için kullanılır."
+      }
+    ],
+    "successFeedback": "Gözlemle yorumu ayırdın. Tarihî eşyaları anlamanın ilk adımı budur."
+  },
+  "reward": {
+    "cardId": "card_03",
+    "title": "Tarih Sandığı",
+    "concept": "Eşya ve hatıra",
+    "icon": "🧰",
+    "shortText": "Eşyalar geçmişten iz taşır. Fakat her iz dikkatle ve kaynaklarla yorumlanmalıdır."
+  },
+  "closing": {
+    "id": "d01_n03_closing",
+    "audio": "d01_n03_closing.wav",
+    "text": "Sandığın içindekileri dikkatle ayırdın. Şimdi taşların taşıdığı sessiz izlere gideceğiz."
+  },
+  "completion": {
+    "requiredHotspots": [
+      "hs_sandik_kilidi",
+      "hs_tomar",
+      "hs_deri_kese"
+    ],
+    "requiredQuest": true,
+    "events": [
+      "node_03_completed",
+      "observation_interpretation_sorted",
+      "card_03_earned"
+    ]
+  },
+  "assets": [
+    "A01",
+    "A03",
+    "A08",
+    "D01a",
+    "D03a",
+    "D04a",
+    "D05a"
+  ],
+  "audioFiles": [
+    "d01_n03_intro.wav",
+    "d01_n03_main_a.wav",
+    "d01_n03_main_b.wav",
+    "d01_n03_hs_sandik_kilidi.wav",
+    "d01_n03_hs_tomar.wav",
+    "d01_n03_hs_deri_kese.wav",
+    "d01_n03_hs_bakir_ayna.wav",
+    "d01_n03_hs_kilim_parcasi.wav",
+    "d01_n03_fb_correct_a.wav",
+    "d01_n03_fb_correct_b.wav",
+    "d01_n03_fb_correct_c.wav",
+    "d01_n03_fb_wrong_d.wav",
+    "d01_n03_fb_wrong_e.wav",
+    "d01_n03_fb_wrong_f.wav",
+    "d01_n03_hint_2.wav",
+    "d01_n03_hint_4.wav",
+    "d01_n03_success.wav",
+    "d01_n03_closing.wav"
+  ]
+}

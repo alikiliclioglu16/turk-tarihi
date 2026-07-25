@@ -1,0 +1,227 @@
+{
+  "schemaVersion": "1.0",
+  "periodId": "d01",
+  "nodeId": "d01_n02",
+  "order": 2,
+  "zoneId": "oba",
+  "title": "Ocak Ateşi ve Oba",
+  "estimatedSeconds": 240,
+  "learningObjective": "Çocuk, oba eşyalarının işlevlerini gözlemleyerek günlük yaşam düzenini kavrar.",
+  "sourceType": "maddi",
+  "world": {
+    "guidePosition": [
+      2.6,
+      0.0,
+      2.6
+    ],
+    "triggerRadius": 3.0,
+    "cameraFocus": [
+      0.0,
+      1.2,
+      0.0
+    ]
+  },
+  "narration": [
+    {
+      "id": "d01_n02_intro",
+      "type": "intro",
+      "emotion": "sicak",
+      "audio": "d01_n02_intro.wav",
+      "text": "Gel evlat, ateşin yanına yaklaş. Burası obanın sıcak kalbidir. İnsanlar burada dinlenir, konuşur ve işlerini paylaşır. Şimdi çevredeki eşyalara birlikte bakalım. Her birinin ayrı görevi vardır."
+    },
+    {
+      "id": "d01_n02_main_a",
+      "type": "main_a",
+      "emotion": "sicak",
+      "audio": "d01_n02_main_a.wav",
+      "text": "Şu taş çemberinin içinde ateş yanıyor. Ateşin üstünde bir sacayak duruyor. Kazan, sacayağın üzerine güvenle yerleşiyor. Yakındaki çanaklar yemeği paylaşmaya yarıyor. Minderler, ateş çevresinde oturmayı kolaylaştırıyor. Bu eşyalar, günlük yaşamın düzenini birlikte kuruyor. Heybe, taşınan düzenin küçük parçalarından biridir."
+    },
+    {
+      "id": "d01_n02_main_b",
+      "type": "main_b",
+      "emotion": "sicak",
+      "audio": "d01_n02_main_b.wav",
+      "text": "Bir obayı anlamak için yalnız otağlara bakmayız. İnsanların hangi eşyayı nerede kullandığını da inceleriz. Bir nesnenin biçimi, işlevi hakkında ipucu verebilir. Ateş, yemek, dinlenme ve taşıma düzeni birlikte düşünülür. Böylece günlük hayatın küçük parçaları, geçmişi anlamamıza yardım eder. Her parça, bütünü anlamamıza yeni bir kapı açar."
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "hs_ocak",
+      "assetRef": "A05",
+      "position": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "label": "İncele",
+      "audio": "d01_n02_hs_ocak.wav",
+      "required": true,
+      "text": "Taş çember, ateşi belirli bir alanda tutar. Çevresindeki is ve kül, burada ateş yakıldığını gösterir.",
+      "sourceNote": "Genel arkeolojik yorum. Ocak yerleri taş dizileri, kül ve yanık izleriyle tanımlanabilir. D01 sahne referansı, uygun kazı yayını veya müze kaydıyla eşleştirilmelidir."
+    },
+    {
+      "id": "hs_sacayak_kazan",
+      "assetRef": "A06",
+      "position": [
+        0.0,
+        2.3,
+        0.0
+      ],
+      "label": "İncele",
+      "audio": "d01_n02_hs_sacayak_kazan.wav",
+      "required": true,
+      "text": "Sacayağın üç ayağı, kazanı ateş üzerinde dengeler. Kazan, yemeğin pişirilmesine ve paylaşılmasına yardım eder.",
+      "sourceNote": "DOĞRULANMALI — IX-XI. yüzyıl Oğuz çevresinde kullanılacak sacayak ve kazan biçimleri, müze kataloğu veya arkeolojik buluntuyla doğrulanmalıdır."
+    },
+    {
+      "id": "hs_ahsap_canak",
+      "assetRef": "B10",
+      "position": [
+        1.4,
+        0.5,
+        -1.4
+      ],
+      "label": "İncele",
+      "audio": "d01_n02_hs_ahsap_canak.wav",
+      "required": true,
+      "text": "Ahşap çanak ve kepçe, yiyeceği bölüştürmeye yardım eder. Ahşap, taşınabilir günlük eşyalarda kullanılan malzemelerden biridir.",
+      "sourceNote": "DOĞRULANMALI — D01 için seçilecek ahşap çanak ve kepçe biçimleri, erken Türk veya bozkır kültürü müze örnekleriyle doğrulanmalıdır."
+    },
+    {
+      "id": "hs_minder",
+      "assetRef": "B07",
+      "position": [
+        1.9,
+        0.5,
+        1.5
+      ],
+      "label": "Dokun",
+      "audio": "d01_n02_hs_minder.wav",
+      "required": true,
+      "text": "Minderler, ateş çevresinde oturmayı rahatlatır. Dokuma yüzeyler, soğuk zemine karşı yumuşak bir katman oluşturur.",
+      "sourceNote": "DOĞRULANMALI — Minder ve dokuma yaygıların biçimi, dönemsel tekstil buluntuları ve güvenilir müze referanslarıyla doğrulanmalıdır."
+    },
+    {
+      "id": "hs_heybe",
+      "assetRef": "B06",
+      "position": [
+        -5.4,
+        0.7,
+        -1.1
+      ],
+      "label": "İncele",
+      "audio": "d01_n02_hs_heybe.wav",
+      "required": false,
+      "text": "Heybe, küçük eşyaları veya yiyecekleri taşımaya yarayan dokuma bir çantadır. Omuzda veya hayvan üzerinde taşınabilir.",
+      "sourceNote": "DOĞRULANMALI — D01 heybesinin dokuma tekniği ve biçimi, erken dönem bozkır kültürüne ait müze referansıyla doğrulanmalıdır."
+    }
+  ],
+  "quest": {
+    "type": "eslestir",
+    "prompt": "Eşyaları doğru işlevleriyle eşleştir.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Sacayak — kazanı ateş üzerinde tutar",
+        "correct": true,
+        "feedback": "Doğru yiğidim. Üç ayak, kazanı ateşin üzerinde dengede tutar."
+      },
+      {
+        "id": "b",
+        "text": "Ahşap çanak — yemeği paylaşmaya yardım eder",
+        "correct": true,
+        "feedback": "Güzel eşleştirdin evlat. Çanak, hazırlanan yemeğin bölüştürülmesini kolaylaştırır."
+      },
+      {
+        "id": "c",
+        "text": "Minder — oturulan yeri daha rahat yapar",
+        "correct": true,
+        "feedback": "Evet evlat. Minder, sert ve soğuk zeminde rahatlık sağlar."
+      },
+      {
+        "id": "d",
+        "text": "Heybe — ateşi söndürmek için kullanılır",
+        "correct": false,
+        "feedback": "Heybe ateş için değildir. Taşınacak eşyaları düşünerek yeniden eşleştir."
+      },
+      {
+        "id": "e",
+        "text": "Kazan — otağın kapısını örtmek için kullanılır",
+        "correct": false,
+        "feedback": "Kazan bir örtü değildir. Ateş çevresindeki işlevine tekrar bak."
+      },
+      {
+        "id": "f",
+        "text": "Kepçe — atı bağlamak için kullanılır",
+        "correct": false,
+        "feedback": "Kepçe bağlama aracı değildir. Yemeğin nasıl bölüştürüldüğünü hatırla."
+      }
+    ],
+    "hints": [
+      {
+        "afterAttempt": 2,
+        "text": "Eşyanın biçimine bak. Ayak, sap veya yumuşak yüzey işlevi gösterir."
+      },
+      {
+        "afterAttempt": 4,
+        "text": "Sacayak kazanı taşır. Çanak paylaşır. Minder oturmayı rahatlatır."
+      }
+    ],
+    "successFeedback": "Eşyaların görevlerini çözdün. Günlük yaşamın düzeni, küçük işlevlerle kurulur."
+  },
+  "reward": {
+    "cardId": "card_02",
+    "title": "Obanın Düzeni",
+    "concept": "Günlük yaşam",
+    "icon": "🔥",
+    "shortText": "Her eşyanın bir görevi vardır. Birlikte kullanıldıklarında yaşam kolaylaşır."
+  },
+  "closing": {
+    "id": "d01_n02_closing",
+    "audio": "d01_n02_closing.wav",
+    "text": "Eşyaların görevini çözdün, yiğidim. Şimdi sandığın sakladığı hatıralara bakalım."
+  },
+  "completion": {
+    "requiredHotspots": [
+      "hs_ocak",
+      "hs_sacayak_kazan",
+      "hs_ahsap_canak",
+      "hs_minder"
+    ],
+    "requiredQuest": true,
+    "events": [
+      "node_02_completed",
+      "oba_objects_matched",
+      "card_02_earned"
+    ]
+  },
+  "assets": [
+    "A01",
+    "A04",
+    "A05",
+    "A06",
+    "B06",
+    "B07",
+    "B10"
+  ],
+  "audioFiles": [
+    "d01_n02_intro.wav",
+    "d01_n02_main_a.wav",
+    "d01_n02_main_b.wav",
+    "d01_n02_hs_ocak.wav",
+    "d01_n02_hs_sacayak_kazan.wav",
+    "d01_n02_hs_ahsap_canak.wav",
+    "d01_n02_hs_minder.wav",
+    "d01_n02_hs_heybe.wav",
+    "d01_n02_fb_correct_a.wav",
+    "d01_n02_fb_correct_b.wav",
+    "d01_n02_fb_correct_c.wav",
+    "d01_n02_fb_wrong_d.wav",
+    "d01_n02_fb_wrong_e.wav",
+    "d01_n02_fb_wrong_f.wav",
+    "d01_n02_hint_2.wav",
+    "d01_n02_hint_4.wav",
+    "d01_n02_success.wav",
+    "d01_n02_closing.wav"
+  ]
+}
