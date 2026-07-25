@@ -20,6 +20,7 @@ import { MobilKontroller } from "@/components/ui/MobilKontroller";
 import { KaliteAyari } from "@/components/ui/KaliteAyari";
 import { Pusula } from "@/components/ui/Pusula";
 import { FotoModu } from "@/components/ui/FotoModu";
+import { YuklemeEkrani } from "@/components/ui/YuklemeEkrani";
 import { AcilisAnlatisi } from "@/components/ui/AcilisAnlatisi";
 import { BolgeGirisi } from "@/components/ui/BolgeGirisi";
 import { KisiPanel } from "@/components/ui/KisiPanel";
@@ -64,6 +65,7 @@ export default function D01Page() {
   const [hata, setHata] = useState<string | null>(null);
   const [koleksiyon, setKoleksiyon] = useState(false);
   const [foto, setFoto] = useState(false);
+  const [ilerleme, setIlerleme] = useState(0);
 
   useEffect(() => {
     let iptal = false;
@@ -101,7 +103,7 @@ export default function D01Page() {
       <D01Scene />
       <div className="vinyet" />
 
-      {faz === "yukleniyor" && <div className="yukleniyor">Bozkır hazırlanıyor…</div>}
+      {faz === "yukleniyor" && <YuklemeEkrani ilerleme={ilerleme} />}
 
       {faz === "acilis" && (
         <div className="acilis-katman">
@@ -125,24 +127,6 @@ export default function D01Page() {
       <KisiPanel />
 
       {faz === "anlati" && !foto && <AnlatiSeridi />}
-
-      {/* keşif fazı: kart yoksa ince ipucu şeridi */}
-      {faz === "kesif" && !aktifKesifKarti && (
-        <div className="kesif-serit" role="status">
-          🧭 Parlayan noktalara yürü
-          <span className="kesif-noktalar" aria-hidden="true">
-            {zorunlu.map((id) => (
-              <span key={id} className={`kesif-nokta ${gezilen.includes(id) ? "bulundu" : ""}`} />
-            ))}
-          </span>
-          <span className="kesif-sayi">{bulunan}/{zorunlu.length}</span>
-          {hepsiGezildi && (
-            <button type="button" className="ana-dugme kucuk" onClick={goreveGec}>
-              Göreve Geç 🎯
-            </button>
-          )}
-        </div>
-      )}
 
       {/* keşif kartı — hotspot veya bonus */}
       {aktifKesifKarti && (

@@ -15,10 +15,12 @@ const basili = new Set<string>();
 function guncelle() {
   let x = 0;
   let z = 0;
-  if (basili.has("arrowup") || basili.has("w")) z -= 1;
-  if (basili.has("arrowdown") || basili.has("s")) z += 1;
-  if (basili.has("arrowleft") || basili.has("a")) x -= 1;
-  if (basili.has("arrowright") || basili.has("d")) x += 1;
+  // Yönler kamera arkası bakışa göre düzeltildi:
+  // yukarı = kameranın baktığı yöne git, sağ = sağa git.
+  if (basili.has("arrowup") || basili.has("w")) z += 1;
+  if (basili.has("arrowdown") || basili.has("s")) z -= 1;
+  if (basili.has("arrowleft") || basili.has("a")) x += 1;
+  if (basili.has("arrowright") || basili.has("d")) x -= 1;
   input.x = x;
   input.z = z;
 }

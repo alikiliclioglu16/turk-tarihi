@@ -56,7 +56,19 @@ export function Pusula() {
         liste.push({ ad: b.ad, aci: Math.atan2(dx, dz), mesafe: d, tur: "kesif" });
       });
       liste.sort((a, b) => a.mesafe - b.mesafe);
-      setHedefler(liste.slice(0, 7));
+      // üst üste binmeyi önle: ekranda birbirine çok yakın olanları ele
+      const secilen: Hedef[] = [];
+      for (const h of liste) {
+        const cakisma = secilen.some((x) => {
+          let f = x.aci - h.aci;
+          while (f > Math.PI) f -= Math.PI * 2;
+          while (f < -Math.PI) f += Math.PI * 2;
+          return Math.abs(f) < 0.16;
+        });
+        if (!cakisma) secilen.push(h);
+        if (secilen.length >= 4) break;
+      }
+      setHedefler(secilen);
     };
     dongu();
     return () => cancelAnimationFrame(raf);

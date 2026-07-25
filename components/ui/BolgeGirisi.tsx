@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useOyun } from "@/lib/store";
 import { oyuncuKonumu } from "@/lib/oyuncuKonum";
 import { BOLGELER, bolgeBul, type BolgeId } from "@/lib/bolgeler";
-import { anlatiCal, anlatiDurdur } from "@/lib/audio";
+import { anlatiCal, anlatiDurdur, anlatiSuresi } from "@/lib/audio";
 import { DedeYuz } from "./DedeYuz";
 
 interface Replik { id: string; audio: string; text: string }
@@ -53,17 +53,20 @@ export function BolgeGirisi() {
       const liste = veri[b];
       if (!liste?.length) return;
 
+      // zincirleme: ilk replik bitince ikincisi başlar
       setAktif({ bolge: b, replik: liste[0] });
       anlatiCal(liste[0].audio, liste[0].text);
       zaman.current.forEach(clearTimeout);
+      const ilkSure = anlatiSuresi(liste[0].text) + 600;
       zaman.current = [
         window.setTimeout(() => {
-          if (liste[1]) {
-            setAktif({ bolge: b, replik: liste[1] });
-            anlatiCal(liste[1].audio, liste[1].text);
-          }
-        }, 7200),
-        window.setTimeout(() => setAktif(null), 14500),
+          if (!liste[1]) { setAktif(null); return; }
+          setAktif({ bolge: b, replik: liste[1] });
+          anlatiCal(liste[1].audio, liste[1].text);
+          zaman.current.push(
+            window.setTimeout(() => setAktif(null), anlatiSuresi(liste[1].text) + 1200)
+          );
+        }, ilkSure),
       ];
     }, 400);
     return () => {

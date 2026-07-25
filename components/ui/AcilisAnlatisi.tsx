@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { anlatiCal, anlatiDurdur } from "@/lib/audio";
+import { anlatiCal, anlatiDurdur, anlatiSuresi } from "@/lib/audio";
 import { DedeYuz } from "./DedeYuz";
 
 interface Replik { id: string; audio: string; text: string }
@@ -31,19 +31,32 @@ export function AcilisAnlatisi() {
     return () => { iptal = true; };
   }, []);
 
+  /**
+   * Replikler ZİNCİRLEME çalınır: bir replik bitmeden diğeri başlamaz.
+   * Önceden sabit 7 saniyelik aralık vardı; uzun cümleler yarıda kesiliyordu.
+   */
   useEffect(() => {
     if (!replikler.length) return;
-    // 21 saniyelik uçuş: 0 sn, 7 sn, 14 sn
-    const araliklar = [200, 7000, 14000];
     setGorunur(true);
-    zamanlar.current = araliklar.map((ms, i) =>
-      window.setTimeout(() => {
-        setIndex(i);
-        anlatiCal(replikler[i].audio, replikler[i].text);
-      }, ms)
-    );
+    let iptal = false;
+
+    const cal = (i: number) => {
+      if (iptal || i >= replikler.length) return;
+      setIndex(i);
+      const r = replikler[i];
+      anlatiCal(r.audio, r.text);
+      // konuşma bitince bir sonrakine geç; kısa bir nefes payı bırak
+      const sure = anlatiSuresi(r.text) + 700;
+      zamanlar.current.push(window.setTimeout(() => cal(i + 1), sure));
+    };
+
+    // ilk replik kısa bir gecikmeyle başlasın (sahne otursun)
+    zamanlar.current.push(window.setTimeout(() => cal(0), 600));
+
     return () => {
+      iptal = true;
       zamanlar.current.forEach(clearTimeout);
+      zamanlar.current = [];
       anlatiDurdur();
     };
   }, [replikler]);

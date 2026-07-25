@@ -46,7 +46,8 @@ export function BolgeAtmosferi() {
 
     // güneş gölge kamerası oyuncuyu takip etsin
     if (gunes.current) {
-      gunes.current.position.set(p.x + konum[0] * 0.16, konum[1] * 0.16, p.z + konum[2] * 0.16);
+      // gölge kamerası oyuncuyu takip eder; kapsamın merkezinde kalır
+      gunes.current.position.set(p.x + konum[0] * 0.42, konum[1] * 0.42, p.z + konum[2] * 0.42);
       gunes.current.target.position.set(p.x, p.y, p.z);
       gunes.current.target.updateMatrixWorld();
     }
@@ -64,15 +65,17 @@ export function BolgeAtmosferi() {
         color={GUN.gunesRenk}
         intensity={GUN.gunesGuc}
         castShadow
-        shadow-mapSize={[2048, 2048]}
-        shadow-camera-left={-34}
-        shadow-camera-right={34}
-        shadow-camera-top={34}
-        shadow-camera-bottom={-34}
+        /* Geniş kapsam + yüksek çözünürlük: uzaktaki nesneler de gölge düşürür.
+           180 m genişlik / 4096 doku = 4,4 cm texel — yakın gölgeler hâlâ keskin. */
+        shadow-mapSize={[4096, 4096]}
+        shadow-camera-left={-90}
+        shadow-camera-right={90}
+        shadow-camera-top={90}
+        shadow-camera-bottom={-90}
         shadow-camera-near={1}
-        shadow-camera-far={220}
-        shadow-bias={-0.0005}
-        shadow-normalBias={0.03}
+        shadow-camera-far={420}
+        shadow-bias={-0.0009}
+        shadow-normalBias={0.05}
       />
     </>
   );

@@ -48,7 +48,7 @@ export function D01Scene() {
 
   return (
     <Canvas
-      shadows={!dusuk}
+      shadows={kalite !== "dusuk"}
       dpr={kalite === "dusuk" ? [1, 1] : kalite === "orta" ? [1, 1.3] : [1, 1.6]}
       camera={{ fov: 54, near: 0.1, far: 900, position: [0, 6, 20] }}
       gl={{

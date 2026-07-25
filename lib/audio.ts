@@ -305,6 +305,16 @@ export function seslendir(metin: string): boolean {
   }
 }
 
+/**
+ * Bir metnin okunma süresini tahmin eder (ms).
+ * TTS hızı 0.92 ayarlı; Türkçe için ~2,3 kelime/saniye.
+ * Gerçek ses dosyası varsa süre ondan alınır, bu tahmin üst sınır olur.
+ */
+export function anlatiSuresi(metin: string): number {
+  const kelime = metin.trim().split(/\s+/).length;
+  return Math.max(2600, Math.round((kelime / 2.3) * 1000) + 900);
+}
+
 export function seslendirmeyiDurdur(): void {
   if (typeof window !== "undefined" && window.speechSynthesis) {
     try { window.speechSynthesis.cancel(); } catch { /* yoksay */ }

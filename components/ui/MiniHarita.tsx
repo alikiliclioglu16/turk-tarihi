@@ -257,22 +257,43 @@ export function MiniHarita() {
     ? BOLGELER[(nodlar[aktifIndex].zoneId as keyof typeof BOLGELER)]?.ad ?? "Oba"
     : "Oba";
 
-  return (
-    <div className={`mini-harita ${buyuk ? "buyuk" : ""}`}>
+  const govde = (
+    <>
       <canvas ref={kanvas} style={{ width: boyut, height: boyut }} />
       <div className="mini-harita-etiket">{bolgeAd}</div>
       <div className="mini-harita-sayac">
         ✨ {bulunan.length}/{TUM_KESIFLER.length} · 🏛 {tamamlanan.length}/{nodlar.length}
       </div>
+    </>
+  );
+
+  // Büyük harita ayrı bir katmanda açılır; küçük harita sağ altta SABİT kalır.
+  if (buyuk) {
+    return (
+      <div className="harita-katman" onClick={() => setBuyuk(false)}>
+        <div className="harita-buyuk" onClick={(e) => e.stopPropagation()}>
+          {govde}
+          <button
+            type="button"
+            className="harita-kapat"
+            onClick={() => setBuyuk(false)}
+            aria-label="Haritayı kapat"
+          >✕ Kapat</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mini-harita">
+      {govde}
       <button
         type="button"
         className="mini-harita-dugme"
-        onClick={() => setBuyuk((b) => !b)}
-        aria-label={buyuk ? "Haritayı küçült" : "Haritayı büyüt"}
+        onClick={() => setBuyuk(true)}
+        aria-label="Haritayı büyüt"
         title="M tuşu"
-      >
-        {buyuk ? "⤡" : "⤢"}
-      </button>
+      >⤢</button>
     </div>
   );
 }
