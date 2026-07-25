@@ -1,0 +1,242 @@
+{
+  "schemaVersion": "1.0",
+  "periodId": "d01",
+  "nodeId": "d01_n06",
+  "order": 6,
+  "zoneId": "su_basi",
+  "title": "Suyun Hafızası",
+  "estimatedSeconds": 240,
+  "learningObjective": "Çocuk, su kaynaklarının yer seçimi ve günlük yaşam üzerindeki etkisini kavrar.",
+  "sourceType": "cografi",
+  "world": {
+    "guidePosition": [
+      52.0,
+      -2.0,
+      30.0
+    ],
+    "triggerRadius": 4.0,
+    "cameraFocus": [
+      56.0,
+      -1.2,
+      33.0
+    ]
+  },
+  "narration": [
+    {
+      "id": "d01_n06_intro",
+      "type": "intro",
+      "emotion": "sakin",
+      "audio": "d01_n06_intro.wav",
+      "text": "Suyun sesini dinle evlat. Bu dere yalnız manzarayı güzelleştirmiyor. İnsanlar, hayvanlar ve bitkiler için yaşam alanı oluşturuyor. Şimdi suyun çevresindeki işaretlere bakalım."
+    },
+    {
+      "id": "d01_n06_main_a",
+      "type": "main_a",
+      "emotion": "sakin",
+      "audio": "d01_n06_main_a.wav",
+      "text": "Suya ulaşmak, günlük yaşamın temel ihtiyaçlarındandır. İçmek, yemek hazırlamak ve hayvanları sulamak su ister. Dere çevresindeki bitkiler, toprağın daha nemli olduğunu gösterebilir. Fakat suyun her mevsim aynı kalacağını varsayamayız. Akış ve kıyı koşulları zamanla değişebilir. İnsanlar güvenli yaklaşma noktalarını da dikkatle seçer."
+    },
+    {
+      "id": "d01_n06_main_b",
+      "type": "main_b",
+      "emotion": "sakin",
+      "audio": "d01_n06_main_b.wav",
+      "text": "Bir yerleşim veya geçici kamp için yalnız su yeterli değildir. Güvenli zemin, otlak, hava ve ulaşım da düşünülür. Coğrafya insanlara imkânlar sunar; aynı zamanda sınırlar koyar. Geçmişteki yaşamı anlamak için insanlarla çevreyi birlikte inceleriz. Bu ilişkiler bölgeden bölgeye ve mevsimden mevsime değişir."
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "hs_dere_yatagi",
+      "assetRef": "F02",
+      "position": [
+        56.0,
+        -1.8,
+        33.0
+      ],
+      "label": "Suyu incele",
+      "audio": "d01_n06_hs_dere_yatagi.wav",
+      "required": true,
+      "text": "Dere yatağındaki yuvarlak taşlar, suyun hareketiyle aşınmış olabilir. Akışın gücü, yönü ve süresi ayrıca incelenmelidir.",
+      "sourceNote": "UNESCO World Heritage Centre, Orkhon Valley Cultural Landscape; su, korunak ve stratejik konumun göçebe kültür merkezleri üzerindeki önemi. Taşların jeolojik yorumu sahne referansıyla doğrulanmalıdır."
+    },
+    {
+      "id": "hs_sogut",
+      "assetRef": "F01",
+      "position": [
+        51.0,
+        -1.0,
+        35.0
+      ],
+      "label": "Yapraklara bak",
+      "audio": "d01_n06_hs_sogut.wav",
+      "required": true,
+      "text": "Söğüt, nemli alanları seven bir ağaçtır. Yakındaki bitki örtüsü, suya erişim hakkında doğal ipucu verebilir.",
+      "sourceNote": "Genel botanik ifade; söğüt türleri çoğunlukla nemli topraklar ve su kenarlarıyla ilişkilidir. D01 için seçilecek tür ve bölgesel uygunluk botanik kaynağıyla doğrulanmalıdır."
+    },
+    {
+      "id": "hs_su_sehpasi",
+      "assetRef": "F04",
+      "position": [
+        58.0,
+        -1.5,
+        30.0
+      ],
+      "label": "İncele",
+      "audio": "d01_n06_hs_su_sehpasi.wav",
+      "required": true,
+      "text": "Bu düzenek su tulumunu doldurmayı kolaylaştırabilir. Biçimi, malzemesi ve dönemi gerçek bir müze örneğiyle doğrulanmalıdır.",
+      "sourceNote": "DOĞRULANMALI — F04 su tulumu doldurma sehpasının tarihsel biçimi için kurumsal veya müze referansı henüz kilitlenmemiştir."
+    },
+    {
+      "id": "hs_ahsap_kova",
+      "assetRef": "F07",
+      "position": [
+        55.0,
+        -1.6,
+        31.5
+      ],
+      "label": "İncele",
+      "audio": "d01_n06_hs_ahsap_kova.wav",
+      "required": false,
+      "text": "Ahşap kap, su taşımaya yardım edebilir. Üretim tekniği, bağlantıları, sapı ve biçimi dönemsel örneklerle karşılaştırılmalıdır.",
+      "sourceNote": "DOĞRULANMALI — F07 ahşap su kovasının biçimi, erken Türk veya Orta Asya maddi kültürü müze örneğine bağlanmalıdır."
+    }
+  ],
+  "quest": {
+    "type": "coklu_secim",
+    "prompt": "Geçici kamp için uygun özellikleri seç. Her seçeneğin gerekçesini düşün.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Suya yakın, fakat taşkın yatağının dışında kalan zemin",
+        "correct": true,
+        "feedback": "Doğru. Suya erişim kolaylaşır, taşkın yatağından uzak kalınır."
+      },
+      {
+        "id": "b",
+        "text": "Çadır kurulabilecek, yüksekçe ve düz bir alan",
+        "correct": true,
+        "feedback": "Evet. Düz ve yüksekçe zemin daha güvenli yerleşim sağlar."
+      },
+      {
+        "id": "c",
+        "text": "Hayvanların otlayabileceği bitkilerin bulunduğu çevre",
+        "correct": true,
+        "feedback": "Doğru. Otlak, hayvanların kısa süreli ihtiyaçlarını destekleyebilir."
+      },
+      {
+        "id": "d",
+        "text": "Derenin tam yatağındaki nemli ve çukur bölüm",
+        "correct": false,
+        "feedback": "Bu alan taşkın ve yoğun nem riski taşır. Başka yere bak."
+      },
+      {
+        "id": "e",
+        "text": "Suyun uzağındaki dik ve kaygan yamaç",
+        "correct": false,
+        "feedback": "Dik yamaç yerleşimi zorlaştırır. Suya erişim de güçleşir."
+      },
+      {
+        "id": "f",
+        "text": "Rüzgâra bütünüyle açık, bitkisiz sırt çizgisi",
+        "correct": false,
+        "feedback": "Açık sırt güçlü rüzgâr alabilir. Daha korunaklı zemin düşün."
+      }
+    ],
+    "hints": [
+      {
+        "afterAttempt": 2,
+        "text": "Suya erişim önemlidir. Ancak dere yatağının içine yerleşmek güvenli değildir."
+      },
+      {
+        "afterAttempt": 4,
+        "text": "Yüksekçe düz zemin, yakın su ve otlak bulunan seçenekleri birlikte seç."
+      }
+    ],
+    "successFeedback": "Çevresel ipuçlarını birlikte değerlendirdin. Uygun yer, tek özellikle seçilmez."
+  },
+  "reward": {
+    "cardId": "card_06",
+    "title": "Suyun İzinde",
+    "concept": "Coğrafya ve yaşam",
+    "icon": "💧",
+    "shortText": "Su, yaşamı ve hareketi etkiler. Fakat yer seçimi birçok koşulla birlikte düşünülür."
+  },
+  "closing": {
+    "id": "d01_n06_closing",
+    "audio": "d01_n06_closing.wav",
+    "text": "Suyun çevresini okudun. Şimdi izlerin bizi götürdüğü yolu takip edelim."
+  },
+  "completion": {
+    "requiredHotspots": [
+      "hs_dere_yatagi",
+      "hs_sogut",
+      "hs_su_sehpasi"
+    ],
+    "requiredQuest": true,
+    "events": [
+      "node_06_completed",
+      "water_life_links_selected",
+      "card_06_earned"
+    ]
+  },
+  "assets": [
+    "A01",
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F07",
+    "H06"
+  ],
+  "audioFiles": [
+    "d01_n06_intro.wav",
+    "d01_n06_main_a.wav",
+    "d01_n06_main_b.wav",
+    "d01_n06_hs_dere_yatagi.wav",
+    "d01_n06_hs_sogut.wav",
+    "d01_n06_hs_su_sehpasi.wav",
+    "d01_n06_hs_ahsap_kova.wav",
+    "d01_n06_fb_correct_a.wav",
+    "d01_n06_fb_correct_b.wav",
+    "d01_n06_fb_correct_c.wav",
+    "d01_n06_fb_wrong_d.wav",
+    "d01_n06_fb_wrong_e.wav",
+    "d01_n06_fb_wrong_f.wav",
+    "d01_n06_hint_2.wav",
+    "d01_n06_hint_4.wav",
+    "d01_n06_success.wav",
+    "d01_n06_closing.wav"
+  ],
+  "world3d": {
+    "zoneId": "su_basi",
+    "guidePosition": [
+      52.0,
+      -2.0,
+      30.0
+    ],
+    "triggerRadius": 4.0,
+    "hotspotPositions": {
+      "hs_dere_yatagi": [
+        56.0,
+        -1.8,
+        33.0
+      ],
+      "hs_sogut": [
+        51.0,
+        -1.0,
+        35.0
+      ],
+      "hs_su_sehpasi": [
+        58.0,
+        -1.5,
+        30.0
+      ],
+      "hs_ahsap_kova": [
+        55.0,
+        -1.6,
+        31.5
+      ]
+    }
+  }
+}

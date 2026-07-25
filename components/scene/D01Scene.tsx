@@ -21,6 +21,8 @@ import { AtesEfekti } from "./AtesEfekti";
 import { IBL } from "./IBL";
 import { Sis } from "./Sis";
 import { BonusKesifler } from "./BonusKesifler";
+import { BolgeAtmosferi } from "./BolgeAtmosferi";
+import { Dere } from "./Dere";
 import { RenkDerecelendirme } from "./RenkDerecelendirme";
 import { D01_YERLESIM } from "@/lib/assets";
 import { useOyun } from "@/lib/store";
@@ -36,7 +38,7 @@ export function D01Scene() {
     <Canvas
       shadows
       dpr={[1, 2]}
-      camera={{ fov: 50, near: 0.1, far: 400, position: [0, 6, 20] }}
+      camera={{ fov: 50, near: 0.1, far: 520, position: [0, 6, 20] }}
       gl={{
         antialias: false, // SMAA devrede
         toneMapping: THREE.ACESFilmicToneMapping,
@@ -49,6 +51,8 @@ export function D01Scene() {
         {/* PCSS yumuşak gölgeler: temasta keskin, uzaklaştıkça yumuşayan */}
         <SoftShadows size={12} samples={14} focus={0.7} />
         <SahneAtmosferi />
+        <BolgeAtmosferi />
+        <Dere />
         <Terrain />
         <Dekor />
         <Sis />

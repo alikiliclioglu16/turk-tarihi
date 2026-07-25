@@ -1,0 +1,228 @@
+{
+  "schemaVersion": "1.0",
+  "periodId": "d01",
+  "nodeId": "d01_n08",
+  "order": 8,
+  "zoneId": "eski_yurt",
+  "title": "Kalan İzler",
+  "estimatedSeconds": 270,
+  "learningObjective": "Çocuk, arkeolojik buluntunun bulunduğu yerin ve çevresinin korunması gerektiğini kavrar.",
+  "sourceType": "arkeolojik",
+  "world": {
+    "guidePosition": [
+      -30.0,
+      -1.0,
+      -58.0
+    ],
+    "triggerRadius": 4.0,
+    "cameraFocus": [
+      -34.0,
+      -0.3,
+      -62.0
+    ]
+  },
+  "narration": [
+    {
+      "id": "d01_n08_intro",
+      "type": "intro",
+      "emotion": "dusunceli",
+      "audio": "d01_n08_intro.wav",
+      "text": "Burada sesler azalmış evlat. Otağın iskeleti kalmış, ocak çoktan sönmüş. Toprakta yarı gömülü bir kap görünüyor. Yaklaşırken hiçbir şeyi yerinden oynatma."
+    },
+    {
+      "id": "d01_n08_main_a",
+      "type": "main_a",
+      "emotion": "dusunceli",
+      "audio": "d01_n08_main_a.wav",
+      "text": "Bir buluntunun değeri yalnız kendisinde değildir. Bulunduğu derinlik, yön ve yanındaki parçalar da bilgi taşır. Nesneyi çekip çıkarırsak bu ilişkiler bozulabilir. Arkeologlar yeri ölçer, fotoğraflar ve çevreyi kaydeder. Sonra uygun yöntemle inceleme yapılır. Küçük bir hareket bile önemli bilgiyi geri dönülmez biçimde kaybettirebilir."
+    },
+    {
+      "id": "d01_n08_main_b",
+      "type": "main_b",
+      "emotion": "dusunceli",
+      "audio": "d01_n08_main_b.wav",
+      "text": "Merak etmek güzeldir; korumak daha büyük bir sorumluluktur. Buluntuyu temizlemek bile yüzeydeki izleri silebilir. Bu yüzden yerinde bırakmak ve konumu bildirmek doğru davranıştır. Geçmiş, herkesin ortak emanetidir. Onu aceleyle sahiplenmeyiz. Yetkili kişiler, alanı güvenli yöntemlerle inceleyebilir ve koruyabilir. Böylece bilgi gelecek kuşaklara ulaşır."
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "hs_yari_gomulu_kap",
+      "assetRef": "G05",
+      "position": [
+        -34.0,
+        -0.7,
+        -62.0
+      ],
+      "label": "Yerinde incele",
+      "audio": "d01_n08_hs_yari_gomulu_kap.wav",
+      "required": true,
+      "text": "Kabın yalnız bir bölümü görünüyor. Çevresindeki toprak, taşlar ve küçük parçalar onun arkeolojik bağlamının bir bölümüdür.",
+      "sourceNote": "U.S. National Park Service, 'What Is Archeological Context?' ve 'What If I Find an Artifact?'; buluntunun yeri ve diğer buluntularla ilişkisi bilgi taşır, eser yerinde bırakılmalıdır."
+    },
+    {
+      "id": "hs_canak_parcalari",
+      "assetRef": "G04",
+      "position": [
+        -32.5,
+        -0.8,
+        -61.0
+      ],
+      "label": "İncele",
+      "audio": "d01_n08_hs_canak_parcalari.wav",
+      "required": true,
+      "text": "Kırık parçaların dağılımı, kabın burada bulunma biçimini araştırmaya yardım edebilir. Parçaları toplamak veya dizmek doğru değildir.",
+      "sourceNote": "U.S. National Park Service, archaeological context guidance; parçaların konumu ve birbirleriyle ilişkisi, nesnenin kendisi kadar araştırma değeri taşır."
+    },
+    {
+      "id": "hs_sonmus_ocak",
+      "assetRef": "G02",
+      "position": [
+        -28.0,
+        -0.8,
+        -64.0
+      ],
+      "label": "İzleri incele",
+      "audio": "d01_n08_hs_sonmus_ocak.wav",
+      "required": true,
+      "text": "Kararmış taşlar ve kül, burada ateş yakıldığını düşündürebilir. Kesin yorum için kayıt ve örnekleme gerekir.",
+      "sourceNote": "U.S. National Park Service archaeology guidance; features, ecofacts and artifacts bağlam içinde değerlendirilir. D01 ocak yorumu uygun arkeolojik yayınla doğrulanmalıdır."
+    },
+    {
+      "id": "hs_otag_iskeleti",
+      "assetRef": "G01",
+      "position": [
+        -37.0,
+        0.5,
+        -57.0
+      ],
+      "label": "Çevreye bak",
+      "audio": "d01_n08_hs_otag_iskeleti.wav",
+      "required": false,
+      "text": "Ahşap iskeletin bazı parçaları hâlâ ayakta kalmış. Yapının ne zaman ve neden terk edildiğini yalnız görünüşten bilemeyiz.",
+      "sourceNote": "Genel yapı gözlemi. Terk tarihi; dendrokronoloji, kazı, belge veya karşılaştırmalı kaynak olmadan belirlenemez."
+    }
+  ],
+  "quest": {
+    "type": "secim",
+    "prompt": "Yarı gömülü kabı bulduğunda en doğru davranış hangisidir?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Yerinde bırakır, konumu işaretler ve yetkiliye bildiririm.",
+        "correct": true,
+        "feedback": "Doğru evlat. Böylece buluntu ve çevresindeki bilgi birlikte korunur."
+      },
+      {
+        "id": "b",
+        "text": "Kabı dikkatlice çıkarır ve daha iyi görmek için temizlerim.",
+        "correct": false,
+        "feedback": "Çıkarmak ve temizlemek bağlamı bozabilir. Buluntuyu yerinde bırakmalıyız."
+      },
+      {
+        "id": "c",
+        "text": "Kabı eve götürür, sonra bir uzmana gösteririm.",
+        "correct": false,
+        "feedback": "Yerinden almak bilgiyi kaybettirir. Önce konumu korumak gerekir."
+      },
+      {
+        "id": "d",
+        "text": "Parçaları farklı yerlere dizer ve fotoğrafını çekerim.",
+        "correct": false,
+        "feedback": "Parçaları hareket ettirmek dağılım bilgisini bozar. Olduğu gibi kaydedilmelidir."
+      }
+    ],
+    "hints": [
+      {
+        "afterAttempt": 2,
+        "text": "Kabın çevresindeki toprak ve parçalar da bilgi taşıyor. Onları bozma."
+      },
+      {
+        "afterAttempt": 4,
+        "text": "Doğru davranış: dokunma, yeri işaretle ve yetkiliye bildir."
+      }
+    ],
+    "successFeedback": "Buluntuyu değil, bilgiyi korudun. Arkeolojik bağlamın değerini anladın."
+  },
+  "reward": {
+    "cardId": "card_08",
+    "title": "Bağlamı Koru",
+    "concept": "Arkeolojik koruma",
+    "icon": "🏺",
+    "shortText": "Buluntunun yeri ve çevresi bilgi taşır. Dokunmadan kaydetmek geçmişi korur."
+  },
+  "closing": {
+    "id": "d01_n08_closing",
+    "audio": "d01_n08_closing.wav",
+    "text": "Emaneti korudun yiğidim. Şimdi değişen ve devam eden izleri karşılaştıralım."
+  },
+  "completion": {
+    "requiredHotspots": [
+      "hs_yari_gomulu_kap",
+      "hs_canak_parcalari",
+      "hs_sonmus_ocak"
+    ],
+    "requiredQuest": true,
+    "events": [
+      "node_08_completed",
+      "artifact_left_in_context",
+      "card_08_earned"
+    ]
+  },
+  "assets": [
+    "A01",
+    "G01",
+    "G02",
+    "G04",
+    "G05",
+    "G06",
+    "G08"
+  ],
+  "audioFiles": [
+    "d01_n08_intro.wav",
+    "d01_n08_main_a.wav",
+    "d01_n08_main_b.wav",
+    "d01_n08_hs_yari_gomulu_kap.wav",
+    "d01_n08_hs_canak_parcalari.wav",
+    "d01_n08_hs_sonmus_ocak.wav",
+    "d01_n08_hs_otag_iskeleti.wav",
+    "d01_n08_fb_correct_a.wav",
+    "d01_n08_fb_wrong_b.wav",
+    "d01_n08_fb_wrong_c.wav",
+    "d01_n08_fb_wrong_d.wav",
+    "d01_n08_hint_2.wav",
+    "d01_n08_hint_4.wav",
+    "d01_n08_success.wav",
+    "d01_n08_closing.wav"
+  ],
+  "world3d": {
+    "zoneId": "eski_yurt",
+    "guidePosition": [
+      -30.0,
+      -1.0,
+      -58.0
+    ],
+    "triggerRadius": 4.0,
+    "hotspotPositions": {
+      "hs_yari_gomulu_kap": [
+        -34.0,
+        -0.7,
+        -62.0
+      ],
+      "hs_canak_parcalari": [
+        -32.5,
+        -0.8,
+        -61.0
+      ],
+      "hs_sonmus_ocak": [
+        -28.0,
+        -0.8,
+        -64.0
+      ],
+      "hs_otag_iskeleti": [
+        -37.0,
+        0.5,
+        -57.0
+      ]
+    }
+  }
+}

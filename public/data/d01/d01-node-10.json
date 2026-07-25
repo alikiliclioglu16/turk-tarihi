@@ -1,0 +1,262 @@
+{
+  "schemaVersion": "1.0",
+  "periodId": "d01",
+  "nodeId": "d01_n10",
+  "order": 10,
+  "zoneId": "eski_yurt",
+  "title": "İlk Sandık Açılıyor",
+  "estimatedSeconds": 300,
+  "learningObjective": "Çocuk, farklı kaynak türlerini birleştirerek geçmiş hakkında dengeli bir açıklama kurar.",
+  "sourceType": "sentez",
+  "world": {
+    "guidePosition": [
+      0.0,
+      2.0,
+      -86.0
+    ],
+    "triggerRadius": 5.0,
+    "cameraFocus": [
+      0.0,
+      2.8,
+      -91.0
+    ]
+  },
+  "narration": [
+    {
+      "id": "d01_n10_intro",
+      "type": "intro",
+      "emotion": "torensel",
+      "audio": "d01_n10_intro.wav",
+      "text": "Yolun son durağına geldin yiğidim. Sandıkta dokuz kart için yer açıldı. Her kart başka bir kaynak türünü hatırlatıyor. Şimdi onları birlikte anlamlandıracağız."
+    },
+    {
+      "id": "d01_n10_main_a",
+      "type": "main_a",
+      "emotion": "torensel",
+      "audio": "d01_n10_main_a.wav",
+      "text": "Kopuz bize sözlü hatırayı gösterdi. Eşyalar günlük yaşamdan iz taşıdı. Taş figürler ve yazı, anıtsal kaynakları düşündürdü. Su ve patika, coğrafyanın yaşama etkisini anlattı. Eski yurt ise bağlamı korumanın önemini gösterdi. Her kaynak bize farklı bir soru sormayı öğretti. Kartlar şimdi aynı açıklamada buluşuyor."
+    },
+    {
+      "id": "d01_n10_main_b",
+      "type": "main_b",
+      "emotion": "torensel",
+      "audio": "d01_n10_main_b.wav",
+      "text": "Kaynaklar tek başına bütün hikâyeyi vermez. Birbirlerini destekleyebilir veya yeni sorular doğurabilir. Gözlem yapar, yorum kurar ve kanıtın sınırını belirtiriz. Tarih kapısı böyle açılır. Cevaplardan önce doğru soruları öğrenerek. Yanlış kesinlikten kaçınır, yeni kanıtlar geldiğinde düşüncemizi gözden geçiririz. Bu tutum araştırmayı güvenilir kılar."
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "hs_final_sandik",
+      "assetRef": "A03",
+      "position": [
+        0.0,
+        2.0,
+        -91.0
+      ],
+      "label": "Sandığı aç",
+      "audio": "d01_n10_hs_final_sandik.wav",
+      "required": true,
+      "text": "Sandık, kazandığın kartları bir araya getiriyor. Kartların her biri farklı bir öğrenme yolunu temsil ediyor.",
+      "sourceNote": "D01 eğitim tasarımına ait kurgu nesnesidir. Belirli bir tarihî sandık veya tören iddiası içermez."
+    },
+    {
+      "id": "hs_kaynak_kartlari",
+      "assetRef": "A08",
+      "position": [
+        -1.2,
+        2.6,
+        -90.5
+      ],
+      "label": "Kartları incele",
+      "audio": "d01_n10_hs_kaynak_kartlari.wav",
+      "required": true,
+      "text": "Kartlarda sözlü, maddi, yazılı, coğrafi ve arkeolojik kaynaklar bulunuyor. Birlikte kullanıldıklarında açıklama daha dengeli ve güçlü olur.",
+      "sourceNote": "D01 veri şeması ve pedagojik sentez tasarımı. Kaynak türleri, tarih araştırmasında farklı kanıt gruplarını temsil eder."
+    },
+    {
+      "id": "hs_harita_tasi",
+      "assetRef": "E04",
+      "position": [
+        1.5,
+        2.2,
+        -90.0
+      ],
+      "label": "Rotayı hatırla",
+      "audio": "d01_n10_hs_harita_tasi.wav",
+      "required": true,
+      "text": "İşaretler dört bölgeyi birbirine bağlıyor. Yürüdüğün rota, kaynakların farklı çevrelerde ve ilişkiler içinde bulunduğunu hatırlatıyor.",
+      "sourceNote": "D01 harita tasarımına ait bileşik eğitim kurgusu. Belirli bir tarihî rota iddiası içermez."
+    },
+    {
+      "id": "hs_d02_kapisi",
+      "assetRef": "H04",
+      "position": [
+        0.0,
+        2.5,
+        -96.0
+      ],
+      "label": "Kapıya bak",
+      "audio": "d01_n10_hs_d02_kapisi.wav",
+      "required": false,
+      "text": "İleride yeni bir dönem kapısı görünüyor. Bu kapı, D01 tamamlandığında sonraki tarih keşfinin açıldığını simgesel olarak gösterir.",
+      "sourceNote": "D01 ürün ilerleme sistemine ait kurgu ve kullanıcı arayüzü öğesidir."
+    }
+  ],
+  "quest": {
+    "type": "baglanti",
+    "prompt": "İddiaları kaynaklarla bağla. Sonra bilgi düzeyini doğru değerlendir.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Biliyoruz — Su ve patika | Coğrafya hareket seçeneklerini etkiler.",
+        "correct": true,
+        "feedback": "Doğru. Coğrafi izler hareket imkânları hakkında doğrudan kanıt sunar."
+      },
+      {
+        "id": "b",
+        "text": "Tahmin ediyoruz — Taş figür | Önemli bir kişiyi anlatıyor olabilir.",
+        "correct": true,
+        "feedback": "Doğru. Figür yorum sağlar; kimlik başka kanıtlar olmadan kesinleşmez."
+      },
+      {
+        "id": "c",
+        "text": "Bilmiyoruz — Aşınmış yazıt | Kayıp bölümde hangi sözlerin bulunduğu",
+        "correct": true,
+        "feedback": "Evet. Okunamayan bölüm hakkında kesin bir cümle kuramayız."
+      },
+      {
+        "id": "d",
+        "text": "Biliyoruz — Yarı gömülü kap | Buluntu konumunun araştırma için önemli olduğu",
+        "correct": true,
+        "feedback": "Doğru. Buluntunun bağlamı, nesnenin yorumlanmasını destekler."
+      },
+      {
+        "id": "e",
+        "text": "Tahmin ediyoruz — Eski patika | Mevsimlik hareket için kullanılmış olabileceği",
+        "correct": true,
+        "feedback": "Güzel. Patika ihtimal düşündürür; kullanım amacı ayrıca araştırılmalıdır."
+      },
+      {
+        "id": "f",
+        "text": "Bilmiyoruz — İsimsiz nesne | İlk sahibinin kim olduğu",
+        "correct": true,
+        "feedback": "Doğru. Doğrudan kayıt yoksa sahibin adını kesin söyleyemeyiz."
+      },
+      {
+        "id": "g",
+        "text": "Biliyoruz — Tek taş figür | Kişinin adı ve bütün yaşam öyküsü",
+        "correct": false,
+        "feedback": "Tek figür bu ayrıntıları kesinleştirmez. Başka kaynaklar gerekir."
+      },
+      {
+        "id": "h",
+        "text": "Tahmin ediyoruz — Aşınmış yazıt | İstediğimiz cümleyi tamamlayabileceğimiz",
+        "correct": false,
+        "feedback": "Eksik yazı istenen öyküyle tamamlanmaz. Bilmediğimizi açıkça söyleriz."
+      },
+      {
+        "id": "i",
+        "text": "Bilmiyoruz — Su kaynağı | Çevrede su bulunduğu",
+        "correct": false,
+        "feedback": "Suyu doğrudan gözleyebiliriz. Bu bilgi “Biliyoruz” düzeyindedir."
+      }
+    ],
+    "hints": [
+      {
+        "afterAttempt": 2,
+        "text": "Doğrudan görülen kanıt “biliyoruz” diyebilir. Eksik kanıt tahmin gerektirir."
+      },
+      {
+        "afterAttempt": 4,
+        "text": "Okunamayan yazı ve isimsiz sahipler “bilmiyoruz” grubunda kalır."
+      }
+    ],
+    "successFeedback": "Kaynakları dikkatle bağladın. Bildiğinle tahmin ettiğini açıkça ayırdın."
+  },
+  "reward": {
+    "cardId": "card_10",
+    "title": "Tarihin Kapısı",
+    "concept": "Kaynakları birleştirmek",
+    "icon": "🗝️",
+    "shortText": "Tarih; gözlem, karşılaştırma, dürüst yorum ve farklı kaynakların birlikte okunmasıyla kurulur."
+  },
+  "closing": {
+    "id": "d01_n10_closing",
+    "audio": "d01_n10_closing.wav",
+    "text": "İlk sandık açıldı evlat. D01 tamamlandı. Yeni sorularla D02 kapısına yürümeye hazırsın."
+  },
+  "completion": {
+    "requiredHotspots": [
+      "hs_final_sandik",
+      "hs_kaynak_kartlari",
+      "hs_harita_tasi"
+    ],
+    "requiredQuest": true,
+    "events": [
+      "node_10_completed",
+      "source_connections_completed",
+      "card_10_earned",
+      "d01_completed",
+      "d02_unlocked"
+    ]
+  },
+  "assets": [
+    "A01",
+    "A03",
+    "A08",
+    "E04",
+    "G07",
+    "H04",
+    "H07"
+  ],
+  "audioFiles": [
+    "d01_n10_intro.wav",
+    "d01_n10_main_a.wav",
+    "d01_n10_main_b.wav",
+    "d01_n10_hs_final_sandik.wav",
+    "d01_n10_hs_kaynak_kartlari.wav",
+    "d01_n10_hs_harita_tasi.wav",
+    "d01_n10_hs_d02_kapisi.wav",
+    "d01_n10_fb_correct_a.wav",
+    "d01_n10_fb_correct_b.wav",
+    "d01_n10_fb_correct_c.wav",
+    "d01_n10_fb_correct_d.wav",
+    "d01_n10_fb_wrong_e.wav",
+    "d01_n10_fb_wrong_f.wav",
+    "d01_n10_hint_2.wav",
+    "d01_n10_hint_4.wav",
+    "d01_n10_success.wav",
+    "d01_n10_closing.wav"
+  ],
+  "world3d": {
+    "zoneId": "eski_yurt",
+    "guidePosition": [
+      0.0,
+      2.0,
+      -86.0
+    ],
+    "triggerRadius": 5.0,
+    "hotspotPositions": {
+      "hs_final_sandik": [
+        0.0,
+        2.0,
+        -91.0
+      ],
+      "hs_kaynak_kartlari": [
+        -1.2,
+        2.6,
+        -90.5
+      ],
+      "hs_harita_tasi": [
+        1.5,
+        2.2,
+        -90.0
+      ],
+      "hs_d02_kapisi": [
+        0.0,
+        2.5,
+        -96.0
+      ]
+    }
+  }
+}

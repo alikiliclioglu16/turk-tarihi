@@ -1,0 +1,228 @@
+{
+  "schemaVersion": "1.0",
+  "periodId": "d01",
+  "nodeId": "d01_n07",
+  "order": 7,
+  "zoneId": "su_basi",
+  "title": "Göç Yolu",
+  "estimatedSeconds": 240,
+  "learningObjective": "Çocuk, mevsim, su, otlak ve taşıma koşullarının hareket rotalarını etkilediğini kavrar.",
+  "sourceType": "guzergah",
+  "world": {
+    "guidePosition": [
+      76.0,
+      0.0,
+      4.0
+    ],
+    "triggerRadius": 4.2,
+    "cameraFocus": [
+      81.0,
+      0.8,
+      0.0
+    ]
+  },
+  "narration": [
+    {
+      "id": "d01_n07_intro",
+      "type": "intro",
+      "emotion": "sakin",
+      "audio": "d01_n07_intro.wav",
+      "text": "Çamurdaki izlere bak yiğidim. Bir at yakın zamanda buradan geçmiş olabilir. Patika su başından uzaklaşarak ovaya uzanıyor. Hareketin nedenini tek izden bilemeyiz."
+    },
+    {
+      "id": "d01_n07_main_a",
+      "type": "main_a",
+      "emotion": "sakin",
+      "audio": "d01_n07_main_a.wav",
+      "text": "Mevsimlik hareket, rastgele yola çıkmak değildir. Su, otlak, hava ve hayvanların durumu birlikte değerlendirilir. Taşınabilir eşyalar hazırlanır ve uygun yol seçilir. Bazı topluluklar yaz ve kış otlakları arasında düzenli rotalar kullanır. Her bölgenin yolu ve zamanı farklı olabilir. Toplulukların deneyimi, rotanın güvenli biçimde kullanılmasına yardım eder."
+    },
+    {
+      "id": "d01_n07_main_b",
+      "type": "main_b",
+      "emotion": "sakin",
+      "audio": "d01_n07_main_b.wav",
+      "text": "Yollar yalnız insanların geçtiği çizgiler değildir. Konaklama yerleri, su noktaları ve geçitler ağı oluşturur. Bu ağlar zamanla değişebilir veya uzun süre kullanılabilir. Bir göç yolunu anlamak için araziyi, mevsimi ve topluluk kararlarını birlikte düşünürüz. Yol üzerindeki izler, bu ilişkileri araştırmaya başlangıç sağlar."
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "hs_at_izleri",
+      "assetRef": "F08",
+      "position": [
+        79.0,
+        0.1,
+        2.0
+      ],
+      "label": "İzleri incele",
+      "audio": "d01_n07_hs_at_izleri.wav",
+      "required": true,
+      "text": "Çamurdaki nal veya toynak izleri hareketi gösterir. Hayvanın yönü görülebilir; yolculuğun amacı yalnız izden bilinemez.",
+      "sourceNote": "Genel iz okuma ilkesi. F08 iz biçimi, D01'de kullanılacak atın ayak yapısı ve zeminle teknik olarak eşleştirilmelidir."
+    },
+    {
+      "id": "hs_patika",
+      "assetRef": "H01",
+      "position": [
+        82.0,
+        0.0,
+        -1.0
+      ],
+      "label": "Yolu takip et",
+      "audio": "d01_n07_hs_patika.wav",
+      "required": true,
+      "text": "Patikanın sık kullanılması toprağı sıkıştırmış olabilir. Tek başına yaşı ve kullanıcıları hakkında kesin bilgi vermez.",
+      "sourceNote": "UNESCO World Heritage Centre, Khinalig People and Köç Yolu Transhumance Route, List 1696; mevsimlik rotalar, geçici otlaklar, kamp alanları, su kaynakları ve hayvancılık altyapısının ağı."
+    },
+    {
+      "id": "hs_baglama_diregi",
+      "assetRef": "F05",
+      "position": [
+        74.0,
+        0.3,
+        0.5
+      ],
+      "label": "İncele",
+      "audio": "d01_n07_hs_baglama_diregi.wav",
+      "required": true,
+      "text": "Direk ve ip, bir hayvanı kısa süre bekletmek için kullanılabilir. Biçimi için dönemsel kaynak gerekir.",
+      "sourceNote": "DOĞRULANMALI — F05 at bağlama direği ve ipin tarihsel biçimi için müze veya arkeolojik referans kilitlenmelidir."
+    },
+    {
+      "id": "hs_otlayan_at",
+      "assetRef": "F06",
+      "position": [
+        70.0,
+        0.8,
+        6.0
+      ],
+      "label": "Gözlemle",
+      "audio": "d01_n07_hs_otlayan_at.wav",
+      "required": false,
+      "text": "Atın otladığı alan, kısa süreli dinlenme noktası olabilir. Bu sahne belirli bir tarihî olayı temsil etmez.",
+      "sourceNote": "UNESCO Orkhon Valley ve Khinalig Köç Yolu belgeleri, pastoral hareket ile otlak kullanımının ilişkisini açıklar. D01 sahnesi eğitim amaçlı bileşik bir canlandırmadır."
+    }
+  ],
+  "quest": {
+    "type": "sirala",
+    "prompt": "Mevsimlik bir hareket planının adımlarını doğru sıraya koy.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Su, otlak ve hava koşullarını gözlemlemek",
+        "correct": true,
+        "feedback": "İlk adım koşulları anlamaktır. Yolculuk, çevreyi gözlemleyerek planlanır."
+      },
+      {
+        "id": "b",
+        "text": "Taşınabilir eşyaları ve ihtiyaçları hazırlamak",
+        "correct": true,
+        "feedback": "Koşullar değerlendirildikten sonra gerekli eşyalar ve yiyecekler dikkatle hazırlanır."
+      },
+      {
+        "id": "c",
+        "text": "Uygun patikayı hayvanlarla birlikte takip etmek",
+        "correct": true,
+        "feedback": "Hazırlık tamamlanınca seçilen rota hayvanlarla birlikte dikkatle ve düzenli izlenir."
+      },
+      {
+        "id": "d",
+        "text": "Uygun yerde geçici kamp düzenini kurmak",
+        "correct": true,
+        "feedback": "Yolculuğun sonunda güvenli yerde geçici yaşam ve dinlenme düzeni kurulabilir."
+      }
+    ],
+    "hints": [
+      {
+        "afterAttempt": 2,
+        "text": "Önce yola çıkılmaz. Çevreyi gözlemle, sonra hazırlık yap."
+      },
+      {
+        "afterAttempt": 4,
+        "text": "Doğru sıra: koşulları gözlemle, hazırlan, yolu izle, kampı kur."
+      }
+    ],
+    "successFeedback": "Hareketin bir düzen ve karar işi olduğunu kavradın. Yol artık daha anlamlı."
+  },
+  "reward": {
+    "cardId": "card_07",
+    "title": "Göç Yolunun Ritmi",
+    "concept": "Mevsim ve hareket",
+    "icon": "🐎",
+    "shortText": "Hareket; su, otlak, hava, yol ve hazırlık kararlarının birlikte sonucudur."
+  },
+  "closing": {
+    "id": "d01_n07_closing",
+    "audio": "d01_n07_closing.wav",
+    "text": "Yolun düzenini çözdün. Şimdi terk edilmiş yurtta kalan izlere yaklaşacağız."
+  },
+  "completion": {
+    "requiredHotspots": [
+      "hs_at_izleri",
+      "hs_patika",
+      "hs_baglama_diregi"
+    ],
+    "requiredQuest": true,
+    "events": [
+      "node_07_completed",
+      "seasonal_route_ordered",
+      "card_07_earned",
+      "water_zone_completed"
+    ]
+  },
+  "assets": [
+    "A01",
+    "F05",
+    "F06",
+    "F08",
+    "H01",
+    "H04"
+  ],
+  "audioFiles": [
+    "d01_n07_intro.wav",
+    "d01_n07_main_a.wav",
+    "d01_n07_main_b.wav",
+    "d01_n07_hs_at_izleri.wav",
+    "d01_n07_hs_patika.wav",
+    "d01_n07_hs_baglama_diregi.wav",
+    "d01_n07_hs_otlayan_at.wav",
+    "d01_n07_fb_correct_a.wav",
+    "d01_n07_fb_correct_b.wav",
+    "d01_n07_fb_correct_c.wav",
+    "d01_n07_fb_correct_d.wav",
+    "d01_n07_hint_2.wav",
+    "d01_n07_hint_4.wav",
+    "d01_n07_success.wav",
+    "d01_n07_closing.wav"
+  ],
+  "world3d": {
+    "zoneId": "su_basi",
+    "guidePosition": [
+      76.0,
+      0.0,
+      4.0
+    ],
+    "triggerRadius": 4.2,
+    "hotspotPositions": {
+      "hs_at_izleri": [
+        79.0,
+        0.1,
+        2.0
+      ],
+      "hs_patika": [
+        82.0,
+        0.0,
+        -1.0
+      ],
+      "hs_baglama_diregi": [
+        74.0,
+        0.3,
+        0.5
+      ],
+      "hs_otlayan_at": [
+        70.0,
+        0.8,
+        6.0
+      ]
+    }
+  }
+}

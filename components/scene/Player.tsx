@@ -8,6 +8,7 @@ import { hareketVektoru, klavyeyiBagla } from "@/lib/input";
 import { useOyun } from "@/lib/store";
 import { DedeKorkutBillboard } from "./models/DedeKorkutBillboard";
 import { pozSec } from "@/lib/pozSecici";
+import { oyuncuKonumu } from "@/lib/oyuncuKonum";
 
 const HIZ = 3.6;          // yaşlı bir adamın ölçülü yürüyüşü
 const ADIM_TEMPO = 6.4;   // adım frekansı
@@ -82,6 +83,9 @@ export function Player({ baslangic = [0, 0, 14] as [number, number, number] }) {
       adimFaz.current += dt * ADIM_TEMPO * guc;
     }
     g.position.y = araziYukseklik(g.position.x, g.position.z);
+    oyuncuKonumu.x = g.position.x;
+    oyuncuKonumu.y = g.position.y;
+    oyuncuKonumu.z = g.position.z;
 
     // yürüyüş yoğunluğu yumuşak geçiş (dur ↔ yürü arası ani zıplama olmasın)
     yuruyusYogunluk.current = THREE.MathUtils.lerp(yuruyusYogunluk.current, yuruyor ? guc : 0, dt * 8);

@@ -1,0 +1,240 @@
+{
+  "schemaVersion": "1.0",
+  "periodId": "d01",
+  "nodeId": "d01_n09",
+  "order": 9,
+  "zoneId": "eski_yurt",
+  "title": "Zamanın Geçişi",
+  "estimatedSeconds": 240,
+  "learningObjective": "Çocuk, geçmişteki yaşamda değişim ve sürekliliği kaynakları karşılaştırarak değerlendirir.",
+  "sourceType": "karsilastirmali",
+  "world": {
+    "guidePosition": [
+      -58.0,
+      0.0,
+      -74.0
+    ],
+    "triggerRadius": 4.0,
+    "cameraFocus": [
+      -61.0,
+      1.0,
+      -78.0
+    ]
+  },
+  "narration": [
+    {
+      "id": "d01_n09_intro",
+      "type": "intro",
+      "emotion": "dusunceli",
+      "audio": "d01_n09_intro.wav",
+      "text": "Bu alanda eski ve yeni izler birbirine karışıyor. Bazı yapılar çökmüş, bazı patikalar hâlâ seçiliyor. Zaman yalnız yok etmez. Bazı alışkanlıklar değişerek devam edebilir."
+    },
+    {
+      "id": "d01_n09_main_a",
+      "type": "main_a",
+      "emotion": "dusunceli",
+      "audio": "d01_n09_main_a.wav",
+      "text": "Bir yapının malzemesi çürüyebilir, kullanım amacı değişebilir. Suya ulaşma veya barınma ihtiyacı ise devam edebilir. Süreklilik, her şeyin aynı kalması değildir. İnsanlar yeni koşullara uyum sağlar. Araştırmacılar farklı dönemlerin kaynaklarını karşılaştırarak bu dönüşümü inceler. Aynı ihtiyaç, farklı dönemlerde farklı araçlar ve düzenlerle karşılanabilir."
+    },
+    {
+      "id": "d01_n09_main_b",
+      "type": "main_b",
+      "emotion": "dusunceli",
+      "audio": "d01_n09_main_b.wav",
+      "text": "Tek bir eşya uzun bir zamanı açıklayamaz. Yapı izi, kap parçası, patika ve çevre birlikte okunur. Benzerlikler sürekliliği, farklılıklar değişimi düşündürebilir. Fakat sonuçlar başka kaynaklarla sınanmalıdır. Tarih, karşılaştırma sayesinde daha dengeli görünür. Bu yöntem, tek bir izden büyük sonuçlar çıkarmamızı önler."
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "hs_yikik_duvar",
+      "assetRef": "G03",
+      "position": [
+        -61.0,
+        0.7,
+        -78.0
+      ],
+      "label": "Karşılaştır",
+      "audio": "d01_n09_hs_yikik_duvar.wav",
+      "required": true,
+      "text": "Taş duvar parçası, otağ iskeletinden farklı bir yapı tekniği gösteriyor. İki yapı aynı döneme ait olmayabilir.",
+      "sourceNote": "Genel karşılaştırmalı arkeoloji ilkesi. Yapıların dönem ilişkisi, stratigrafi ve tarihleme olmadan kesinleştirilemez."
+    },
+    {
+      "id": "hs_curumus_direk",
+      "assetRef": "G06",
+      "position": [
+        -56.0,
+        0.4,
+        -76.0
+      ],
+      "label": "İncele",
+      "audio": "d01_n09_hs_curumus_direk.wav",
+      "required": true,
+      "text": "Ahşap direk zamanla çürümüş ve özgün biçiminin bir bölümünü kaybetmiş. Malzemenin durumu, kullanım tarihini tek başına vermez.",
+      "sourceNote": "Genel koruma ve malzeme gözlemi. Ahşabın yaşı uygun bilimsel tarihleme yapılmadan bilinemez."
+    },
+    {
+      "id": "hs_solmus_kilim",
+      "assetRef": "G08",
+      "position": [
+        -59.0,
+        0.1,
+        -71.0
+      ],
+      "label": "Deseni incele",
+      "audio": "d01_n09_hs_solmus_kilim.wav",
+      "required": true,
+      "text": "Solmuş dokuma parçasında bazı çizgiler hâlâ seçiliyor. Motifin anlamı, karşılaştırmalı ve dönemsel tekstil kaynağı olmadan kurulamaz.",
+      "sourceNote": "DOĞRULANMALI — G08 dokuma parçasının motif ve tekniği seçilecek müze tekstiliyle birebir eşleştirilmelidir."
+    },
+    {
+      "id": "hs_eski_patika",
+      "assetRef": "H01",
+      "position": [
+        -64.0,
+        0.0,
+        -73.0
+      ],
+      "label": "Yolu izle",
+      "audio": "d01_n09_hs_eski_patika.wav",
+      "required": false,
+      "text": "Patikanın bir bölümü bugün hâlâ görülebiliyor. Yolun farklı zamanlarda yeniden kullanılmış olması mümkündür; kesin değildir.",
+      "sourceNote": "UNESCO cultural landscape yaklaşımı; yollar, yerleşimler ve doğal özellikler zaman içinde değişen ilişkiler oluşturabilir. D01 patikasının kullanım süresi kurgusal olarak kesinleştirilmez."
+    }
+  ],
+  "quest": {
+    "type": "siniflandir",
+    "prompt": "İfadeleri “Değişen”, “Süren” ve “Hem değişen hem süren” sütunlarına ayır.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Değişen — Otağın kumaşı yıpranmış, bazı direkler çürümüş.",
+        "correct": true,
+        "feedback": "Malzemenin durumu zamanla değişmiş. Bu ifade “Değişen” sütununa gider."
+      },
+      {
+        "id": "b",
+        "text": "Değişen — Eski patikanın bir bölümü otlarla kapanmış.",
+        "correct": true,
+        "feedback": "Patikanın görünümü değişmiş. Bu ifade “Değişen” sütunundadır."
+      },
+      {
+        "id": "c",
+        "text": "Süren — İnsanlar suya ve güvenli barınmaya ihtiyaç duyar.",
+        "correct": true,
+        "feedback": "Bu ihtiyaç farklı dönemlerde sürebilir. “Süren” sütununa yerleştir."
+      },
+      {
+        "id": "d",
+        "text": "Süren — Geçmişi anlamak için izleri karşılaştırma gereği sürer.",
+        "correct": true,
+        "feedback": "Araştırma ihtiyacı devam eder. Bu ifade “Süren” sütununa gider."
+      },
+      {
+        "id": "e",
+        "text": "Hem değişen hem süren — Desenler farklılaşabilir, dokuma geleneği yaşayabilir.",
+        "correct": true,
+        "feedback": "Biçim değişebilir, uygulama sürebilir. İki durumu birlikte gösterir."
+      },
+      {
+        "id": "f",
+        "text": "Hem değişen hem süren — Yerleşimler değişebilir, birlikte yaşama ihtiyacı sürebilir.",
+        "correct": true,
+        "feedback": "Yerleşim biçimi değişirken ortak ihtiyaç sürebilir. Doğru sütunu seçtin."
+      }
+    ],
+    "hints": [
+      {
+        "afterAttempt": 2,
+        "text": "Malzeme ve görünüm değişebilir. İhtiyaçlar veya uygulamalar sürebilir."
+      },
+      {
+        "afterAttempt": 4,
+        "text": "Bir ifade iki özelliği taşıyorsa “Hem değişen hem süren” sütununa gider."
+      }
+    ],
+    "successFeedback": "Değişimle sürekliliği birlikte gördün. Geçmiş tek çizgide ilerlemez."
+  },
+  "reward": {
+    "cardId": "card_09",
+    "title": "Değişen Yurt",
+    "concept": "Değişim ve süreklilik",
+    "icon": "⌛",
+    "shortText": "Geçmişte bazı şeyler değişir, bazı ihtiyaçlar sürer. Kaynaklar birlikte karşılaştırılmalıdır."
+  },
+  "closing": {
+    "id": "d01_n09_closing",
+    "audio": "d01_n09_closing.wav",
+    "text": "Zamanın iki yönünü gördün. Şimdi bütün kartları ilk sandıkta birleştireceğiz."
+  },
+  "completion": {
+    "requiredHotspots": [
+      "hs_yikik_duvar",
+      "hs_curumus_direk",
+      "hs_solmus_kilim"
+    ],
+    "requiredQuest": true,
+    "events": [
+      "node_09_completed",
+      "change_continuity_sequence_completed",
+      "card_09_earned"
+    ]
+  },
+  "assets": [
+    "A01",
+    "G01",
+    "G03",
+    "G06",
+    "G08",
+    "H01",
+    "H07"
+  ],
+  "audioFiles": [
+    "d01_n09_intro.wav",
+    "d01_n09_main_a.wav",
+    "d01_n09_main_b.wav",
+    "d01_n09_hs_yikik_duvar.wav",
+    "d01_n09_hs_curumus_direk.wav",
+    "d01_n09_hs_solmus_kilim.wav",
+    "d01_n09_hs_eski_patika.wav",
+    "d01_n09_fb_correct_a.wav",
+    "d01_n09_fb_correct_b.wav",
+    "d01_n09_fb_correct_c.wav",
+    "d01_n09_fb_correct_d.wav",
+    "d01_n09_hint_2.wav",
+    "d01_n09_hint_4.wav",
+    "d01_n09_success.wav",
+    "d01_n09_closing.wav"
+  ],
+  "world3d": {
+    "zoneId": "eski_yurt",
+    "guidePosition": [
+      -58.0,
+      0.0,
+      -74.0
+    ],
+    "triggerRadius": 4.0,
+    "hotspotPositions": {
+      "hs_yikik_duvar": [
+        -61.0,
+        0.7,
+        -78.0
+      ],
+      "hs_curumus_direk": [
+        -56.0,
+        0.4,
+        -76.0
+      ],
+      "hs_solmus_kilim": [
+        -59.0,
+        0.1,
+        -71.0
+      ],
+      "hs_eski_patika": [
+        -64.0,
+        0.0,
+        -73.0
+      ]
+    }
+  }
+}

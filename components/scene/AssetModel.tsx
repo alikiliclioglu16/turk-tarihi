@@ -11,6 +11,14 @@ import {
   KurutmaSehpasiModel, OdunYiginiModel, TulumSehpasiModel,
   MizrakRafiModel, TugModel,
 } from "./models/Props";
+import {
+  BuyukBalbalModel, DevrikBalbalModel, YazitTasiModel, TasDizisiModel,
+  KayalikYamacModel, SogutModel, DereTaslariModel, SazlikModel,
+  SuSehpasiModel, BaglamaDiregiModel, AtModel, KovaModel,
+  OtagIskeletiModel, SonmusOcakModel, YikikDuvarModel, KirikCanakModel,
+  YariGomuluKapModel, CurumusDirekModel, HoyukModel, SolmusKilimModel,
+  YonDiregiModel,
+} from "./models/BolgeProps";
 
 interface Props {
   kod: string;
@@ -44,6 +52,31 @@ function Prosedurel({ kod, olcek = 1 }: { kod: string; olcek?: number }) {
     case "B19": return <TulumSehpasiModel />;
     case "B20": return <MizrakRafiModel />;
     case "B21": return <TugModel />;
+    /* --- Balbal Sırtı --- */
+    case "E01": return <BuyukBalbalModel />;
+    case "E02": return <DevrikBalbalModel />;
+    case "E03": return <YazitTasiModel />;
+    case "E04": return <TasDizisiModel />;
+    case "E05": return <KayalikYamacModel olcek={olcek} />;
+    /* --- Su Başı --- */
+    case "F01": return <SogutModel olcek={olcek} />;
+    case "F02": return <DereTaslariModel />;
+    case "F03": return <SazlikModel />;
+    case "F04": return <SuSehpasiModel />;
+    case "F05": return <BaglamaDiregiModel />;
+    case "F06": return <AtModel olcek={olcek} />;
+    case "F07": return <KovaModel />;
+    /* --- Eski Yurt --- */
+    case "G01": return <OtagIskeletiModel />;
+    case "G02": return <SonmusOcakModel />;
+    case "G03": return <YikikDuvarModel olcek={olcek} />;
+    case "G04": return <KirikCanakModel />;
+    case "G05": return <YariGomuluKapModel />;
+    case "G06": return <CurumusDirekModel />;
+    case "G07": return <HoyukModel olcek={olcek} />;
+    case "G08": return <SolmusKilimModel />;
+    /* --- Ortak --- */
+    case "H04": return <YonDiregiModel />;
     default: {
       const v = varlik(kod);
       if (!v) return null;

@@ -1,0 +1,242 @@
+{
+  "schemaVersion": "1.0",
+  "periodId": "d01",
+  "nodeId": "d01_n04",
+  "order": 4,
+  "zoneId": "balbal_sirti",
+  "title": "Balballar Arasında",
+  "estimatedSeconds": 240,
+  "learningObjective": "Çocuk, anıtsal taşları incelerken gözlem ile yorumu birbirinden ayırır.",
+  "sourceType": "anitsal",
+  "world": {
+    "guidePosition": [
+      -44.0,
+      7.0,
+      50.0
+    ],
+    "triggerRadius": 4.0,
+    "cameraFocus": [
+      -49.0,
+      8.6,
+      55.0
+    ]
+  },
+  "narration": [
+    {
+      "id": "d01_n04_intro",
+      "type": "intro",
+      "emotion": "saygili",
+      "audio": "d01_n04_intro.wav",
+      "text": "Adımlarını yavaşlat yiğidim. Bu sırtta taş figürler sessizce bekliyor. Rüzgâr yüzlerini aşındırmış. Yine de bazı ayrıntılar hâlâ görülebiliyor. Önce yalnız gördüklerimizi söyleyelim."
+    },
+    {
+      "id": "d01_n04_main_a",
+      "type": "main_a",
+      "emotion": "saygili",
+      "audio": "d01_n04_main_a.wav",
+      "text": "Taştaki yüz çizgilerine, ellere ve kemere dikkatle bak. Bazı figürler ellerinde kap benzeri nesneler taşır. Araştırmacılar bu ayrıntıları başka buluntularla karşılaştırır. Fakat tek bir şekil, kişinin kimliğini kesinleştirmez. Gözlem, gördüğümüz ayrıntıyı olduğu gibi kaydetmektir. Taşın yüksekliği ve yerleşimi de kayda alınır."
+    },
+    {
+      "id": "d01_n04_main_b",
+      "type": "main_b",
+      "emotion": "saygili",
+      "audio": "d01_n04_main_b.wav",
+      "text": "Yorum ise gözlemden sonra kurulur. Taşın önemli bir kişiyi anlattığını düşünebiliriz. Ancak bunu kesin bilgi gibi söyleyemeyiz. Bulunduğu yer, çevresindeki taşlar ve benzer örnekler birlikte incelenir. Saygılı araştırma, bilmediğimiz yerde durmayı da gerektirir. Böylece yorumlarımız yeni kanıtlarla değişmeye açık kalır."
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "hs_buyuk_tas_figuru",
+      "assetRef": "E01",
+      "position": [
+        -49.0,
+        8.0,
+        55.0
+      ],
+      "label": "İncele",
+      "audio": "d01_n04_hs_buyuk_tas_figuru.wav",
+      "required": true,
+      "text": "Figürün yüzü, elleri ve giysisi taşa işlenmiş. Bu ayrıntılar görülebilir; kişinin adı ise yalnız görünüşten bilinemez.",
+      "sourceNote": "UNESCO World Heritage Centre, Orkhon Valley Cultural Landscape, List 1081; Türk anıt alanları ve taş kültürü. Terminoloji ve figür tipi, seçilecek müze örneğiyle doğrulanmalıdır."
+    },
+    {
+      "id": "hs_kase_tutan_el",
+      "assetRef": "E01",
+      "position": [
+        -48.6,
+        8.7,
+        54.7
+      ],
+      "label": "Yakından bak",
+      "audio": "d01_n04_hs_kase_tutan_el.wav",
+      "required": true,
+      "text": "Ellerin arasında kap benzeri bir biçim görülüyor. Benzer tasvirler bulunmuştur; işlevi her örnekte aynı olmayabilir.",
+      "sourceNote": "The Metropolitan Museum of Art, 'Figure', collection object 451990; Orta Asya Türk dünyasında kap tutan figürler ve taş tasvirlerle karşılaştırma. D01 figürü birebir müze referansına bağlanmalıdır."
+    },
+    {
+      "id": "hs_devirmis_tas",
+      "assetRef": "E02",
+      "position": [
+        -41.0,
+        7.0,
+        57.0
+      ],
+      "label": "İncele",
+      "audio": "d01_n04_hs_devirmis_tas.wav",
+      "required": true,
+      "text": "Bu taş yana devrilmiş ve bir bölümü toprağa gömülmüş. Konumu değişmiş olabilir; ne zaman devrildiğini bilmiyoruz.",
+      "sourceNote": "Genel arkeolojik gözlem. Devrilme zamanı ve nedeni yalnız sahne görünümünden çıkarılamaz; alan kaydı veya kazı raporu gerekir."
+    },
+    {
+      "id": "hs_tas_dizisi",
+      "assetRef": "E04",
+      "position": [
+        -52.0,
+        7.3,
+        49.0
+      ],
+      "label": "Çevreyi incele",
+      "audio": "d01_n04_hs_tas_dizisi.wav",
+      "required": false,
+      "text": "Küçük taşlar belirli bir çizgi oluşturuyor. Diziliş insan eli düşündürebilir; amacı güvenilir kaynak olmadan bugün kesinleşmez.",
+      "sourceNote": "UNESCO World Heritage Centre, Orkhon Valley Cultural Landscape; anıtsal alanlar, mezarlar ve taş unsurların birlikte değerlendirilmesi. D01 dizilişi belirli bir tarihî alanın kopyası değildir."
+    }
+  ],
+  "quest": {
+    "type": "siniflandir",
+    "prompt": "Altı ifadeyi “Gördüğüm” ve “Düşündüğüm” sütunlarına yerleştir.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Gördüğüm — Figürün elinde kap benzeri bir şekil var.",
+        "correct": true,
+        "feedback": "Bu ayrıntı doğrudan görülebilir. Gözlem sütununa yerleştir."
+      },
+      {
+        "id": "b",
+        "text": "Gördüğüm — Taşın yüzeyi aşınmış ve çatlamış.",
+        "correct": true,
+        "feedback": "Aşınma ve çatlak gözle görülür. Gözlem sütununa gider."
+      },
+      {
+        "id": "c",
+        "text": "Gördüğüm — Bazı yüz çizgileri artık seçilemiyor.",
+        "correct": true,
+        "feedback": "Çizgilerin seçilememesi görülebilir. Bu bir gözlemdir."
+      },
+      {
+        "id": "d",
+        "text": "Düşündüğüm — Figür önemli bir kişiyi anlatıyor olabilir.",
+        "correct": true,
+        "feedback": "“Olabilir” sözü dikkatli yorum kurduğunu gösterir."
+      },
+      {
+        "id": "e",
+        "text": "Düşündüğüm — Kap bir törenle ilişkili olabilir.",
+        "correct": true,
+        "feedback": "Bu anlam doğrudan görülmez. Kaynaklarla sınanacak bir yorumdur."
+      },
+      {
+        "id": "f",
+        "text": "Düşündüğüm — Taşın ilk yeri başka bir nokta olabilir.",
+        "correct": true,
+        "feedback": "İlk konum bilinmiyor. Bu nedenle ifade bir yorumdur."
+      }
+    ],
+    "hints": [
+      {
+        "afterAttempt": 2,
+        "text": "Gözünle seçebildiğin ayrıntılar gözlemdir. Anlam hakkındaki düşünceler yorumdur."
+      },
+      {
+        "afterAttempt": 4,
+        "text": "“Var” ve “görülüyor” gözlemdir. “Olabilir” sözü yorumu gösterir."
+      }
+    ],
+    "successFeedback": "Gözlemle yorumu ayırdın. Geçmişi araştırırken bu ayrım çok değerlidir."
+  },
+  "reward": {
+    "cardId": "card_04",
+    "title": "Taşın Söylediği",
+    "concept": "Gözlem ve yorum",
+    "icon": "🗿",
+    "shortText": "Önce görüleni kaydet. Sonra kaynaklarla karşılaştır ve yorumunu dikkatle kur."
+  },
+  "closing": {
+    "id": "d01_n04_closing",
+    "audio": "d01_n04_closing.wav",
+    "text": "Taşlara dikkatle baktın. Şimdi sırtın yukarısındaki aşınmış yazıya yaklaşalım."
+  },
+  "completion": {
+    "requiredHotspots": [
+      "hs_buyuk_tas_figuru",
+      "hs_kase_tutan_el",
+      "hs_devirmis_tas"
+    ],
+    "requiredQuest": true,
+    "events": [
+      "node_04_completed",
+      "observation_interpretation_balbal_sorted",
+      "card_04_earned"
+    ]
+  },
+  "assets": [
+    "A01",
+    "A07",
+    "E01",
+    "E02",
+    "E04",
+    "E05",
+    "E06"
+  ],
+  "audioFiles": [
+    "d01_n04_intro.wav",
+    "d01_n04_main_a.wav",
+    "d01_n04_main_b.wav",
+    "d01_n04_hs_buyuk_tas_figuru.wav",
+    "d01_n04_hs_kase_tutan_el.wav",
+    "d01_n04_hs_devirmis_tas.wav",
+    "d01_n04_hs_tas_dizisi.wav",
+    "d01_n04_fb_correct_a.wav",
+    "d01_n04_fb_correct_b.wav",
+    "d01_n04_fb_wrong_c.wav",
+    "d01_n04_fb_correct_d.wav",
+    "d01_n04_fb_wrong_e.wav",
+    "d01_n04_fb_correct_f.wav",
+    "d01_n04_hint_2.wav",
+    "d01_n04_hint_4.wav",
+    "d01_n04_success.wav",
+    "d01_n04_closing.wav"
+  ],
+  "world3d": {
+    "zoneId": "balbal_sirti",
+    "guidePosition": [
+      -44.0,
+      7.0,
+      50.0
+    ],
+    "triggerRadius": 4.0,
+    "hotspotPositions": {
+      "hs_buyuk_tas_figuru": [
+        -49.0,
+        8.0,
+        55.0
+      ],
+      "hs_kase_tutan_el": [
+        -48.6,
+        8.7,
+        54.7
+      ],
+      "hs_devirmis_tas": [
+        -41.0,
+        7.0,
+        57.0
+      ],
+      "hs_tas_dizisi": [
+        -52.0,
+        7.3,
+        49.0
+      ]
+    }
+  }
+}

@@ -26,6 +26,13 @@ const NODE_DOSYALARI = [
   "/data/d01/d01-node-01.json",
   "/data/d01/d01-node-02.json",
   "/data/d01/d01-node-03.json",
+  "/data/d01/d01-node-04.json",
+  "/data/d01/d01-node-05.json",
+  "/data/d01/d01-node-06.json",
+  "/data/d01/d01-node-07.json",
+  "/data/d01/d01-node-08.json",
+  "/data/d01/d01-node-09.json",
+  "/data/d01/d01-node-10.json",
 ];
 
 export default function D01Page() {

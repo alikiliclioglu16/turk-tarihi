@@ -57,6 +57,8 @@ export function SahneAtmosferi() {
       <fogExp2 attach="fog" args={["#0b1322", 0.015]} />
       {/* kenar ışığı: nesneleri geceden ayıran soğuk kontur */}
       <directionalLight color="#7794cf" intensity={0.45} position={[38, 16, -46]} />
+      {/* kenar ışığı: nesneleri geceden ayıran soğuk kontur */}
+      <directionalLight color="#7794cf" intensity={0.45} position={[38, 16, -46]} />
       <ambientLight color="#2c3d63" intensity={0.35} />
       <directionalLight
         color="#93abda"

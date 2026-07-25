@@ -115,6 +115,59 @@ export const VARLIKLAR: Record<string, VarlikTanimi> = {
     greybox: { sekil: "kutu", boyut: [1.5, 2.5, 0.3], renk: "#5A4126" } },
   B21: { kod: "B21", ad: "Tuğ Direği", path: null, hazir: false,
     greybox: { sekil: "silindir", boyut: [0.15, 3.7, 0.15], renk: "#6E4B26" } },
+
+  /* ---------- BALBAL SIRTI ---------- */
+  E01: { kod: "E01", ad: "Büyük Balbal", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [0.82, 3.3, 0.56], renk: "#5A6474" } },
+  E02: { kod: "E02", ad: "Devrik Balbal", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [1.9, 0.6, 0.42], renk: "#5A6474" } },
+  E03: { kod: "E03", ad: "Yazıtlı Taş", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [1.15, 2.4, 0.45], renk: "#57606E" } },
+  E04: { kod: "E04", ad: "Taş Dizisi", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [7.0, 0.4, 1.0], renk: "#4A5568" } },
+  E05: { kod: "E05", ad: "Kayalık Yamaç", path: null, hazir: false,
+    greybox: { sekil: "tas", boyut: [4.5, 2.0, 4.0], renk: "#3E4A5E" } },
+  E06: { kod: "E06", ad: "Step Otu", path: null, hazir: false,
+    greybox: { sekil: "koni", boyut: [0.7, 0.8, 0.7], renk: "#4A5548" } },
+
+  /* ---------- SU BAŞI ---------- */
+  F01: { kod: "F01", ad: "Söğüt", path: null, hazir: false,
+    greybox: { sekil: "koni", boyut: [5.0, 6.5, 5.0], renk: "#334A3E" } },
+  F02: { kod: "F02", ad: "Dere Taşları", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [5.5, 0.3, 2.5], renk: "#5A6470" } },
+  F03: { kod: "F03", ad: "Sazlık", path: null, hazir: false,
+    greybox: { sekil: "koni", boyut: [2.4, 1.8, 1.6], renk: "#6B7A52" } },
+  F04: { kod: "F04", ad: "Su Sehpası", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [1.2, 1.2, 0.6], renk: "#6B4A2E" } },
+  F05: { kod: "F05", ad: "Bağlama Direği", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [0.2, 1.5, 0.2], renk: "#6E4B26" } },
+  F06: { kod: "F06", ad: "Otlayan At", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [2.4, 2.2, 1.0], renk: "#4A3826" } },
+  F07: { kod: "F07", ad: "Ahşap Kova", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [0.4, 0.35, 0.4], renk: "#6E4B26" } },
+
+  /* ---------- ESKİ YURT ---------- */
+  G01: { kod: "G01", ad: "Otağ İskeleti", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [5.0, 2.4, 5.0], renk: "#4A3A26" } },
+  G02: { kod: "G02", ad: "Sönmüş Ocak", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [2.2, 0.25, 2.2], renk: "#26221E" } },
+  G03: { kod: "G03", ad: "Yıkık Duvar", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [3.6, 1.4, 0.5], renk: "#57606E" } },
+  G04: { kod: "G04", ad: "Kırık Çanak", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [1.4, 0.15, 1.2], renk: "#9A6E4E" } },
+  G05: { kod: "G05", ad: "Yarı Gömülü Kap", path: null, hazir: false,
+    greybox: { sekil: "kure", boyut: [0.7, 0.5, 0.7], renk: "#8A6248" } },
+  G06: { kod: "G06", ad: "Çürümüş Direk", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [0.26, 1.4, 0.26], renk: "#3E3020" } },
+  G07: { kod: "G07", ad: "Höyük", path: null, hazir: false,
+    greybox: { sekil: "kure", boyut: [10.0, 3.6, 10.0], renk: "#2E3630" } },
+  G08: { kod: "G08", ad: "Solmuş Kilim", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [1.5, 0.03, 1.0], renk: "#8A8078" } },
+
+  /* ---------- ORTAK ---------- */
+  H04: { kod: "H04", ad: "Yön Direği", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [0.16, 2.2, 0.16], renk: "#6E4B26" } },
+
 };
 
 export function varlik(kod: string): VarlikTanimi | null {
@@ -186,4 +239,64 @@ export const D01_YERLESIM: Yerlesim[] = [
   { kod: "C01", pos: [-12.5, 0, -2.5], olcek: 1.1 },
   { kod: "C01", pos: [6.5, 0, 12.5], olcek: 0.9 },
   { kod: "C01", pos: [-6.5, 0, 12.8], olcek: 1.2 },
+
+  /* ============================================================
+     BALBAL SIRTI  (node 04–05)
+     ============================================================ */
+  { kod: "E01", pos: [-49, 0, 55], rotY: 0.25 },
+  { kod: "E02", pos: [-41, 0, 57], rotY: 1.1 },
+  { kod: "A07", pos: [-45.5, 0, 53], rotY: -0.4, olcek: 0.85 },
+  { kod: "A07", pos: [-51.5, 0, 58.5], rotY: 0.7, olcek: 0.95 },
+  { kod: "E04", pos: [-52, 0, 49], rotY: 0.55 },
+  { kod: "E03", pos: [-69, 0, 73], rotY: -0.35 },
+  { kod: "E05", pos: [-62, 0, 66], olcek: 1.2 },
+  { kod: "E05", pos: [-72, 0, 66], olcek: 0.9, rotY: 1.4 },
+  { kod: "E05", pos: [-38, 0, 62], olcek: 1.05, rotY: 2.2 },
+  { kod: "H04", pos: [-30, 0, 34], rotY: 0.5 },
+  { kod: "H04", pos: [-58, 0, 58], rotY: -0.7 },
+
+  /* ============================================================
+     SU BAŞI  (node 06–07)
+     ============================================================ */
+  { kod: "F01", pos: [51, 0, 35], olcek: 1.0 },
+  { kod: "F01", pos: [46, 0, 41], olcek: 0.78, rotY: 1.2 },
+  { kod: "F01", pos: [60, 0, 26], olcek: 0.88, rotY: 2.4 },
+  { kod: "F02", pos: [56, 0, 33], rotY: 0.4 },
+  { kod: "F02", pos: [64, 0, 23], rotY: 1.1, olcek: 0.8 },
+  { kod: "F03", pos: [53, 0, 31], rotY: 0.2 },
+  { kod: "F03", pos: [59, 0, 35], rotY: 1.5 },
+  { kod: "F03", pos: [68, 0, 20], rotY: 0.8 },
+  { kod: "F04", pos: [58, 0, 30], rotY: -0.5 },
+  { kod: "F07", pos: [55, 0, 31.5], rotY: 0.9 },
+  { kod: "F05", pos: [74, 0, 0.5], rotY: 0.3 },
+  { kod: "F06", pos: [70, 0, 6], rotY: -1.1 },
+  { kod: "H04", pos: [80, 0, -2], rotY: 0.9 },
+  { kod: "C05", pos: [72, 0, 12], olcek: 1.2 },
+  { kod: "C01", pos: [66, 0, 8], olcek: 1.1 },
+
+  /* ============================================================
+     ESKİ YURT YERİ  (node 08–10)
+     ============================================================ */
+  { kod: "G01", pos: [-37, 0, -57], rotY: 0.4 },
+  { kod: "G02", pos: [-28, 0, -64], rotY: 0 },
+  { kod: "G05", pos: [-34, 0, -62], rotY: 0.6 },
+  { kod: "G04", pos: [-32.5, 0, -61], rotY: 1.2 },
+  { kod: "G06", pos: [-56, 0, -76], rotY: 0.3 },
+  { kod: "G06", pos: [-40, 0, -66], rotY: 1.4, olcek: 0.85 },
+  { kod: "G03", pos: [-61, 0, -78], rotY: 0.5 },
+  { kod: "G03", pos: [-53, 0, -81], rotY: 1.9, olcek: 0.8 },
+  { kod: "G08", pos: [-59, 0, -71], rotY: 0.2 },
+  { kod: "G07", pos: [-46, 0, -90], olcek: 1.1 },
+  { kod: "G07", pos: [-14, 0, -70], olcek: 0.75 },
+  { kod: "C01", pos: [-24, 0, -72], olcek: 1.3 },
+  { kod: "C01", pos: [-48, 0, -62], olcek: 0.9 },
+  { kod: "H04", pos: [-16, 0, -50], rotY: -0.4 },
+
+  /* ---------- FİNAL AÇIKLIĞI (node 10) ---------- */
+  { kod: "A03", pos: [0, 0, -91], rotY: 0 },
+  { kod: "A08", pos: [-1.2, 0, -90.5], rotY: 0.3 },
+  { kod: "E04", pos: [1.5, 0, -90], rotY: 1.2, olcek: 0.5 },
+  { kod: "H04", pos: [0, 0, -96], rotY: 0 },
+  { kod: "B21", pos: [-3.5, 0, -93], olcek: 0.9 },
+  { kod: "B21", pos: [3.5, 0, -93], olcek: 0.9 },
 ];

@@ -1,0 +1,228 @@
+{
+  "schemaVersion": "1.0",
+  "periodId": "d01",
+  "nodeId": "d01_n05",
+  "order": 5,
+  "zoneId": "balbal_sirti",
+  "title": "Taşa Kazınan Ad",
+  "estimatedSeconds": 240,
+  "learningObjective": "Çocuk, okunamayan bir kaynak karşısında bilmediğini kabul etmenin bilimsel değerini kavrar.",
+  "sourceType": "yazili",
+  "world": {
+    "guidePosition": [
+      -66.0,
+      12.0,
+      70.0
+    ],
+    "triggerRadius": 4.0,
+    "cameraFocus": [
+      -69.0,
+      13.3,
+      73.0
+    ]
+  },
+  "narration": [
+    {
+      "id": "d01_n05_intro",
+      "type": "intro",
+      "emotion": "saygili",
+      "audio": "d01_n05_intro.wav",
+      "text": "Bu taşın yüzünde işaretler var evlat. Fakat çoğu aşınmış ve okunamaz durumda. Boşlukları hayalimizle doldurmayacağız. Önce taşın bize gerçekten ne verdiğini soracağız."
+    },
+    {
+      "id": "d01_n05_main_a",
+      "type": "main_a",
+      "emotion": "saygili",
+      "audio": "d01_n05_main_a.wav",
+      "text": "Yazılı kaynaklar geçmişten söz taşıyabilir. Ancak her işaret hemen okunmaz. Dil, alfabe, taşın yüzeyi ve karşılaştırmalı örnekler birlikte incelenir. Bazı yazıtların çözülmesi yıllar süren uzmanlık ister. Silinmiş bir bölüm için kesin cümle kurmak doğru değildir. Okunabilen bölüm ayrıca satır satır belgelenir."
+    },
+    {
+      "id": "d01_n05_main_b",
+      "type": "main_b",
+      "emotion": "saygili",
+      "audio": "d01_n05_main_b.wav",
+      "text": "Tarihçi bazen güçlü bir cevap verir: bunu bilmiyoruz. Bu söz bilgisizlikten kaçmak değildir. Eldeki kanıtın sınırını dürüstçe göstermektir. Yeni bir parça bulunursa yorum değişebilir. Bilim, sorularını açık tutarak ilerler. Dürüst belirsizlik, yanlış bir kesinlikten daha değerlidir. Bu tutum kaynakları korur."
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "hs_asinmis_yazi",
+      "assetRef": "E03",
+      "position": [
+        -69.0,
+        13.0,
+        73.0
+      ],
+      "label": "İncele",
+      "audio": "d01_n05_hs_asinmis_yazi.wav",
+      "required": true,
+      "text": "Taşta bazı çizgiler seçiliyor; birçok bölüm silinmiş. Eksik işaretleri uydurmadan, yalnız görülebilen kısmı dikkatle kaydetmeliyiz.",
+      "sourceNote": "UNESCO Orkhon Valley nomination dossier 1081rev; Bilge Kağan ve Kül Tigin anıtlarındaki büyük Türkçe yazıtların belgelenmesi. D01 taşında gerçek metin gösterilmeyecek; yüzey bilinçli biçimde okunamaz kalacaktır."
+    },
+    {
+      "id": "hs_tas_yuzeyi",
+      "assetRef": "E03",
+      "position": [
+        -68.7,
+        12.7,
+        72.8
+      ],
+      "label": "Dokuyu incele",
+      "audio": "d01_n05_hs_tas_yuzeyi.wav",
+      "required": true,
+      "text": "Yüzeyde rüzgâr, yağış ve zamanın oluşturduğu aşınma görülüyor. Aşınma, bazı işaretlerin kaybolmasına yol açmış olabilir.",
+      "sourceNote": "UNESCO ve ICOMOS Orkhon Valley değerlendirmeleri, kırık ve hava koşullarından etkilenmiş taşların korunmasını belirtir. D01 aşınma biçimi görsel referansla doğrulanmalıdır."
+    },
+    {
+      "id": "hs_kirik_kenar",
+      "assetRef": "E03",
+      "position": [
+        -69.4,
+        12.4,
+        73.1
+      ],
+      "label": "İncele",
+      "audio": "d01_n05_hs_kirik_kenar.wav",
+      "required": true,
+      "text": "Taşın kenarında eksik bir bölüm var. Kopan parçanın nerede olduğunu ve üzerinde ne bulunduğunu bilmiyoruz.",
+      "sourceNote": "Genel arkeolojik belgeleme ilkesi. Eksik parçanın içeriği, parça bulunmadan veya eski kayıt olmadan kurulamaz."
+    },
+    {
+      "id": "hs_uzak_anit_alani",
+      "assetRef": "E01",
+      "position": [
+        -62.0,
+        11.0,
+        66.0
+      ],
+      "label": "Çevreye bak",
+      "audio": "d01_n05_hs_uzak_anit_alani.wav",
+      "required": false,
+      "text": "Yazılı taş, çevresindeki anıtsal alanla birlikte değerlendirilir. Yerleşimi, metnin olası kullanımını ve önemini anlamaya yardımcı olabilir.",
+      "sourceNote": "UNESCO World Heritage Centre, Orkhon Valley Cultural Landscape, List 1081; Türk anıt alanları, yazıtlar ve çevresel bağlamın birlikte korunması."
+    }
+  ],
+  "quest": {
+    "type": "secim",
+    "prompt": "Taşın silinmiş bölümünde tam olarak ne yazıyordu?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Bunu bilmiyoruz. Okunabilen işaretleri uzmanlar inceler; silinmiş bölümü kanıtsız tamamlayamayız.",
+        "correct": true,
+        "feedback": "Doğru. Okunabilen izler incelenebilir; kaybolan sözler kanıtsız tamamlanamaz."
+      },
+      {
+        "id": "b",
+        "text": "Kesinlikle büyük bir savaşın tarihi yazıyordu.",
+        "correct": false,
+        "feedback": "Bunu söyleyecek okunabilir işaretimiz yok. Boşluğu tahminle doldurmayalım."
+      },
+      {
+        "id": "c",
+        "text": "Dede Korkut’un adı ve bütün hikâyeleri yazıyordu.",
+        "correct": false,
+        "feedback": "Bu güzel bir hikâye olabilir; fakat taş bunu kanıtlamıyor."
+      },
+      {
+        "id": "d",
+        "text": "Gizli bir yolun yönü anlatılıyordu.",
+        "correct": false,
+        "feedback": "Bu da bir tahmindir. Aşınmış bölüm bize böyle bir bilgi vermiyor."
+      }
+    ],
+    "hints": [
+      {
+        "afterAttempt": 2,
+        "text": "Silinmiş bölüme dikkat et. Görmediğin işaretleri güvenle okuyabilir misin?"
+      },
+      {
+        "afterAttempt": 4,
+        "text": "Doğru cevap bir tahmin değildir. Kanıt yetmiyorsa bunu açıkça söylemeliyiz."
+      }
+    ],
+    "successFeedback": "Bilmediğini açıkça söyledin. Bu, tarih araştırmasının güçlü bir alışkanlığıdır."
+  },
+  "reward": {
+    "cardId": "card_05",
+    "title": "Bilmediğini Bilmek",
+    "concept": "Bilimsel dürüstlük",
+    "icon": "🔎",
+    "shortText": "Kanıt eksikse kesin konuşma. Bilmiyoruz demek, yeni araştırmaya açık bir kapıdır."
+  },
+  "closing": {
+    "id": "d01_n05_closing",
+    "audio": "d01_n05_closing.wav",
+    "text": "Taşın sınırına saygı gösterdin. Şimdi suyun çevresinde kalan izleri okuyacağız."
+  },
+  "completion": {
+    "requiredHotspots": [
+      "hs_asinmis_yazi",
+      "hs_tas_yuzeyi",
+      "hs_kirik_kenar"
+    ],
+    "requiredQuest": true,
+    "events": [
+      "node_05_completed",
+      "unknown_answer_accepted",
+      "card_05_earned",
+      "balbal_zone_completed"
+    ]
+  },
+  "assets": [
+    "A01",
+    "A07",
+    "E01",
+    "E03",
+    "E05",
+    "E06"
+  ],
+  "audioFiles": [
+    "d01_n05_intro.wav",
+    "d01_n05_main_a.wav",
+    "d01_n05_main_b.wav",
+    "d01_n05_hs_asinmis_yazi.wav",
+    "d01_n05_hs_tas_yuzeyi.wav",
+    "d01_n05_hs_kirik_kenar.wav",
+    "d01_n05_hs_uzak_anit_alani.wav",
+    "d01_n05_fb_correct_a.wav",
+    "d01_n05_fb_wrong_b.wav",
+    "d01_n05_fb_wrong_c.wav",
+    "d01_n05_fb_wrong_d.wav",
+    "d01_n05_hint_2.wav",
+    "d01_n05_hint_4.wav",
+    "d01_n05_success.wav",
+    "d01_n05_closing.wav"
+  ],
+  "world3d": {
+    "zoneId": "balbal_sirti",
+    "guidePosition": [
+      -66.0,
+      12.0,
+      70.0
+    ],
+    "triggerRadius": 4.0,
+    "hotspotPositions": {
+      "hs_asinmis_yazi": [
+        -69.0,
+        13.0,
+        73.0
+      ],
+      "hs_tas_yuzeyi": [
+        -68.7,
+        12.7,
+        72.8
+      ],
+      "hs_kirik_kenar": [
+        -69.4,
+        12.4,
+        73.1
+      ],
+      "hs_uzak_anit_alani": [
+        -62.0,
+        11.0,
+        66.0
+      ]
+    }
+  }
+}
