@@ -8,7 +8,7 @@ import { zeminDokusu } from "@/lib/textures";
 export function Terrain() {
   const tex = useMemo(() => zeminDokusu(), []);
   const geo = useMemo(() => {
-    const g = new THREE.PlaneGeometry(340, 340, 150, 150);
+    const g = new THREE.PlaneGeometry(900, 900, 200, 200);
     const pos = g.attributes.position;
     const renkler = new Float32Array(pos.count * 3);
     for (let i = 0; i < pos.count; i++) {
@@ -16,7 +16,7 @@ export function Terrain() {
       const z = -pos.getY(i);
       pos.setZ(i, araziYukseklik(x, z));
       const d = Math.sqrt(x * x + z * z);
-      const yakin = Math.max(0, 1 - d / 30);
+      const yakin = Math.max(0, 1 - d / 90);
       const benek =
         0.86 + Math.sin(x * 0.33) * Math.cos(z * 0.29) * 0.1 + Math.sin(x * 1.3 + z * 0.9) * 0.05;
       renkler[i * 3] = (0.30 + yakin * 0.34) * benek;

@@ -9,10 +9,10 @@
  * bonus keşifler, arazi kontrol noktaları ve varlık yerleşimi.
  * JSON dosyalarına DOKUNULMAZ — dönüşüm yükleme anında yapılır.
  *
- * 2.6 → dünya ~420×470 m, duraklar arası yürüyüş ~900 m (≈4 dk),
+ * 4.2 → dünya ~630×710 m; duraklar arası yürüyüş ~1450 m (≈5.5 dk),
  * oba mahalleleriyle birlikte toplam gezinme 9–11 dakika.
  */
-export const DUNYA_OLCEK = 2.6;
+export const DUNYA_OLCEK = 4.2;
 
 export function olcekle(p: [number, number, number]): [number, number, number] {
   return [p[0] * DUNYA_OLCEK, p[1] * DUNYA_OLCEK, p[2] * DUNYA_OLCEK];

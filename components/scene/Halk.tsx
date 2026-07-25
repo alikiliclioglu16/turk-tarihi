@@ -7,10 +7,11 @@ import { HALK, type HalkKaydi } from "@/lib/halk";
 import { InsanModel } from "./models/InsanModel";
 import { araziYukseklik } from "@/lib/terrain";
 import { oyuncuKonumu } from "@/lib/oyuncuKonum";
+import { DUNYA_OLCEK as OL } from "@/lib/dunyaOlcek";
 import { useOyun } from "@/lib/store";
 import { tik } from "@/lib/audio";
 
-const GORUNUR = 65;   // metre
+const GORUNUR = 90;   // metre
 const BILGI_MESAFE = 6;
 
 /** Tek bir kişi — yürüyense rotasında ilerler */
@@ -32,12 +33,13 @@ function Kisi({ k, onBilgi }: { k: HalkKaydi; onBilgi: (k: HalkKaydi) => void })
       const i = Math.floor(p) % n;
       const j = (i + 1) % n;
       const t = p - Math.floor(p);
-      const x = k.rota[i][0] + (k.rota[j][0] - k.rota[i][0]) * t;
-      const z = k.rota[i][1] + (k.rota[j][1] - k.rota[i][1]) * t;
+      const x = (k.rota[i][0] + (k.rota[j][0] - k.rota[i][0]) * t) * OL;
+      const z = (k.rota[i][1] + (k.rota[j][1] - k.rota[i][1]) * t) * OL;
       g.position.set(x, araziYukseklik(x, z), z);
       g.rotation.y = Math.atan2(k.rota[j][0] - k.rota[i][0], k.rota[j][1] - k.rota[i][1]);
     } else {
-      g.position.set(k.pos[0], araziYukseklik(k.pos[0], k.pos[1]), k.pos[1]);
+      const px = k.pos[0] * OL, pz = k.pos[1] * OL;
+      g.position.set(px, araziYukseklik(px, pz), pz);
       g.rotation.y = k.yon ?? 0;
     }
   });
@@ -88,7 +90,7 @@ export function Halk() {
     sonKontrol.current = clock.elapsedTime;
     const liste = HALK.filter((k) => {
       const [x, z] = k.rota ? k.rota[0] : k.pos;
-      return Math.hypot(x - oyuncuKonumu.x, z - oyuncuKonumu.z) < GORUNUR;
+      return Math.hypot(x * OL - oyuncuKonumu.x, z * OL - oyuncuKonumu.z) < GORUNUR;
     });
     const anahtar = liste.map((k) => k.id).join(",");
     if (anahtar !== sonAnahtar.current) {

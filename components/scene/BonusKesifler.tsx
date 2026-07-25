@@ -10,7 +10,7 @@ import { oyuncuKonumu } from "@/lib/oyuncuKonum";
 import { lekeDokusu } from "@/lib/textures";
 import { DUNYA_OLCEK } from "@/lib/dunyaOlcek";
 
-const GORUNUR_MESAFE = 70; // metre — bu uzaklıktan öteye çizilmez
+const GORUNUR_MESAFE = 95; // metre — bu uzaklıktan öteye çizilmez
 
 /**
  * MERAKLI GÖZLER

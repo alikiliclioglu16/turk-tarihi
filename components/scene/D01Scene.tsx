@@ -11,6 +11,8 @@ import { Terrain } from "./Terrain";
 import { Player } from "./Player";
 import { YakinVarliklar } from "./YakinVarliklar";
 import { Halk } from "./Halk";
+import { BuyukOba } from "./BuyukOba";
+import { GirilebilirOtag } from "./GirilebilirOtag";
 import { Suru } from "./Suru";
 import { HotspotMarker } from "./HotspotMarker";
 import { HedefIsigi } from "./HedefIsigi";
@@ -35,7 +37,7 @@ export function D01Scene() {
     <Canvas
       shadows
       dpr={[1, 1.6]}
-      camera={{ fov: 50, near: 0.1, far: 520, position: [0, 6, 20] }}
+      camera={{ fov: 54, near: 0.1, far: 900, position: [0, 6, 20] }}
       gl={{
         antialias: false, // SMAA devrede
         toneMapping: THREE.ACESFilmicToneMapping,
@@ -58,10 +60,16 @@ export function D01Scene() {
         <AtesEfekti pos={[0, 0, 0]} />
 
         <YakinVarliklar />
+        <BuyukOba />
         <Halk />
+        {/* girilebilir otağlar — kapıdan içeri girilir, çatı saydamlaşır */}
+        <GirilebilirOtag pos={[-27, -14]} rotY={0.75} olcek={1.5} tur="bey" />
+        <GirilebilirOtag pos={[36, 23]} rotY={-0.6} olcek={1.25} tur="aile" />
+        <GirilebilirOtag pos={[-84, 52]} rotY={2.0} olcek={1.2} tur="usta" />
+        <GirilebilirOtag pos={[52, -76]} rotY={1.4} olcek={1.2} tur="aile" />
         <Suru />
 
-        <Player baslangic={[0, 0, 14]} />
+        <Player baslangic={[0, 0, 46]} />
         <BonusKesifler />
 
         {faz === "gezinti" && nod && <HedefIsigi pos={nod.world.guidePosition} />}

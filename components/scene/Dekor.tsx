@@ -15,9 +15,9 @@ import { oyuncuKonumu } from "@/lib/oyuncuKonum";
  * dağ silüetleri için 1 çağrı. Görsel aynı, maliyet yüzde biri.
  */
 
-const OT_SAYISI = 900;
-const KAYA_SAYISI = 90;
-const DAG_SAYISI = 20;
+const OT_SAYISI = 2600;
+const KAYA_SAYISI = 260;
+const DAG_SAYISI = 26;
 
 export function Dekor() {
   const otTex = useMemo(() => otDokusu(), []);
@@ -39,9 +39,9 @@ export function Dekor() {
     };
 
     for (let i = 0; i < OT_SAYISI; i++) {
-      const x = (rnd() - 0.5) * 240;
-      const z = (rnd() - 0.5) * 250;
-      if (Math.hypot(x, z) > 125) continue;
+      const x = (rnd() - 0.5) * 700;
+      const z = (rnd() - 0.5) * 720;
+      if (Math.hypot(x, z) > 350) continue;
       const s = 0.7 + rnd() * 1.3;
       gecici.position.set(x, araziYukseklik(x, z) + 0.3 * s, z);
       gecici.rotation.set(0, rnd() * Math.PI, 0);
@@ -51,9 +51,9 @@ export function Dekor() {
     }
 
     for (let i = 0; i < KAYA_SAYISI; i++) {
-      const x = (rnd() - 0.5) * 230;
-      const z = (rnd() - 0.5) * 240;
-      if (Math.hypot(x, z) > 120) continue;
+      const x = (rnd() - 0.5) * 680;
+      const z = (rnd() - 0.5) * 700;
+      if (Math.hypot(x, z) > 340) continue;
       const s = 0.35 + rnd() * 1.1;
       gecici.position.set(x, araziYukseklik(x, z) + 0.14 * s, z);
       gecici.rotation.set(rnd() * 3, rnd() * 3, rnd() * 3);
@@ -64,11 +64,11 @@ export function Dekor() {
 
     for (let i = 0; i < DAG_SAYISI; i++) {
       const a = (i / DAG_SAYISI) * Math.PI * 2 + rnd() * 0.3;
-      const r = 150 + rnd() * 40;
+      const r = 400 + rnd() * 90;
       const s = 1 + rnd() * 1.1;
       gecici.position.set(Math.cos(a) * r, 2, Math.sin(a) * r);
       gecici.rotation.set(0, rnd() * Math.PI, 0);
-      gecici.scale.set(18 * s, 16 * s, 18 * s);
+      gecici.scale.set(46 * s, 40 * s, 46 * s);
       gecici.updateMatrix();
       dag.push(gecici.matrix.clone());
     }
