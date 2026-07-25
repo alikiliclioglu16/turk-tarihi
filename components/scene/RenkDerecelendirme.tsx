@@ -30,11 +30,11 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   vec3 c = inputColor.rgb;
   float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
 
-  // gölgelere gece lacivertı
-  c += vec3(0.028, 0.048, 0.098) * (1.0 - smoothstep(0.0, 0.55, l)) * golgeMavi;
+  // gölgelere gökyüzü mavisi (gündüz gölgeleri soğuktur)
+  c += vec3(0.014, 0.024, 0.048) * (1.0 - smoothstep(0.0, 0.5, l)) * golgeMavi;
 
-  // ışıklara ocak kehribarı
-  c *= mix(vec3(1.0), vec3(1.10, 1.005, 0.86), smoothstep(0.28, 1.0, l) * isikSicak);
+  // ışıklara güneş sıcaklığı
+  c *= mix(vec3(1.0), vec3(1.06, 1.02, 0.94), smoothstep(0.35, 1.0, l) * isikSicak);
 
   // doygunluk
   float gri = dot(c, vec3(0.2126, 0.7152, 0.0722));
@@ -55,9 +55,9 @@ class RenkDerecelendirmeEffect extends Effect {
   constructor({
     golgeMavi = 1.0,
     isikSicak = 1.0,
-    kontrast = 1.14,
-    gren = 0.03,
-    doygunluk = 1.06,
+    kontrast = 1.07,
+    gren = 0.012,
+    doygunluk = 1.1,
   } = {}) {
     super("RenkDerecelendirme", fragman, {
       uniforms: new Map<string, THREE.Uniform>([

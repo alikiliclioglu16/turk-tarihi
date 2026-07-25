@@ -45,7 +45,7 @@ export function AtesEfekti({ pos = [0, 0, 0] as [number, number, number] }) {
       alev2.current.rotation.y = -t * 1.1;
     }
     if (isik.current) {
-      isik.current.intensity = 26 + Math.sin(t * 8.5) * 5 + Math.sin(t * 21.3) * 2.5;
+      isik.current.intensity = 9 + Math.sin(t * 8.5) * 2 + Math.sin(t * 21.3) * 1;
     }
 
     if (kivGeo.current) {
@@ -85,7 +85,7 @@ export function AtesEfekti({ pos = [0, 0, 0] as [number, number, number] }) {
 
   return (
     <group position={[pos[0], y, pos[2]]}>
-      <pointLight ref={isik} color="#f0a44a" intensity={26} distance={34} decay={2} position={[0, 1.4, 0]} />
+      <pointLight ref={isik} color="#f0a44a" intensity={9} distance={20} decay={2} position={[0, 1.4, 0]} />
 
       <mesh ref={alev1} position={[0, 0.82, 0]}>
         <coneGeometry args={[0.45, 1.4, 10]} />

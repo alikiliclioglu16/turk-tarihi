@@ -15,7 +15,9 @@ import { BuyukOba } from "./BuyukOba";
 import { GirilebilirOtag } from "./GirilebilirOtag";
 import { Suru } from "./Suru";
 import { HotspotMarker } from "./HotspotMarker";
-import { HedefIsigi } from "./HedefIsigi";
+import { DurakIsigi } from "./DurakIsigi";
+import { AltinYol } from "./AltinYol";
+import { AcilisUcusu } from "./AcilisUcusu";
 import { Dekor } from "./Dekor";
 import { AtesEfekti } from "./AtesEfekti";
 import { IBL } from "./IBL";
@@ -41,7 +43,7 @@ export function D01Scene() {
       gl={{
         antialias: false, // SMAA devrede
         toneMapping: THREE.ACESFilmicToneMapping,
-        toneMappingExposure: 1.15,
+        toneMappingExposure: 1.0,
         powerPreference: "high-performance",
       }}
     >
@@ -72,7 +74,11 @@ export function D01Scene() {
         <Player baslangic={[0, 0, 46]} />
         <BonusKesifler />
 
-        {faz === "gezinti" && nod && <HedefIsigi pos={nod.world.guidePosition} />}
+        <AcilisUcusu />
+        <AltinYol />
+        {(faz === "gezinti" || faz === "kesif" || faz === "acilis") && nod && (
+          <DurakIsigi pos={nod.world.guidePosition} />
+        )}
         {faz === "kesif" &&
           nod?.hotspots.map((h) => (
             <HotspotMarker key={h.id} hotspot={h} gezildi={gezilen.includes(h.id)} />
@@ -81,17 +87,17 @@ export function D01Scene() {
         {/* ---------- SİNEMATİK BORU HATTI ---------- */}
         <EffectComposer multisampling={0}>
           {/* ortam örtüşmesi: nesneleri zemine oturtur, köşelere derinlik verir */}
-          <N8AO aoRadius={1.1} intensity={2.0} distanceFalloff={1.0} color="#0a1020" halfRes quality="low" />
+          <N8AO aoRadius={1.6} intensity={1.5} distanceFalloff={1.0} color="#2a2418" halfRes quality="low" />
           {/* ateş, ay ve ışık sütunlarının halelenmesi */}
           <Bloom
-            intensity={0.95}
-            luminanceThreshold={0.3}
+            intensity={0.35}
+            luminanceThreshold={0.72}
             luminanceSmoothing={0.3}
             mipmapBlur
           />
           {/* gece derecelendirmesi + film greni */}
-          <RenkDerecelendirme golgeMavi={1.0} isikSicak={1.0} kontrast={1.13} gren={0.028} doygunluk={1.07} />
-          <Vignette offset={0.26} darkness={0.78} />
+          <RenkDerecelendirme golgeMavi={1.0} isikSicak={1.0} kontrast={1.07} gren={0.012} doygunluk={1.1} />
+          <Vignette offset={0.32} darkness={0.45} />
           <SMAA />
         </EffectComposer>
       </Suspense>

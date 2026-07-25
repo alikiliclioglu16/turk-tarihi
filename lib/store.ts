@@ -31,6 +31,7 @@ function nodOlcekle(n: TourNode): TourNode {
 
 export type Faz =
   | "yukleniyor"
+  | "acilis"     // kuşbakışı tanıtım uçuşu
   | "gezinti"    // oyuncu serbest yürüyor, hedefe gidiyor
   | "anlati"     // Dede Korkut konuşuyor
   | "kesif"      // hotspotlar açık
@@ -67,6 +68,8 @@ interface Durum {
   bonusKapat: () => void;
   kisiBilgiAc: (id: string, ad: string, metin: string) => void;
   kisiBilgiKapat: () => void;
+  acilisBitti: () => void;
+  acilisAtla: () => void;
   odulAlindi: () => void;
   kapanisBitti: () => void;
   sifirla: () => void;
@@ -96,11 +99,12 @@ export const useOyun = create<Durum>((set, get) => ({
     let index = 0;
     while (index < nodlar.length && tamam.includes(nodlar[index].nodeId)) index++;
     if (index >= nodlar.length) index = nodlar.length - 1;
-    input.kilitli = false;
+    const ilkKez = kayit.tamamlananNodlar.length === 0;
+    input.kilitli = ilkKez;
     set({
       nodlar,
       aktifIndex: index,
-      faz: "gezinti",
+      faz: ilkKez ? "acilis" : "gezinti",
       anlatiIndex: 0,
       gezilenHotspotlar: [],
       kazanilanKartlar: [],
@@ -183,6 +187,15 @@ export const useOyun = create<Durum>((set, get) => ({
 
   kisiBilgiAc: (id, ad, metin) => set({ kisiBilgi: { id, ad, metin } }),
   kisiBilgiKapat: () => set({ kisiBilgi: null }),
+
+  acilisBitti: () => {
+    input.kilitli = false;
+    set({ faz: "gezinti" });
+  },
+  acilisAtla: () => {
+    input.kilitli = false;
+    set({ faz: "gezinti" });
+  },
 
   cokluCevapVer: (secenekId) => {
     const { nodlar, aktifIndex, denemeSayisi, dogruSecilenler } = get();

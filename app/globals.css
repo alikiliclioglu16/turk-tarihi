@@ -254,3 +254,63 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--cini); outline-
 .anlati-metin.kucuk, .panel .kucuk { font-size: 14.5px; }
 
 .kisi-panel { border-color: #4BB3A9; box-shadow: 0 12px 36px #000d, 0 0 0 2px rgba(75,179,169,.22); }
+
+/* ---------- Anlatıcı portresi ---------- */
+.anlatici-portre {
+  position: relative; flex: 0 0 auto;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.45));
+}
+.anlatici-img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain; object-position: bottom center;
+  animation: portreGir .25s ease;
+}
+@keyframes portreGir { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Kart şeridi ---------- */
+.kart-seridi {
+  position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+  z-index: 30; animation: kartGir .5s cubic-bezier(.2,.9,.3,1);
+}
+@keyframes kartGir { from { opacity: 0; transform: translate(60px, -50%); } }
+.kart-seridi-ic {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  background: rgba(12,18,28,.86); border: 1.5px solid rgba(255,207,114,.55);
+  border-radius: 16px; padding: 12px; width: 190px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.5);
+}
+.kart-seridi-gorsel { width: 100%; border-radius: 10px; display: block; }
+.kart-seridi-ikon { font-size: 46px; }
+.kart-seridi-metin { text-align: center; }
+.kart-seridi-etiket {
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: #FFCF72; font-weight: 800;
+}
+.kart-seridi-ad { font-size: 15px; font-weight: 800; color: #F7EBD3; margin-top: 3px; }
+.kart-seridi-kavram { font-size: 11.5px; color: #F7EBD3AA; }
+
+/* ---------- Açılış uçuşu ---------- */
+.acilis-katman {
+  position: absolute; inset: 0; z-index: 28; pointer-events: none;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 42px 32px;
+  background: linear-gradient(180deg, rgba(6,10,18,.5), transparent 22%, transparent 78%, rgba(6,10,18,.5));
+  animation: acilisGir 1.2s ease;
+}
+@keyframes acilisGir { from { opacity: 0; } }
+.acilis-baslik { animation: acilisYaz 1.6s ease .5s both; }
+@keyframes acilisYaz { from { opacity: 0; transform: translateY(14px); } }
+.acilis-ust {
+  font-size: 12px; letter-spacing: .28em; text-transform: uppercase;
+  color: #FFCF72; font-weight: 800;
+}
+.acilis-ad {
+  font-size: clamp(34px, 6vw, 62px); font-weight: 800; color: #FFF6E2;
+  line-height: 1.05; margin-top: 4px; text-shadow: 0 4px 24px rgba(0,0,0,.55);
+}
+.acilis-alt { font-size: 15px; color: #FFF6E2CC; margin-top: 6px; letter-spacing: .06em; }
+.acilis-atla {
+  pointer-events: auto; align-self: flex-end;
+  background: rgba(12,18,28,.7); border: 1.5px solid rgba(255,207,114,.5);
+  color: #F7EBD3; border-radius: 999px; padding: 10px 18px; font-size: 14px; font-weight: 700;
+}

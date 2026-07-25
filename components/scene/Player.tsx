@@ -7,7 +7,7 @@ import { araziYukseklik, DUNYA_YARICAP } from "@/lib/terrain";
 import { hareketVektoru, klavyeyiBagla } from "@/lib/input";
 import { useOyun } from "@/lib/store";
 import { oyuncuKonumu } from "@/lib/oyuncuKonum";
-import { DedeKorkut3D } from "./models/DedeKorkut3D";
+import { GezginModel } from "./models/GezginModel";
 
 const HIZ = 4.6;
 const KOSU_CARPAN = 2.1;    // Shift ile hızlı gezinme (büyük harita için)
@@ -210,7 +210,7 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
 
   return (
     <group ref={grup}>
-      <DedeKorkut3D
+      <GezginModel
         govdeRef={govde}
         basRef={bas}
         pelerinRef={pelerin}
@@ -223,7 +223,7 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
         solDizRef={solDiz}
         sagDizRef={sagDiz}
       />
-      <pointLight position={[0.5, 2.1, 1.1]} intensity={2.2} distance={5} decay={2} color="#cfd8ee" />
+      
     </group>
   );
 }

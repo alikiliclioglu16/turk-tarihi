@@ -9,11 +9,11 @@ import { Hud } from "@/components/ui/Hud";
 import { NarrationPanel } from "@/components/ui/NarrationPanel";
 import { HotspotPanel } from "@/components/ui/HotspotPanel";
 import { QuestPanel } from "@/components/ui/QuestPanel";
-import { RewardCardPanel } from "@/components/ui/RewardCard";
 import { ClosingPanel } from "@/components/ui/ClosingPanel";
 import { Joystick } from "@/components/ui/Joystick";
 import { ilerlemeSifirla } from "@/lib/progress";
 import { BonusPanel } from "@/components/ui/BonusPanel";
+import { KartSeridi } from "@/components/ui/KartSeridi";
 import { KisiPanel } from "@/components/ui/KisiPanel";
 
 // R3F sunucuda render edilemez
@@ -41,6 +41,11 @@ export default function D01Page() {
   const nodlariYukle = useOyun((s) => s.nodlariYukle);
   const kartlar = useOyun((s) => s.kazanilanKartlar);
   const sifirla = useOyun((s) => s.sifirla);
+  const acilisAtla = useOyun((s) => s.acilisAtla);
+  const odulAlindi = useOyun((s) => s.odulAlindi);
+  const nodlar = useOyun((s) => s.nodlar);
+  const aktifIndex = useOyun((s) => s.aktifIndex);
+  const nod = nodlar[aktifIndex] ?? null;
   const [hata, setHata] = useState<string | null>(null);
 
   useEffect(() => {
@@ -80,6 +85,17 @@ export default function D01Page() {
       <div className="vinyet" />
 
       {faz === "yukleniyor" && <div className="yukleniyor">Bozkır hazırlanıyor…</div>}
+
+      {faz === "acilis" && (
+        <div className="acilis-katman">
+          <div className="acilis-baslik">
+            <div className="acilis-ust">D01 · Tarihin Kapısı</div>
+            <h1 className="acilis-ad">Oğuz Obası</h1>
+            <p className="acilis-alt">Bozkır · Öğle vakti</p>
+          </div>
+          <button className="acilis-atla" onClick={acilisAtla}>Tanıtımı geç →</button>
+        </div>
+      )}
       {faz !== "yukleniyor" && <Hud />}
 
       <BonusPanel />
@@ -88,7 +104,9 @@ export default function D01Page() {
       {faz === "anlati" && <NarrationPanel />}
       {faz === "kesif" && <HotspotPanel />}
       {faz === "gorev" && <QuestPanel />}
-      {faz === "odul" && <RewardCardPanel />}
+      {faz === "odul" && nod && (
+        <KartSeridi kart={nod.reward} onBitti={odulAlindi} />
+      )}
       {faz === "kapanis" && <ClosingPanel />}
 
       {faz === "bolumBitti" && (
