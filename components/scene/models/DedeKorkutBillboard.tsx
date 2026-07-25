@@ -27,6 +27,68 @@ const POZ_DOSYA: Record<PozId, string> = {
 
 const BOY = 1.85; // metre — 1024x1536 oranı korunur
 
+/**
+ * Boyalı görselden sahte normal haritası üretir.
+ * Parlaklık farkları yükseklik gibi okunur; düz düzlem ışığa hacimliymiş
+ * gibi tepki verir. Ateşin yanından geçerken yüzü ve cübbesi gerçekten
+ * gölgelenir — düz bir çıkartma gibi durmaz.
+ */
+function normalHaritasiUret(kaynak: THREE.Texture): THREE.Texture | null {
+  const img = kaynak.image as HTMLImageElement | undefined;
+  if (!img || !img.width) return null;
+  const B = 256;
+  const c = document.createElement("canvas");
+  c.width = c.height = B;
+  const g = c.getContext("2d");
+  if (!g) return null;
+  g.drawImage(img, 0, 0, B, B);
+  const veri = g.getImageData(0, 0, B, B);
+  const px = veri.data;
+
+  const yuk = new Float32Array(B * B);
+  for (let i = 0; i < B * B; i++) {
+    const a = px[i * 4 + 3] / 255;
+    const l = (px[i * 4] * 0.299 + px[i * 4 + 1] * 0.587 + px[i * 4 + 2] * 0.114) / 255;
+    yuk[i] = a * (0.35 + l * 0.65);
+  }
+
+  const cikti = g.createImageData(B, B);
+  const kuvvet = 2.4;
+  for (let y = 0; y < B; y++) {
+    for (let x = 0; x < B; x++) {
+      const i = y * B + x;
+      const sol = yuk[y * B + Math.max(0, x - 1)];
+      const sag = yuk[y * B + Math.min(B - 1, x + 1)];
+      const ust = yuk[Math.max(0, y - 1) * B + x];
+      const alt = yuk[Math.min(B - 1, y + 1) * B + x];
+      const dx = (sol - sag) * kuvvet;
+      const dy = (ust - alt) * kuvvet;
+      const uz = Math.hypot(dx, dy, 1);
+      cikti.data[i * 4] = ((dx / uz) * 0.5 + 0.5) * 255;
+      cikti.data[i * 4 + 1] = ((dy / uz) * 0.5 + 0.5) * 255;
+      cikti.data[i * 4 + 2] = ((1 / uz) * 0.5 + 0.5) * 255;
+      cikti.data[i * 4 + 3] = 255;
+    }
+  }
+  g.putImageData(cikti, 0, 0);
+  const t = new THREE.CanvasTexture(c);
+  t.needsUpdate = true;
+  return t;
+}
+
+/** Hafif silindirik bükülmüş düzlem — kenarlar geriye kıvrılır, hacim hissi verir */
+function bukukDuzlem(en: number, boy: number): THREE.BufferGeometry {
+  const g = new THREE.PlaneGeometry(en, boy, 12, 1);
+  const pos = g.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const n = x / (en / 2); // -1..1
+    pos.setZ(i, -(n * n) * en * 0.16);
+  }
+  g.computeVertexNormals();
+  return g;
+}
+
 interface Props {
   poz: PozId;
   yuruyor: boolean;
@@ -65,6 +127,14 @@ export function DedeKorkutBillboard({ poz, yuruyor, yon }: Props) {
   }, [poz]);
 
   const en = BOY * (1024 / 1536);
+  const geometri = useMemo(() => bukukDuzlem(en, BOY), [en]);
+  const normalHaritalari = useMemo(() => {
+    const m = {} as Record<PozId, THREE.Texture | null>;
+    (Object.keys(POZ_DOSYA) as PozId[]).forEach((k) => {
+      m[k] = normalHaritasiUret(dokuHarita[k]);
+    });
+    return m;
+  }, [dokuHarita]);
 
   useFrame(({ camera, clock }, delta) => {
     const t = clock.elapsedTime;
@@ -105,17 +175,18 @@ export function DedeKorkutBillboard({ poz, yuruyor, yon }: Props) {
         <meshBasicMaterial color="#000000" transparent opacity={0.42} depthWrite={false} />
       </mesh>
 
-      <mesh ref={duzlem} position={[0, BOY / 2, 0]} castShadow>
-        <planeGeometry args={[en, BOY]} />
+      <mesh ref={duzlem} position={[0, BOY / 2, 0]} geometry={geometri} castShadow>
         <meshStandardMaterial
           map={dokuHarita[gorunen]}
+          normalMap={normalHaritalari[gorunen] ?? undefined}
+          normalScale={new THREE.Vector2(0.85, 0.85)}
           transparent
           alphaTest={0.32}
-          roughness={1}
+          roughness={0.92}
           metalness={0}
           side={THREE.DoubleSide}
-          emissive="#2a3348"
-          emissiveIntensity={0.35}
+          emissive="#233047"
+          emissiveIntensity={0.28}
         />
       </mesh>
     </group>

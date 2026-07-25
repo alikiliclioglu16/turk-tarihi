@@ -7,6 +7,9 @@ import { araziYukseklik } from "@/lib/terrain";
 import {
   OtagModel, OcakModel, SacayakKazanModel, SandikModel,
   BalbalModel, KopuzModel, KilimModel, KayaModel,
+  AgilModel, KoyunModel, KagniModel, TezgahModel,
+  KurutmaSehpasiModel, OdunYiginiModel, TulumSehpasiModel,
+  MizrakRafiModel, TugModel,
 } from "./models/Props";
 
 interface Props {
@@ -32,6 +35,15 @@ function Prosedurel({ kod, olcek = 1 }: { kod: string; olcek?: number }) {
     case "A07": return <BalbalModel olcek={olcek} />;
     case "A08": return <KilimModel />;
     case "C01": return <KayaModel olcek={olcek} />;
+    case "B13": return <AgilModel />;
+    case "B14": return <KoyunModel olcek={olcek} />;
+    case "B15": return <KagniModel />;
+    case "B16": return <TezgahModel />;
+    case "B17": return <KurutmaSehpasiModel />;
+    case "B18": return <OdunYiginiModel />;
+    case "B19": return <TulumSehpasiModel />;
+    case "B20": return <MizrakRafiModel />;
+    case "B21": return <TugModel />;
     default: {
       const v = varlik(kod);
       if (!v) return null;

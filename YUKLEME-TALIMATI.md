@@ -1,77 +1,76 @@
-# Güncelleme: Dede Korkut Poz Seti
+# TEMİZ KURULUM — Depoyu Sıfırlayıp Bu Paketi Yükleyin
 
-**Bu klasörde yalnızca değişen dosyalar var.** Diğer hiçbir dosyaya dokunmayın.
+Önceki deploy'ların hata vermesinin iki sebebi vardı:
+
+1. Güncelleme zip'inin **dış klasörü** olduğu gibi yüklendi → depoda
+   `GUNCELLEME-oba-buyume/app/...` diye iç içe bir kopya oluştu.
+2. 2.5D denemesinden kalan dosyalar (`components/discovery2d/`) hâlâ
+   depodaydı ve artık var olmayan dosyaları çağırıyordu.
+
+Bu paket **eksiksiz ve derlenmiş** bir projedir. Depoyu sıfırlayıp bunu
+yüklemek, dosya dosya temizlemekten çok daha hızlı ve güvenli.
 
 ---
 
-## GitHub'a nasıl yükleyeceksiniz
+## ADIM 1 — Eski depoyu temizleyin
 
-Bu klasörün içindeki yapı, deponuzdaki yapıyla **birebir aynı**. Her dosyayı
-kendi klasörüne koyacaksınız; GitHub aynı adlı dosyaların üzerine yazar.
+**En hızlı yol:** GitHub'da deponuzu açın, klavyeden **nokta tuşuna ( . )**
+basın. Tarayıcıda bir kod editörü açılır. Sol taraftaki dosya listesinden
+**tüm klasörleri seçip silin** (sağ tık → Delete). Sonra sol üstteki kaynak
+kontrol simgesinden değişikliği **Commit** edin.
 
-### Yol 1 — Toplu (önerilen, tek seferde)
+**Alternatif:** Yeni bir depo oluşturun (`turk-tarihi-v2` gibi) ve Vercel'de
+projeyi yeni depoya bağlayın. Eski depoya hiç dokunmazsınız.
 
-1. GitHub'da deponuzu açın: `alikiliclioglu16/turk-tarihi`
-2. **Add file → Upload files**
-3. Bu klasörün içindeki **`public`, `lib`, `components`, `app`** klasörlerinin
-   dördünü birden sürükleyip bırakın.
-4. Altta "ilk poz seti" yazıp **Commit changes**.
+---
 
-GitHub klasör yapısını koruyarak yükler ve aynı adlı dosyaların üzerine yazar.
-Vercel 2 dakika içinde siteyi kendiliğinden günceller.
+## ADIM 2 — Bu paketi yükleyin
 
-### Yol 2 — Tek tek
+Zip'i açın. İçinde şunları göreceksiniz:
 
-Aşağıdaki 12 dosyayı ilgili klasörlere yükleyin:
+```
+app/          components/     lib/          public/
+package.json  package-lock.json
+next.config.mjs   tsconfig.json   next-env.d.ts
+README.md     SINEMATIK-AYARLAR.md
+```
 
-| Dosya | Depodaki yeri |
+GitHub → **Add file → Upload files** → **bu dosya ve klasörlerin hepsini**
+seçip sürükleyin → **Commit changes**.
+
+### ⚠️ En sık yapılan hata
+
+| ❌ Yanlış | ✅ Doğru |
 |---|---|
-| 8 adet `.webp` | `public/assets/d01/characters/dede-korkut/` |
-| `manifest.ts` | `lib/` |
-| `pozSecici.ts` | `lib/` *(yeni dosya)* |
-| `DedeKorkutGuide.tsx` | `components/discovery2d/` |
-| `page.tsx` | `app/d01/` |
-| `globals.css` | `app/` |
+| Zip'in dış klasörünü sürüklemek | Dış klasörün **içindekileri** sürüklemek |
+| Depoda `dk-3d-hibrit/app/...` oluşur | Depoda `app/...` oluşur |
+
+Deponun ana sayfasında `app`, `components`, `lib`, `public` ve
+`package.json` **doğrudan görünmeli**. Araya başka bir klasör adı girmemeli.
 
 ---
 
-## Ne değişti
+## ADIM 3 — Vercel ayarını kontrol edin
 
-**Yeni:** `lib/pozSecici.ts` — hangi anlatı durumunda hangi pozun görüneceğine
-karar veren tek merkez. Bileşenler artık poz seçmiyor, yalnız çiziyor.
-
-**Güncellendi:**
-- `lib/manifest.ts` — 8 poz `hazir: true` olarak bağlandı, yollar
-  `assets/d01/characters/dede-korkut/` olarak düzeltildi.
-- `components/discovery2d/DedeKorkutGuide.tsx` — `poseId`, `side`, `visible`,
-  `ariaLabel`, `className` props'ları; 220 ms crossfade; `object-fit: contain`.
-- `app/d01/page.tsx` — poz seçimi merkezi modüle bağlandı.
-- `app/globals.css` — poz geçiş animasyonu, oran koruma, mobil yükseklik sınırı.
+Settings → Build and Deployment → **Framework Preset = Next.js** olmalı.
+(Daha önce "Other" ayarlıydı, düzelttiniz — yeni depo açarsanız tekrar bakın.)
 
 ---
 
-## Poz eşlemesi
+## Bu pakette ne var
 
-| Durum | Poz |
-|---|---|
-| Durağa davet, ilk anlatı bloğu | `01_karsilama` |
-| main_a / main_b anlatıları | `02_anlatma` |
-| Bir hotspot incelenirken | `03_isaret` |
-| Görev açıldığında | `04_dusunme` |
-| Keşif sırasında beklerken | `05_dinleme` |
-| Doğru cevap, kart ödülü | `06_onay` |
-| Yanlış cevap, ipucu | `07_yonlendirme` |
-| Kapanış, bölüm sonu | `08_veda` |
+- 3B dünya: arazi, gece gökyüzü, ay, ocak ateşi, kıvılcım, duman, sis
+- **Boyalı Dede Korkut** — 8 poz, normal haritalı, ışığa tepki veren
+- Büyütülmüş oba: 4 otağ, tuğ direği, ağıl ve koyunlar, kağnı, dokuma
+  tezgâhı, kurutma sehpası, odun yığınları, tulum sehpası, mızrak rafı
+- **Meraklı Gözler:** 8 bonus keşif + sayaç
+- 3 durak (kopuz · ocak · sandık) tam oynanabilir
+- Sinematik katman: PCSS gölge, N8AO, IBL, bloom, gece renk derecelendirmesi,
+  film greni, kromatik sapma, alan derinliği, kamera nefesi
+- Ses: sentez ambiyans + gerçek kayıt desteği
+- Yerel ilerleme kaydı
 
-E�lemeyi değiştirmek isterseniz tek dosya: `lib/pozSecici.ts` içindeki `pozSec`.
+## Bundan sonraki güncellemeler
 
----
-
-## Kontrol listesi (yükledikten sonra)
-
-- [ ] `/d01` açılıyor
-- [ ] Dede Korkut görseli çıkıyor (SVG yer tutucu değil)
-- [ ] Durak başında karşılama, anlatırken anlatma pozu geliyor
-- [ ] Hotspota dokununca işaret pozuna geçiyor, geçiş yumuşak
-- [ ] Yanlış cevapta yönlendirme, doğru cevapta onay pozu
-- [ ] Mobilde karakter ekranı boğmuyor, kırpılmıyor
+Node 04–10 JSON'ları geldiğinde delta paketler göndereceğim. Onlarda da
+aynı kural: **dış klasörü değil, içindekileri yükleyin.**

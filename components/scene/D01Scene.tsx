@@ -20,6 +20,7 @@ import { Dekor } from "./Dekor";
 import { AtesEfekti } from "./AtesEfekti";
 import { IBL } from "./IBL";
 import { Sis } from "./Sis";
+import { BonusKesifler } from "./BonusKesifler";
 import { RenkDerecelendirme } from "./RenkDerecelendirme";
 import { D01_YERLESIM } from "@/lib/assets";
 import { useOyun } from "@/lib/store";
@@ -58,6 +59,7 @@ export function D01Scene() {
         ))}
 
         <Player baslangic={[0, 0, 14]} />
+        <BonusKesifler />
 
         {faz === "gezinti" && nod && <HedefIsigi pos={nod.world.guidePosition} />}
         {faz === "kesif" &&

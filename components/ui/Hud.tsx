@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useOyun } from "@/lib/store";
 import { sesBaslat, sessizAyarla, sessizMi, tik } from "@/lib/audio";
+import { BonusSayac } from "./BonusPanel";
 
 export function Hud() {
   const nodlar = useOyun((s) => s.nodlar);
@@ -43,6 +44,7 @@ export function Hud() {
             ))}
           </div>
           <div className="kart-sayaci">🃏 {kartlar.length}</div>
+          <BonusSayac />
           <button
             className="mini-dugme"
             aria-label={sessiz ? "Sesi aç" : "Sesi kapat"}

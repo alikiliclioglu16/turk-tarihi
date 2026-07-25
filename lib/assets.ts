@@ -96,6 +96,25 @@ export const VARLIKLAR: Record<string, VarlikTanimi> = {
     kod: "D05a", ad: "Kilim Parçası", path: null, hazir: false,
     greybox: { sekil: "kutu", boyut: [0.5, 0.03, 0.36], renk: "#A63A32" },
   },
+  /* --- oba genişlemesi --- */
+  B13: { kod: "B13", ad: "Ağıl", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [6.4, 1.1, 6.4], renk: "#5A452C" } },
+  B14: { kod: "B14", ad: "Koyun", path: null, hazir: false,
+    greybox: { sekil: "kure", boyut: [0.6, 0.6, 0.6], renk: "#D8D2C4" } },
+  B15: { kod: "B15", ad: "Kağnı", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [2.2, 1.0, 1.5], renk: "#6E4B26" } },
+  B16: { kod: "B16", ad: "Dokuma Tezgâhı", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [1.9, 1.6, 0.3], renk: "#6E4B26" } },
+  B17: { kod: "B17", ad: "Kurutma Sehpası", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [2.1, 1.3, 0.6], renk: "#5A4126" } },
+  B18: { kod: "B18", ad: "Odun Yığını", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [1.2, 0.9, 1.1], renk: "#5A4126" } },
+  B19: { kod: "B19", ad: "Tulum Sehpası", path: null, hazir: false,
+    greybox: { sekil: "koni", boyut: [0.9, 1.6, 0.9], renk: "#6B4A2E" } },
+  B20: { kod: "B20", ad: "Mızrak Rafı", path: null, hazir: false,
+    greybox: { sekil: "kutu", boyut: [1.5, 2.5, 0.3], renk: "#5A4126" } },
+  B21: { kod: "B21", ad: "Tuğ Direği", path: null, hazir: false,
+    greybox: { sekil: "silindir", boyut: [0.15, 3.7, 0.15], renk: "#6E4B26" } },
 };
 
 export function varlik(kod: string): VarlikTanimi | null {
@@ -131,4 +150,40 @@ export const D01_YERLESIM: Yerlesim[] = [
   { kod: "D03a", pos: [-4.1, 0, -4.2], rotY: -0.3 },
   { kod: "D04a", pos: [-3.7, 0, -3.6], rotY: 0.8 },
   { kod: "D05a", pos: [-2.6, 0, -3.6], rotY: 0.2 },
+
+  /* ---------- OBA GENİŞLEMESİ ---------- */
+  /* Üçüncü ve dördüncü otağ — kamp büyüdü */
+  { kod: "A04", pos: [-13.5, 0, 3.5], rotY: 1.8, olcek: 0.75 },
+  { kod: "A04", pos: [12.5, 0, 5.5], rotY: -1.4, olcek: 0.68 },
+
+  /* Tuğ direği — obanın merkezi işareti */
+  { kod: "B21", pos: [-1.2, 0, -8.5] },
+
+  /* Hayvan ağılı ve sürü */
+  { kod: "B13", pos: [14.5, 0, -4.5], rotY: 2.4 },
+  { kod: "B14", pos: [13.6, 0, -3.4], rotY: 0.6 },
+  { kod: "B14", pos: [14.8, 0, -2.6], rotY: 2.1, olcek: 0.9 },
+  { kod: "B14", pos: [15.6, 0, -4.2], rotY: -0.8, olcek: 1.05 },
+  { kod: "B14", pos: [13.2, 0, -5.4], rotY: 1.2, olcek: 0.95 },
+
+  /* Göç yükü: kağnı */
+  { kod: "B15", pos: [-9.5, 0, -6.5], rotY: 0.5 },
+
+  /* Dokuma alanı */
+  { kod: "B16", pos: [-8.5, 0, 8.5], rotY: -0.35 },
+  { kod: "A08", pos: [-7.4, 0, 9.6], rotY: 0.4 },
+  { kod: "B07", pos: [-9.6, 0, 9.4], rotY: 0.8 },
+
+  /* Erzak ve günlük hayat */
+  { kod: "B17", pos: [7.5, 0, -2.5], rotY: 0.9 },
+  { kod: "B18", pos: [3.5, 0, -6.2], rotY: 0.2 },
+  { kod: "B18", pos: [4.6, 0, -6.9], rotY: 1.1, olcek: 0.8 },
+  { kod: "B19", pos: [9.5, 0, 8.5], rotY: -0.6 },
+  { kod: "B20", pos: [-4.5, 0, -7.4], rotY: 0.15 },
+
+  /* Kamp çevresi taş ve dekor */
+  { kod: "C01", pos: [11.5, 0, 11.5], olcek: 1.3 },
+  { kod: "C01", pos: [-12.5, 0, -2.5], olcek: 1.1 },
+  { kod: "C01", pos: [6.5, 0, 12.5], olcek: 0.9 },
+  { kod: "C01", pos: [-6.5, 0, 12.8], olcek: 1.2 },
 ];

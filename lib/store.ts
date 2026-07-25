@@ -27,6 +27,8 @@ interface Durum {
   sonGeriBildirim: string | null;
   ipucu: string | null;
   dogruSecilenler: string[];
+  bulunanBonuslar: string[];
+  aktifBonusId: string | null;
 
   nodlariYukle: (n: TourNode[]) => void;
   duragiBaslat: () => void;
@@ -36,6 +38,8 @@ interface Durum {
   goreveGec: () => void;
   cevapVer: (secenekId: string) => void;
   cokluCevapVer: (secenekId: string) => void;
+  bonusBul: (id: string) => void;
+  bonusKapat: () => void;
   odulAlindi: () => void;
   kapanisBitti: () => void;
   sifirla: () => void;
@@ -53,6 +57,8 @@ export const useOyun = create<Durum>((set, get) => ({
   sonGeriBildirim: null,
   ipucu: null,
   dogruSecilenler: [],
+  bulunanBonuslar: [],
+  aktifBonusId: null,
 
   nodlariYukle: (nodlar) => {
     const kayit = ilerlemeYukle();
@@ -132,6 +138,19 @@ export const useOyun = create<Durum>((set, get) => ({
       ipucu: ipucu ? ipucu.text : null,
     });
   },
+
+  bonusBul: (id) => {
+    const { bulunanBonuslar } = get();
+    const kayit = ilerlemeYukle();
+    const yeni = bulunanBonuslar.includes(id) ? bulunanBonuslar : [...bulunanBonuslar, id];
+    if (!bulunanBonuslar.includes(id)) {
+      olayKaydet("bonus_kesif", { id });
+      ilerlemeKaydet({ ...kayit, kartlar: kayit.kartlar });
+    }
+    set({ bulunanBonuslar: yeni, aktifBonusId: id });
+  },
+
+  bonusKapat: () => set({ aktifBonusId: null }),
 
   cokluCevapVer: (secenekId) => {
     const { nodlar, aktifIndex, denemeSayisi, dogruSecilenler } = get();
