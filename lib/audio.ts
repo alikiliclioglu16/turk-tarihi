@@ -90,6 +90,7 @@ export function sesBaslat(): void {
     }, 130);
 
     basladi = true;
+    kopuzBaslat();
   } catch {
     /* ses desteklenmiyor — sessizce devam */
   }
@@ -118,6 +119,98 @@ export function sessizAyarla(deger: boolean): void {
 
 export function sessizMi(): boolean {
   return sessiz;
+}
+
+/* ============================================================
+   KOPUZ EZGİSİ — atmosfer müziği
+   Karplus-Strong benzeri mızraplı tel sentezi ile üretilmiş
+   pentatonik bir ezgi. Gerçek kopuz kaydı geldiğinde kapatılacak.
+   ============================================================ */
+
+let ezgiZaman: number | null = null;
+let ezgiKazanc: GainNode | null = null;
+
+/** Tek bir tel darbesi — mızrap sesi */
+function telCal(frekans: number, sure: number, guc: number, gecikme: number) {
+  if (!ctx || !ezgiKazanc) return;
+  const t0 = ctx.currentTime + gecikme;
+  const n = Math.floor(ctx.sampleRate * sure);
+  const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+  const veri = buf.getChannelData(0);
+
+  // Karplus-Strong: kısa gürültü + gecikme hattı ortalaması
+  const p = Math.max(2, Math.floor(ctx.sampleRate / frekans));
+  const hat = new Float32Array(p);
+  for (let i = 0; i < p; i++) hat[i] = Math.random() * 2 - 1;
+  let idx = 0;
+  for (let i = 0; i < n; i++) {
+    const sonraki = (idx + 1) % p;
+    const deger = (hat[idx] + hat[sonraki]) * 0.5 * 0.996;
+    veri[i] = hat[idx] * Math.exp(-3.2 * (i / n));
+    hat[idx] = deger;
+    idx = sonraki;
+  }
+
+  const kaynak = ctx.createBufferSource();
+  kaynak.buffer = buf;
+  const g = ctx.createGain();
+  g.gain.value = guc;
+  const filtre = ctx.createBiquadFilter();
+  filtre.type = "lowpass";
+  filtre.frequency.value = 2600;
+  kaynak.connect(filtre).connect(g).connect(ezgiKazanc);
+  kaynak.start(t0);
+  kaynak.stop(t0 + sure);
+}
+
+/** Pentatonik ezgi — bozkır tınısı */
+const EZGI: (number | null)[] = [
+  0, null, 3, 5, 7, null, 5, 3,
+  0, null, -2, 0, 3, null, 7, 5,
+  7, 10, 7, 5, 3, null, 0, null,
+  -2, null, 0, null, null, null, null, null,
+];
+const KOK_FREK = 146.83; // D3
+
+function nota(yariTon: number): number {
+  return KOK_FREK * Math.pow(2, yariTon / 12);
+}
+
+export function kopuzBaslat(): void {
+  if (!ctx || ezgiZaman !== null) return;
+  ezgiKazanc = ctx.createGain();
+  ezgiKazanc.gain.value = 0.16;
+  ezgiKazanc.connect(anaKazanc!);
+
+  const olcuSure = 0.42;           // nota aralığı (sn)
+  const dongu = EZGI.length * olcuSure;
+
+  const cal = () => {
+    if (!ctx) return;
+    EZGI.forEach((n, i) => {
+      if (n === null) return;
+      telCal(nota(n), 1.6, 0.5 + (i % 4 === 0 ? 0.2 : 0), i * olcuSure);
+    });
+    // dem: her turda bir kez alt oktav
+    telCal(nota(-12), 3.2, 0.35, 0);
+    telCal(nota(-5), 3.0, 0.22, olcuSure * 8);
+  };
+
+  cal();
+  ezgiZaman = window.setInterval(cal, dongu * 1000);
+}
+
+export function kopuzDurdur(): void {
+  if (ezgiZaman !== null) window.clearInterval(ezgiZaman);
+  ezgiZaman = null;
+  try { ezgiKazanc?.disconnect(); } catch { /* yoksay */ }
+  ezgiKazanc = null;
+}
+
+/** Anlatı sırasında müziği kıs */
+export function kopuzKis(kis: boolean): void {
+  if (!ezgiKazanc || !ctx) return;
+  ezgiKazanc.gain.setTargetAtTime(kis ? 0.05 : 0.16, ctx.currentTime, 0.4);
 }
 
 /** Kopuz tonunda kısa başarı tınısı (gerçek kayıt gelene kadar) */
@@ -197,8 +290,10 @@ export function seslendir(metin: string): boolean {
     s.volume = 1;
     // konuşurken ambiyansı kıs
     if (ambiyansKazanc && ctx) ambiyansKazanc.gain.setTargetAtTime(0.22, ctx.currentTime, 0.2);
+    kopuzKis(true);
     const geriAc = () => {
       if (ambiyansKazanc && ctx) ambiyansKazanc.gain.setTargetAtTime(0.5, ctx.currentTime, 0.4);
+      kopuzKis(false);
     };
     s.onend = geriAc;
     s.onerror = geriAc;
@@ -240,9 +335,11 @@ export function anlatiCal(dosyaAdi: string, yedekMetin?: string): boolean {
     // anlatı çalarken ambiyansı kıs
     a.onplay = () => {
       if (ambiyansKazanc && ctx) ambiyansKazanc.gain.setTargetAtTime(0.22, ctx.currentTime, 0.2);
+      kopuzKis(true);
     };
     const geriYukselt = () => {
       if (ambiyansKazanc && ctx) ambiyansKazanc.gain.setTargetAtTime(0.5, ctx.currentTime, 0.4);
+      kopuzKis(false);
     };
     a.onended = geriYukselt;
     a.onpause = geriYukselt;

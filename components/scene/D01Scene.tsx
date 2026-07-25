@@ -15,6 +15,7 @@ import { Halk } from "./Halk";
 import { BuyukOba } from "./BuyukOba";
 import { GirilebilirOtag } from "./GirilebilirOtag";
 import { Suru } from "./Suru";
+import { Canlilar } from "./Canlilar";
 import { HotspotMarker } from "./HotspotMarker";
 import { DurakIsigi } from "./DurakIsigi";
 import { AltinYol } from "./AltinYol";
@@ -72,6 +73,7 @@ export function D01Scene() {
         <GirilebilirOtag pos={[-84, 52]} rotY={2.0} olcek={1.2} tur="usta" />
         <GirilebilirOtag pos={[52, -76]} rotY={1.4} olcek={1.2} tur="aile" />
         <Suru />
+        <Canlilar />
 
         <Player baslangic={[0, 0, 46]} />
         <BonusKesifler />

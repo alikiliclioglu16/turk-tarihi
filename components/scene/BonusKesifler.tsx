@@ -3,7 +3,16 @@
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { bonusKesifler } from "@/lib/bonusKesifler";
+import { bonusKesifler, bonusKesifBul } from "@/lib/bonusKesifler";
+
+// store'un keşif kartı üretebilmesi için köprü
+if (typeof globalThis !== "undefined") {
+  (globalThis as { __bonusMetin?: (id: string) => { ad: string; metin: string } | null }).__bonusMetin =
+    (id: string) => {
+      const b = bonusKesifBul(id);
+      return b ? { ad: b.ad, metin: b.metin } : null;
+    };
+}
 import { useOyun } from "@/lib/store";
 import { tik } from "@/lib/audio";
 import { oyuncuKonumu } from "@/lib/oyuncuKonum";

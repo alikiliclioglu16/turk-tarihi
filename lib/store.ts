@@ -5,6 +5,7 @@ import type { TourNode, RewardCard } from "./types";
 import { input } from "./input";
 import { ilerlemeYukle, ilerlemeKaydet, olayKaydet } from "./progress";
 import { DUNYA_OLCEK } from "./dunyaOlcek";
+import { kesifKartiYap, type KesifKarti } from "./kartlar";
 
 /**
  * JSON koordinatları tasarım ölçeğinde yazıldı. Dünya 2.6 katına
@@ -55,6 +56,8 @@ interface Durum {
   bulunanBonuslar: string[];
   aktifBonusId: string | null;
   kisiBilgi: { id: string; ad: string; metin: string } | null;
+  aktifKesifKarti: KesifKarti | null;
+  kesifKoleksiyonu: KesifKarti[];
 
   nodlariYukle: (n: TourNode[]) => void;
   duragiBaslat: () => void;
@@ -68,6 +71,7 @@ interface Durum {
   bonusKapat: () => void;
   kisiBilgiAc: (id: string, ad: string, metin: string) => void;
   kisiBilgiKapat: () => void;
+  kesifKartiKapat: () => void;
   acilisBitti: () => void;
   acilisAtla: () => void;
   odulAlindi: () => void;
@@ -90,6 +94,8 @@ export const useOyun = create<Durum>((set, get) => ({
   bulunanBonuslar: [],
   aktifBonusId: null,
   kisiBilgi: null,
+  aktifKesifKarti: null,
+  kesifKoleksiyonu: [],
 
   nodlariYukle: (hamNodlar) => {
     const nodlar = hamNodlar.map(nodOlcekle);
@@ -114,7 +120,8 @@ export const useOyun = create<Durum>((set, get) => ({
   duragiBaslat: () => {
     const { faz } = get();
     if (faz !== "gezinti") return;
-    input.kilitli = true;
+    // Anlatı sırasında hareket serbest — sahne durmaz, hayat akar.
+    input.kilitli = false;
     olayKaydet("durak_baslatildi", { index: get().aktifIndex });
     set({ faz: "anlati", anlatiIndex: 0, gezilenHotspotlar: [], denemeSayisi: 0 });
   },
@@ -132,18 +139,31 @@ export const useOyun = create<Durum>((set, get) => ({
   },
 
   hotspotAc: (id) => {
-    const { gezilenHotspotlar } = get();
+    const { gezilenHotspotlar, nodlar, aktifIndex, kesifKoleksiyonu } = get();
+    const nod = nodlar[aktifIndex];
+    const h = nod?.hotspots.find((x) => x.id === id);
+    const kart = h
+      ? kesifKartiYap(`${nod.nodeId}_${h.id}`, h.label, nod.title, h.text, "hotspot")
+      : null;
     set({
       aktifHotspotId: id,
+      aktifKesifKarti: kart,
+      kesifKoleksiyonu:
+        kart && !kesifKoleksiyonu.some((k) => k.id === kart.id)
+          ? [...kesifKoleksiyonu, kart]
+          : kesifKoleksiyonu,
       gezilenHotspotlar: gezilenHotspotlar.includes(id)
         ? gezilenHotspotlar
         : [...gezilenHotspotlar, id],
     });
   },
 
+  kesifKartiKapat: () => set({ aktifKesifKarti: null, aktifHotspotId: null }),
+
   hotspotKapat: () => set({ aktifHotspotId: null }),
 
   goreveGec: () => {
+    // yalnız görev panelinde hareket kilitlenir
     input.kilitli = true;
     set({ faz: "gorev", aktifHotspotId: null, denemeSayisi: 0, sonGeriBildirim: null, ipucu: null, dogruSecilenler: [] });
   },
@@ -180,7 +200,12 @@ export const useOyun = create<Durum>((set, get) => ({
       olayKaydet("bonus_kesif", { id });
       ilerlemeKaydet({ ...kayit, kartlar: kayit.kartlar });
     }
-    set({ bulunanBonuslar: yeni, aktifBonusId: id });
+    const bk = (globalThis as { __bonusMetin?: (id: string) => { ad: string; metin: string } | null }).__bonusMetin?.(id);
+    set({
+      bulunanBonuslar: yeni,
+      aktifBonusId: id,
+      aktifKesifKarti: bk ? kesifKartiYap(id, bk.ad, "Meraklı Gözler", bk.metin, "bonus") : null,
+    });
   },
 
   bonusKapat: () => set({ aktifBonusId: null }),

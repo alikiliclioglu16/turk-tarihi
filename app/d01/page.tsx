@@ -6,14 +6,13 @@ import Link from "next/link";
 import { useOyun } from "@/lib/store";
 import type { TourNode } from "@/lib/types";
 import { Hud } from "@/components/ui/Hud";
-import { NarrationPanel } from "@/components/ui/NarrationPanel";
-import { HotspotPanel } from "@/components/ui/HotspotPanel";
 import { QuestPanel } from "@/components/ui/QuestPanel";
 import { ClosingPanel } from "@/components/ui/ClosingPanel";
 import { Joystick } from "@/components/ui/Joystick";
 import { ilerlemeSifirla } from "@/lib/progress";
-import { BonusPanel } from "@/components/ui/BonusPanel";
-import { KartSeridi } from "@/components/ui/KartSeridi";
+import { DurakKartiPaneli } from "@/components/ui/DurakKartiPaneli";
+import { KesifKartiPaneli } from "@/components/ui/KesifKartiPaneli";
+import { AnlatiSeridi } from "@/components/ui/AnlatiSeridi";
 import { MiniHarita } from "@/components/ui/MiniHarita";
 import { KisiPanel } from "@/components/ui/KisiPanel";
 
@@ -47,6 +46,13 @@ export default function D01Page() {
   const nodlar = useOyun((s) => s.nodlar);
   const aktifIndex = useOyun((s) => s.aktifIndex);
   const nod = nodlar[aktifIndex] ?? null;
+  const gezilen = useOyun((s) => s.gezilenHotspotlar);
+  const aktifKesifKarti = useOyun((s) => s.aktifKesifKarti);
+  const kesifKartiKapat = useOyun((s) => s.kesifKartiKapat);
+  const goreveGec = useOyun((s) => s.goreveGec);
+  const zorunlu = nod?.completion.requiredHotspots ?? [];
+  const bulunan = zorunlu.filter((id) => gezilen.includes(id)).length;
+  const hepsiGezildi = zorunlu.length > 0 && bulunan >= zorunlu.length;
   const [hata, setHata] = useState<string | null>(null);
 
   useEffect(() => {
@@ -100,14 +106,39 @@ export default function D01Page() {
       {faz !== "yukleniyor" && <Hud />}
       {faz !== "yukleniyor" && <MiniHarita />}
 
-      <BonusPanel />
       <KisiPanel />
 
-      {faz === "anlati" && <NarrationPanel />}
-      {faz === "kesif" && <HotspotPanel />}
+      {faz === "anlati" && <AnlatiSeridi />}
+
+      {/* keşif fazı: kart yoksa ince ipucu şeridi */}
+      {faz === "kesif" && !aktifKesifKarti && (
+        <div className="kesif-serit" role="status">
+          🧭 Parlayan noktalara yürü
+          <span className="kesif-noktalar" aria-hidden="true">
+            {zorunlu.map((id) => (
+              <span key={id} className={`kesif-nokta ${gezilen.includes(id) ? "bulundu" : ""}`} />
+            ))}
+          </span>
+          <span className="kesif-sayi">{bulunan}/{zorunlu.length}</span>
+          {hepsiGezildi && (
+            <button type="button" className="ana-dugme kucuk" onClick={goreveGec}>
+              Göreve Geç 🎯
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* keşif kartı — hotspot veya bonus */}
+      {aktifKesifKarti && (
+        <KesifKartiPaneli
+          kart={aktifKesifKarti}
+          onKapat={kesifKartiKapat}
+          sonraki={faz === "kesif" && hepsiGezildi ? goreveGec : undefined}
+        />
+      )}
       {faz === "gorev" && <QuestPanel />}
       {faz === "odul" && nod && (
-        <KartSeridi kart={nod.reward} onBitti={odulAlindi} />
+        <DurakKartiPaneli kart={nod.reward} onBitti={odulAlindi} />
       )}
       {faz === "kapanis" && <ClosingPanel />}
 

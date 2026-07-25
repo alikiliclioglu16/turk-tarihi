@@ -38,18 +38,40 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
   const adimFaz = useRef(0);
   const yuruyusYogunluk = useRef(0);
   const kosuyor = useRef(false);
+  const oturuyor = useRef(false);
+  const ziplamaHizi = useRef(0);
+  const ziplamaYuk = useRef(0);
+  const havada = useRef(false);
   const kameraHedef = useRef(new THREE.Vector3());
   const yon = useRef(new THREE.Vector3());
 
   useEffect(() => klavyeyiBagla(), []);
 
   useEffect(() => {
-    const shift = (e: KeyboardEvent) => { kosuyor.current = e.shiftKey; };
-    window.addEventListener("keydown", shift);
-    window.addEventListener("keyup", shift);
+    const down = (e: KeyboardEvent) => {
+      kosuyor.current = e.shiftKey;
+      if (e.code === "Space") {
+        e.preventDefault();
+        if (!havada.current && !oturuyor.current) {
+          havada.current = true;
+          ziplamaHizi.current = 5.4;   // m/s
+        }
+      }
+      if (e.code === "ControlLeft" || e.code === "ControlRight") {
+        oturuyor.current = true;
+      }
+    };
+    const up = (e: KeyboardEvent) => {
+      kosuyor.current = e.shiftKey;
+      if (e.code === "ControlLeft" || e.code === "ControlRight") {
+        oturuyor.current = false;
+      }
+    };
+    window.addEventListener("keydown", down);
+    window.addEventListener("keyup", up);
     return () => {
-      window.removeEventListener("keydown", shift);
-      window.removeEventListener("keyup", shift);
+      window.removeEventListener("keydown", down);
+      window.removeEventListener("keyup", up);
     };
   }, []);
 
@@ -79,13 +101,20 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
     };
   }, [gl]);
 
+  /**
+   * Başlangıç konumu YALNIZ BİR KEZ uygulanır.
+   * Önceden bağımlılık dizisi her render'da yenilendiği için karakter
+   * her panel kapanışında başa ışınlanıyordu.
+   */
+  const yerlesti = useRef(false);
   useEffect(() => {
-    if (grup.current) {
-      grup.current.position.set(baslangic[0], araziYukseklik(baslangic[0], baslangic[2]), baslangic[2]);
-      hedefAci.current = Math.PI;
-      grup.current.rotation.y = Math.PI;
-    }
-  }, [baslangic]);
+    if (yerlesti.current || !grup.current) return;
+    yerlesti.current = true;
+    grup.current.position.set(baslangic[0], araziYukseklik(baslangic[0], baslangic[2]), baslangic[2]);
+    hedefAci.current = Math.PI;
+    grup.current.rotation.y = Math.PI;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useFrame((state, delta) => {
     const g = grup.current;
@@ -94,7 +123,7 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
     const t = state.clock.elapsedTime;
 
     const girdi = hareketVektoru();
-    const guc = Math.min(1, Math.hypot(girdi.x, girdi.z));
+    const guc = oturuyor.current ? 0 : Math.min(1, Math.hypot(girdi.x, girdi.z));
     const yuruyor = guc > 0.08;
     const hiz = HIZ * (kosuyor.current ? KOSU_CARPAN : 1);
 
@@ -110,7 +139,18 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
       hedefAci.current = aci;
       adimFaz.current += dt * ADIM_TEMPO * guc * (kosuyor.current ? 1.5 : 1);
     }
-    g.position.y = araziYukseklik(g.position.x, g.position.z);
+    // zıplama
+    const zemin = araziYukseklik(g.position.x, g.position.z);
+    if (havada.current) {
+      ziplamaHizi.current -= 14 * dt;              // yerçekimi
+      ziplamaYuk.current += ziplamaHizi.current * dt;
+      if (ziplamaYuk.current <= 0) {
+        ziplamaYuk.current = 0;
+        ziplamaHizi.current = 0;
+        havada.current = false;
+      }
+    }
+    g.position.y = zemin + ziplamaYuk.current;
     oyuncuKonumu.x = g.position.x;
     oyuncuKonumu.y = g.position.y;
     oyuncuKonumu.z = g.position.z;
@@ -127,6 +167,7 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
     g.rotation.y += fark * Math.min(1, dt * 9);
 
     /* ---------- YÜRÜYÜŞ DÖNGÜSÜ ---------- */
+    const otur = oturuyor.current ? 1 : 0;
     const sal = Math.sin(faz);
     const karsi = Math.sin(faz + Math.PI);
     const genlik = kosuyor.current ? 0.75 : 0.52;
@@ -137,7 +178,8 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
     if (sagDiz.current) sagDiz.current.rotation.x = -Math.max(0, -karsi) * 0.85 * y;
 
     if (solKol.current) {
-      solKol.current.rotation.x = THREE.MathUtils.lerp(solKol.current.rotation.x, karsi * 0.36 * y, 0.3);
+      const hedef = havada.current ? -1.1 : otur ? -0.5 : karsi * 0.36 * y;
+      solKol.current.rotation.x = THREE.MathUtils.lerp(solKol.current.rotation.x, hedef, 0.25);
     }
     if (solDirsek.current) {
       solDirsek.current.rotation.x = -0.24 - Math.max(0, karsi) * 0.32 * y;
@@ -148,10 +190,27 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
     if (sagDirsek.current) {
       sagDirsek.current.rotation.x = -0.6 + sal * 0.09 * y;
     }
+    if (solBacak.current && sagBacak.current && solDiz.current && sagDiz.current) {
+      const hedefKalca = otur * -1.45;
+      const hedefDiz = otur * 1.5;
+      solBacak.current.rotation.x = THREE.MathUtils.lerp(solBacak.current.rotation.x, sal * genlik * y + hedefKalca, otur ? 0.18 : 0.35);
+      sagBacak.current.rotation.x = THREE.MathUtils.lerp(sagBacak.current.rotation.x, karsi * genlik * y + hedefKalca, otur ? 0.18 : 0.35);
+      solDiz.current.rotation.x = THREE.MathUtils.lerp(solDiz.current.rotation.x, -Math.max(0, -sal) * 0.85 * y + hedefDiz, otur ? 0.18 : 0.35);
+      sagDiz.current.rotation.x = THREE.MathUtils.lerp(sagDiz.current.rotation.x, -Math.max(0, -karsi) * 0.85 * y + hedefDiz, otur ? 0.18 : 0.35);
+    }
+
     if (govde.current) {
-      govde.current.position.y = Math.abs(Math.sin(faz)) * 0.03 * y + Math.sin(t * 1.4) * 0.006;
+      // otururken gövde alçalır, zıplarken hafif toplanır
+      const alcak = otur * -0.46;
+      const zipHedef = havada.current ? -0.06 : 0;
+      govde.current.position.y = THREE.MathUtils.lerp(
+        govde.current.position.y,
+        alcak + zipHedef + Math.abs(Math.sin(faz)) * 0.03 * y + Math.sin(t * 1.4) * 0.006,
+        0.22
+      );
       govde.current.rotation.z = Math.sin(faz) * 0.026 * y;
       govde.current.rotation.y = Math.sin(faz) * 0.055 * y;
+      govde.current.rotation.x = THREE.MathUtils.lerp(govde.current.rotation.x, otur * 0.12, 0.2);
     }
     if (pelerin.current) {
       // pelerin yürürken hafif savrulur

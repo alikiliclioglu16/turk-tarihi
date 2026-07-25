@@ -330,3 +330,95 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--cini); outline-
 @media (max-width: 720px) {
   .mini-harita { right: 10px; bottom: 84px; transform: scale(.78); transform-origin: bottom right; }
 }
+
+/* ---------- Anlatı şeridi (altyazı) ---------- */
+.anlati-seridi {
+  position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
+  z-index: 22; width: min(900px, calc(100% - 32px));
+  display: flex; align-items: flex-end; gap: 12px;
+  animation: seritGir .35s ease;
+}
+@keyframes seritGir { from { opacity: 0; transform: translate(-50%, 14px); } }
+.anlati-seridi-portre { flex: 0 0 auto; }
+.anlati-seridi-govde {
+  flex: 1; min-width: 0;
+  background: rgba(10,16,26,.86); border: 1px solid rgba(255,207,114,.35);
+  border-radius: 14px; padding: 11px 15px; backdrop-filter: blur(6px);
+}
+.anlati-seridi-ust { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.anlati-seridi-ad { font-size: 13px; font-weight: 800; color: #FFCF72; letter-spacing: .02em; }
+.anlati-seridi-yer {
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: #F7EBD388; font-weight: 700; flex: 1;
+}
+.anlati-seridi-metin { font-size: 15.5px; line-height: 1.5; color: #F7EBD3; min-height: 2.6em; }
+.anlati-seridi-dugme {
+  flex: 0 0 auto; align-self: center;
+  background: linear-gradient(135deg, var(--alev), var(--kilim)); color: #fff;
+  border: none; border-radius: 12px; padding: 12px 18px; font-weight: 700; font-size: 14.5px;
+  box-shadow: 0 5px 16px rgba(184,67,58,.4);
+}
+.anlati-seridi-dugme.bekliyor { opacity: .4; }
+
+/* ---------- Keşif kartı ---------- */
+.kesif-karti {
+  position: absolute; right: 18px; top: 84px; z-index: 26;
+  width: min(330px, calc(100vw - 36px));
+  background: linear-gradient(165deg, #FFFDF6, #F2E6CB);
+  color: var(--murekkep); border-radius: 16px; padding: 15px;
+  border: 2px solid rgba(255,207,114,.85);
+  box-shadow: 0 16px 44px rgba(0,0,0,.42);
+  animation: kesifGir .38s cubic-bezier(.2,.9,.3,1);
+}
+@keyframes kesifGir { from { opacity: 0; transform: translateX(40px); } }
+.kesif-karti-ust { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 9px; }
+.kesif-karti-ikon { font-size: 24px; line-height: 1; }
+.kesif-karti-baslik { font-size: 16px; font-weight: 800; color: var(--kilim); }
+.kesif-karti-alt {
+  font-size: 10px; letter-spacing: .13em; text-transform: uppercase;
+  color: #2a211888; font-weight: 700;
+}
+.kesif-karti-metin { font-size: 14.5px; line-height: 1.55; }
+.kesif-karti-dugmeler { display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end; }
+.ikinci-dugme.kucuk, .ana-dugme.kucuk { padding: 8px 14px; font-size: 13px; width: auto; }
+
+/* ---------- Durak kartı (çevrilebilir) ---------- */
+.durak-karti-katman {
+  position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+  z-index: 28; animation: kesifGir .45s cubic-bezier(.2,.9,.3,1);
+}
+.durak-karti-kutu { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 240px; }
+.durak-karti-etiket {
+  font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase;
+  color: #FFCF72; font-weight: 800;
+  background: rgba(10,16,26,.8); padding: 5px 12px; border-radius: 999px;
+}
+.kart-cevir {
+  position: relative; width: 240px; aspect-ratio: 1086 / 1448;
+  background: none; border: none; padding: 0; cursor: pointer;
+  perspective: 1100px;
+}
+.kart-yuz {
+  position: absolute; inset: 0; border-radius: 14px; overflow: hidden;
+  backface-visibility: hidden; transition: transform .7s cubic-bezier(.2,.7,.3,1.05);
+  box-shadow: 0 14px 40px rgba(0,0,0,.5);
+  display: grid; place-items: center;
+  background: #F2E6CB; color: var(--murekkep);
+}
+.kart-yuz img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.kart-on { transform: rotateY(0deg); }
+.kart-arka { transform: rotateY(180deg); }
+.kart-cevir.arka .kart-on { transform: rotateY(-180deg); }
+.kart-cevir.arka .kart-arka { transform: rotateY(0deg); }
+.kart-yedek { padding: 18px; font-size: 14px; text-align: center; }
+.durak-karti-alt { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.durak-karti-ipucu { font-size: 11.5px; color: #F7EBD3AA; }
+
+@media (max-width: 720px) {
+  .anlati-seridi { width: calc(100% - 16px); bottom: 10px; gap: 8px; }
+  .anlati-seridi-portre { display: none; }
+  .anlati-seridi-metin { font-size: 14px; }
+  .kesif-karti { right: 10px; top: 70px; width: calc(100vw - 20px); max-width: 340px; }
+  .durak-karti-katman { right: 50%; transform: translate(50%, -50%); }
+  .kart-cevir, .durak-karti-kutu { width: 200px; }
+}
