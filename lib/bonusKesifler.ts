@@ -208,14 +208,14 @@ export const obaBonusKesifler: BonusKesif[] = [
     id: "bk_tezgah",
     ad: "Dokuma Tezgâhı",
     pos: [-8.5, 1.4, 8.5],
-    metin: "Bir kilim günlerce dokunur. Her sıra bir gün, her desen bir dilek olabilir.",
-    kaynakNotu: "DOĞRULANMALI — dokuma tezgâhı biçimi dönem ve bölgeye göre değişir.",
+    metin: "Tezgâhtaki ipler sıra sıra ilerliyor. Yapım süresi, ölçüye ve tekniğe göre değişebilir.",
+    kaynakNotu: "The Metropolitan Museum of Art, Spindle Whorl, 9th–10th century, Object 38.40.1, https://www.metmuseum.org/art/collection/search/449217; British Museum, Central Asian plain-weave textile, 8th–9th century, Museum no. 1907,1111.216, https://www.britishmuseum.org/collection/object/A_1907-1111-216",
   },
   {
     id: "bk_kagni",
     ad: "Yüklü Kağnı",
     pos: [-9.5, 1.1, -6.5],
-    metin: "Bu araba yüklü duruyor. Demek ki yakında yola çıkılacak.",
+    metin: "Araba yüklü duruyor. Yükün ne zaman ve nereye taşınacağını bilmiyoruz.",
     kaynakNotu: "DOĞRULANMALI — kağnı tipi ve tekerlek yapısı kaynakla eşleştirilmeli.",
   },
   {

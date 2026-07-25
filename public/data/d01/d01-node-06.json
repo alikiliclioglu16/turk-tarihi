@@ -84,7 +84,7 @@
       "label": "İncele",
       "audio": "d01_n06_hs_su_sehpasi.wav",
       "required": true,
-      "text": "Bu düzenek su tulumunu doldurmayı kolaylaştırabilir. Biçimi, malzemesi ve dönemi gerçek bir müze örneğiyle doğrulanmalıdır.",
+      "text": "Bu sehpa, tulumu sahnede sabit tutan temsili bir düzenektir. Tarihsel bir örnek olarak sunulmaz.",
       "sourceNote": "DOĞRULANMALI — F04 su tulumu doldurma sehpasının tarihsel biçimi için kurumsal veya müze referansı henüz kilitlenmemiştir."
     },
     {
@@ -98,8 +98,8 @@
       "label": "İncele",
       "audio": "d01_n06_hs_ahsap_kova.wav",
       "required": false,
-      "text": "Ahşap kap, su taşımaya yardım edebilir. Üretim tekniği, bağlantıları, sapı ve biçimi dönemsel örneklerle karşılaştırılmalıdır.",
-      "sourceNote": "DOĞRULANMALI — F07 ahşap su kovasının biçimi, erken Türk veya Orta Asya maddi kültürü müze örneğine bağlanmalıdır."
+      "text": "Ahşap kap, su taşımaya yardım edebilir. Sahnedeki biçim belirli bir müze örneğini kopyalamaz.",
+      "sourceNote": "British Museum, turned wooden bowl, 651–750, Museum no. 1928,1022.106.a, https://www.britishmuseum.org/collection/object/A_1928-1022-106-a"
     }
   ],
   "quest": {

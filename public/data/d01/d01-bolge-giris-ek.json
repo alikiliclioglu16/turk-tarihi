@@ -1,0 +1,28 @@
+{
+  "bolgeGiris": {
+    "ordugah": [
+      {
+        "id": "d01_bolge_ordugah_01",
+        "audio": "d01_bolge_ordugah_01.wav",
+        "text": "Bak yolcu; sıralı çadırlar, nöbet kuleleri ve talim alanları düzenli bir görünüş kuruyor. Öğlen ışığı her çizgiyi belirginleştiriyor."
+      },
+      {
+        "id": "d01_bolge_ordugah_02",
+        "audio": "d01_bolge_ordugah_02.wav",
+        "text": "Burada talim, görev ve birlikte çalışma düzenini inceleyeceksin. Fakat tarih yalnız savaşlardan oluşmaz; günlük yaşam da topluluğu anlatır."
+      }
+    ],
+    "pazaryeri": [
+      {
+        "id": "d01_bolge_pazaryeri_01",
+        "audio": "d01_bolge_pazaryeri_01.wav",
+        "text": "Öğlen ışığında gölgelikler altında tezgâhlar, hayvanlar ve kağnılar canlı bir akış oluşturuyor. Sesler, renkler ve hareketler pazarı dolduruyor."
+      },
+      {
+        "id": "d01_bolge_pazaryeri_02",
+        "audio": "d01_bolge_pazaryeri_02.wav",
+        "text": "Burada yalnız eşyalar değişmez, haberler ve alışkanlıklar da karşılaşır. İnsanların konuşmalarını izleyerek farklı kültürlerin ve haberlerin dolaşımını keşfedebilirsin."
+      }
+    ]
+  }
+}

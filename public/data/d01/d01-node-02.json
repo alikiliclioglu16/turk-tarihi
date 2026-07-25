@@ -70,7 +70,7 @@
       "label": "İncele",
       "audio": "d01_n02_hs_sacayak_kazan.wav",
       "required": true,
-      "text": "Sacayağın üç ayağı, kazanı ateş üzerinde dengeler. Kazan, yemeğin pişirilmesine ve paylaşılmasına yardım eder.",
+      "text": "Üç ayaklı düzenek, kazanı ateş üzerinde dengede tutuyor. Sahnedeki biçim temsili olarak kullanılmıştır.",
       "sourceNote": "DOĞRULANMALI — IX-XI. yüzyıl Oğuz çevresinde kullanılacak sacayak ve kazan biçimleri, müze kataloğu veya arkeolojik buluntuyla doğrulanmalıdır."
     },
     {
@@ -85,7 +85,7 @@
       "audio": "d01_n02_hs_ahsap_canak.wav",
       "required": true,
       "text": "Ahşap çanak ve kepçe, yiyeceği bölüştürmeye yardım eder. Ahşap, taşınabilir günlük eşyalarda kullanılan malzemelerden biridir.",
-      "sourceNote": "DOĞRULANMALI — D01 için seçilecek ahşap çanak ve kepçe biçimleri, erken Türk veya bozkır kültürü müze örnekleriyle doğrulanmalıdır."
+      "sourceNote": "British Museum, turned wooden bowl, 651–750, Museum no. 1928,1022.106.a, https://www.britishmuseum.org/collection/object/A_1928-1022-106-a"
     },
     {
       "id": "hs_minder",
@@ -99,7 +99,7 @@
       "audio": "d01_n02_hs_minder.wav",
       "required": true,
       "text": "Minderler, ateş çevresinde oturmayı rahatlatır. Dokuma yüzeyler, soğuk zemine karşı yumuşak bir katman oluşturur.",
-      "sourceNote": "DOĞRULANMALI — Minder ve dokuma yaygıların biçimi, dönemsel tekstil buluntuları ve güvenilir müze referanslarıyla doğrulanmalıdır."
+      "sourceNote": "British Museum, Central Asian plain-weave textile, 8th–9th century, Museum no. 1907,1111.216, https://www.britishmuseum.org/collection/object/A_1907-1111-216"
     },
     {
       "id": "hs_heybe",
@@ -112,8 +112,8 @@
       "label": "İncele",
       "audio": "d01_n02_hs_heybe.wav",
       "required": false,
-      "text": "Heybe, küçük eşyaları veya yiyecekleri taşımaya yarayan dokuma bir çantadır. Omuzda veya hayvan üzerinde taşınabilir.",
-      "sourceNote": "DOĞRULANMALI — D01 heybesinin dokuma tekniği ve biçimi, erken dönem bozkır kültürüne ait müze referansıyla doğrulanmalıdır."
+      "text": "Bu dokuma çanta, küçük eşyaları taşımaya yarayabilir. Biçimi belirli bir müze örneğini kopyalamaz.",
+      "sourceNote": "Encyclopaedia Iranica, 'Central Asia x. Economy Before the Timurids', https://www.iranicaonline.org/articles/central-asia-x/"
     }
   ],
   "quest": {

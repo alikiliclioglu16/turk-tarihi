@@ -56,7 +56,7 @@
       "label": "İncele",
       "audio": "d01_n03_hs_sandik_kilidi.wav",
       "required": true,
-      "text": "Demir kilit, sandığın kapalı tutulduğunu gösterir. Biçimi, üretildiği dönem hakkında ipucu verebilir. Üzerindeki aşınma, uzun kullanımı düşündürebilir.",
+      "text": "Demir kilit, sandığın kapalı tutulduğunu gösterir. Sahnedeki kilit biçimi temsili olarak tasarlanmıştır.",
       "sourceNote": "DOĞRULANMALI — D01 sandığındaki kilit biçimi, IX–XI. yüzyıl bozkır kültürüne ait müze örneğiyle doğrulanmalıdır."
     },
     {
@@ -70,7 +70,7 @@
       "label": "İncele",
       "audio": "d01_n03_hs_tomar.wav",
       "required": true,
-      "text": "Bu tomar yazılı bir kaynak olabilir. Ancak üzerindeki işaretler okunmadan içeriğini bilemeyiz. Malzemesi ve sarılma biçimi ayrıca incelenmelidir.",
+      "text": "Bu sarılı nesne yazılı bir kaynak olabilir. Malzemesi ve içeriği görünüşten bilinemez.",
       "sourceNote": "DOĞRULANMALI — D01 sahnesinde kullanılacak tomarın malzemesi ve biçimi, dönemsel yazılı kaynak örnekleriyle doğrulanmalıdır."
     },
     {
@@ -85,7 +85,7 @@
       "audio": "d01_n03_hs_deri_kese.wav",
       "required": true,
       "text": "Deri kese, küçük ve değerli eşyaları taşımaya yarayabilir. İçeriği bilinmeden kesin yorum yapılamaz. Dikişleri, nasıl üretildiğini araştırmamıza yardım edebilir.",
-      "sourceNote": "DOĞRULANMALI — Deri kesenin biçimi ve kullanım yorumu, güvenilir bozkır maddi kültürü referansıyla karşılaştırılmalıdır."
+      "sourceNote": "Encyclopaedia Iranica, 'Central Asia x. Economy Before the Timurids', https://www.iranicaonline.org/articles/central-asia-x/"
     },
     {
       "id": "hs_bakir_ayna",
@@ -98,8 +98,8 @@
       "label": "İncele",
       "audio": "d01_n03_hs_bakir_ayna.wav",
       "required": false,
-      "text": "Bakır aynanın yüzeyi zamanla kararmış. Kullanım izleri, onun kişisel bir eşya olabileceğini bize düşündürür. Yüzeyindeki aşınma ayrıca kullanım biçimini araştırmaya yöneltir.",
-      "sourceNote": "DOĞRULANMALI — Bakır ayna tipi, IX–XI. yüzyıl Orta Asya veya erken Türk müze buluntularıyla doğrulanmalıdır."
+      "text": "Bakır aynanın yüzeyi zamanla kararmış. Bu sahne, bölgesel metal ayna örneklerinden esinlenmiştir.",
+      "sourceNote": "The Metropolitan Museum of Art, bronze Mirror, 11th–12th century, Object 1976.158.1, https://www.metmuseum.org/art/collection/search/452809"
     },
     {
       "id": "hs_kilim_parcasi",
@@ -112,8 +112,8 @@
       "label": "İncele",
       "audio": "d01_n03_hs_kilim_parcasi.wav",
       "required": false,
-      "text": "Solmuş kilim parçası, dokuma geleneği hakkında ipucu taşıyabilir. Desenleri, kullanılan teknik ve renkleri araştırmaya yöneltir.",
-      "sourceNote": "DOĞRULANMALI — Kilim parçasının motifleri ve dokuma tekniği, seçilecek müze tekstiliyle birebir eşleştirilmelidir."
+      "text": "Solmuş dokuma parçası, tekstil üretimi hakkında ipucu taşıyabilir. Desenleri güvenilir örneklerle karşılaştırılmalıdır.",
+      "sourceNote": "British Museum, Central Asian plain-weave textile, 8th–9th century, Museum no. 1907,1111.216, https://www.britishmuseum.org/collection/object/A_1907-1111-216"
     }
   ],
   "quest": {

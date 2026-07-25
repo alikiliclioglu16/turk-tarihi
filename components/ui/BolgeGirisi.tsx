@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useOyun } from "@/lib/store";
 import { oyuncuKonumu } from "@/lib/oyuncuKonum";
 import { BOLGELER, bolgeBul, type BolgeId } from "@/lib/bolgeler";
+import { DUNYA_OLCEK } from "@/lib/dunyaOlcek";
 import { anlatiCal, anlatiDurdur, anlatiSuresi } from "@/lib/audio";
 import { DedeYuz } from "./DedeYuz";
 
@@ -44,10 +45,10 @@ export function BolgeGirisi() {
       const merkez = BOLGELER[b].merkez;
       // bölge merkezine yeterince yaklaşınca say
       const d = Math.hypot(
-        oyuncuKonumu.x - merkez[0] * 4.0,
-        oyuncuKonumu.z - merkez[1] * 4.0
+        oyuncuKonumu.x - merkez[0] * DUNYA_OLCEK,
+        oyuncuKonumu.z - merkez[1] * DUNYA_OLCEK
       );
-      if (d > BOLGELER[b].yaricap * 4.0 * 0.85) return;
+      if (d > BOLGELER[b].yaricap * DUNYA_OLCEK * 0.85) return;
 
       girilenler.current.add(b);
       const liste = veri[b];

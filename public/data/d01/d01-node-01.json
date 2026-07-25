@@ -84,8 +84,8 @@
       "label": "Dinle",
       "audio": "d01_n01_hs_kopuz.wav",
       "required": true,
-      "text": "İşte kopuzum. İki teli var, ama binlerce sözü. Ona her dokunduğumda, çoktan gitmiş insanların sesi uyanır.",
-      "sourceNote": "DOĞRULANMALI — Kopuzun tel sayısı döneme ve bölgeye göre değişir. Müze referansı seçildikten sonra metindeki 'iki tel' ifadesi ya doğrulanmalı ya da 'birkaç teli var' olarak yumuşatılmalıdır."
+      "text": "İşte kopuzum. Telleri az olabilir, fakat taşıdığı sözler çoktur. Her dokunuş, geçmişten bir sesi hatırlatır.",
+      "sourceNote": "UNESCO Intangible Cultural Heritage, Heritage of Dede Qorqud/Korkyt Ata/Dede Korkut, https://ich.unesco.org/en/RL/01399"
     },
     {
       "id": "hs_otag_kapisi",
@@ -99,7 +99,7 @@
       "audio": "d01_n01_hs_otag_kapisi.wav",
       "required": false,
       "text": "Şu otağın kapısına bak. Nereye baktığını görüyor musun? Bir evin kapısının yönü bile, o evde yaşayanlar hakkında bir şey söyleyebilir.",
-      "sourceNote": "DOĞRULANMALI — Otağ kapısının yönüne dair yaygın bir bilgi vardır ancak dönem ve topluluğa göre değişir. Kaynak bulunana kadar metin, yön belirtmeden bu hâliyle kalacak. Kaynak bulunursa yön eklenebilir."
+      "sourceNote": "Genel gözlem; belirli bir kapı yönü veya dönemsel yön kuralı ileri sürülmüyor."
     }
   ],
   "quest": {
