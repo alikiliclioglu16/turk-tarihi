@@ -84,8 +84,8 @@
       "label": "İncele",
       "audio": "d01_n06_hs_su_sehpasi.wav",
       "required": true,
-      "text": "Bu sehpa, tulumu sahnede sabit tutan temsili bir düzenektir. Tarihsel bir örnek olarak sunulmaz.",
-      "sourceNote": "DOĞRULANMALI — F04 su tulumu doldurma sehpasının tarihsel biçimi için kurumsal veya müze referansı henüz kilitlenmemiştir."
+      "text": "Bu düzenek su tulumunu desteklemiş olabilir. D01 dönemindeki biçimini bilmiyoruz.",
+      "sourceNote": null
     },
     {
       "id": "hs_ahsap_kova",

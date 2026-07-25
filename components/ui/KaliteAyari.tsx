@@ -52,6 +52,7 @@ export function KaliteAyari() {
               <button
                 key={k}
                 className={`kalite-secenek ${seviye === k ? "aktif" : ""}`}
+                aria-pressed={seviye === k}
                 onClick={() => degistir(k)}
               >
                 {ad}

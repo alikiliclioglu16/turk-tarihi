@@ -84,8 +84,8 @@
       "label": "İncele",
       "audio": "d01_n07_hs_baglama_diregi.wav",
       "required": true,
-      "text": "Direk ve ip, hayvanı kısa süre bekletmek için kullanılabilir. Sahnedeki biçim temsili olarak tasarlanmıştır.",
-      "sourceNote": "DOĞRULANMALI — F05 at bağlama direği ve ipin tarihsel biçimi için müze veya arkeolojik referans kilitlenmelidir."
+      "text": "Direk ve ip hayvanı kısa süre tutmuş olabilir. D01 biçimini kesin bilmiyoruz.",
+      "sourceNote": null
     },
     {
       "id": "hs_otlayan_at",

@@ -46,8 +46,8 @@ export const d01OtagCevresiNotlari: OtagCevresiNotu[] = [
     id: "oc_et_06",
     sahne: "et_kurutma",
     ad: "Paylaşım Düzeni",
-    metin: "Hazırlanan yiyecekler aileler arasında paylaşılmış olabilir. Dağıtım düzeni, topluluğun ihtiyaçlarına göre değişebilir.",
-    kaynakNotu: "DOĞRULANMALI — D01 Oğuz obasında kurutulmuş yiyeceklerin paylaşım düzeni.",
+    metin: "Yiyecekler aileler arasında paylaşılmış olabilir. D01 dağıtım düzenini kesin bilmiyoruz.",
+    kaynakNotu: null,
   },
   {
     id: "oc_soh_01",
@@ -74,7 +74,7 @@ export const d01OtagCevresiNotlari: OtagCevresiNotu[] = [
     id: "oc_soh_04",
     sahne: "sohbet",
     ad: "Dinleyerek Öğrenmek",
-    metin: "Çocuklar sohbeti dinlerken yeni sözler ve öyküler duyabilir. Öğrenme, yalnız görev sırasında gerçekleşmez.",
+    metin: "Çocuklar konuşmaları dinleyerek yeni sözler öğrenmiş olabilir. Katılım biçimlerini kesin bilmiyoruz.",
     kaynakNotu: null,
   },
   {
@@ -82,14 +82,14 @@ export const d01OtagCevresiNotlari: OtagCevresiNotu[] = [
     sahne: "sohbet",
     ad: "Paylaşılan Kararlar",
     metin: "Kadınlar ve erkekler günlük kararları farklı biçimlerde paylaşmış olabilir. Roller, kaynaklar incelenmeden kesinleştirilmemelidir.",
-    kaynakNotu: "DOĞRULANMALI — D01 döneminde Oğuz obasındaki gündelik karar paylaşımı ve roller.",
+    kaynakNotu: null,
   },
   {
     id: "oc_soh_06",
     sahne: "sohbet",
     ad: "Misafir Minderi",
-    metin: "Misafir için ayrılan minder, konukseverliği gösterebilir. Oturma sırasının anlamı kaynakla doğrulanmalıdır.",
-    kaynakNotu: "DOĞRULANMALI — D01 döneminde misafirlik ve oturma düzenine ilişkin güvenilir kaynak.",
+    metin: "Misafir için ayrı minder bırakılmış olabilir. Oturma sırasının anlamını kesin bilmiyoruz.",
+    kaynakNotu: null,
   },
   {
     id: "oc_sut_01",
@@ -144,7 +144,7 @@ export const d01OtagCevresiNotlari: OtagCevresiNotu[] = [
     id: "oc_ota_02",
     sahne: "otag_onu",
     ad: "Yakındaki Beşik",
-    metin: "Beşik, bebeği günlük işlerin yakınında tutabilir. Sallanma, bebeğin sakinleşmesine yardım edebilir.",
+    metin: "Beşik günlük işlerin yakınında tutulmuş olabilir. D01 otağındaki kesin konumunu bilmiyoruz.",
     kaynakNotu: null,
   },
   {
@@ -152,13 +152,13 @@ export const d01OtagCevresiNotlari: OtagCevresiNotu[] = [
     sahne: "otag_onu",
     ad: "Kapının Yönü",
     metin: "Kapının yönü, rüzgâr ve kullanım düzeniyle ilişkili olabilir. D01 uygulaması ayrıca doğrulanmalıdır.",
-    kaynakNotu: "DOĞRULANMALI — 9.–11. yüzyıl Oğuz otağlarında kapı yönlendirme uygulaması.",
+    kaynakNotu: null,
   },
   {
     id: "oc_ota_04",
     sahne: "otag_onu",
     ad: "Eşyanın Yeri",
-    metin: "Kaplar, tulumlar ve dokumalar belirli yerlerde tutuluyor. Düzen, sık kullanılan eşyaya erişimi kolaylaştırır.",
+    metin: "Kaplar ve dokumalar farklı yerlere konmuş olabilir. D01 eşya düzenini kesin bilmiyoruz.",
     kaynakNotu: null,
   },
   {
@@ -166,7 +166,7 @@ export const d01OtagCevresiNotlari: OtagCevresiNotu[] = [
     sahne: "otag_onu",
     ad: "Su Tulumu",
     metin: "Deri tulum, sıvı taşımak için kullanılabilir. Dikiş ve ağız kısmı sızdırmazlığı etkiler.",
-    kaynakNotu: "DOĞRULANMALI — D01 dönemine uygun su tulumu örneği ve yapım tekniği.",
+    kaynakNotu: null,
   },
   {
     id: "oc_ota_06",
@@ -193,7 +193,7 @@ export const d01OtagCevresiNotlari: OtagCevresiNotu[] = [
     id: "oc_yun_03",
     sahne: "yun_egirme",
     ad: "İpliğin Kalınlığı",
-    metin: "İnce ip ile kalın ip farklı işler için uygundur. Usta, kullanım yerine göre kalınlık seçer.",
+    metin: "İplik kalınlığı ve boyama yöntemi kullanım amacına göre değişmiş olabilir. D01 tercihlerini kesin bilmiyoruz.",
     kaynakNotu: null,
   },
   {
@@ -201,7 +201,7 @@ export const d01OtagCevresiNotlari: OtagCevresiNotu[] = [
     sahne: "yun_egirme",
     ad: "Renklerin Kaynağı",
     metin: "Doğal yün renkleri ipliğe çeşitlilik verir. Boyama varsa malzeme ve yöntem ayrıca incelenmelidir.",
-    kaynakNotu: "DOĞRULANMALI — D01 dönemindeki Oğuz yün boyama malzemeleri ve yöntemleri.",
+    kaynakNotu: null,
   },
   {
     id: "oc_yun_05",

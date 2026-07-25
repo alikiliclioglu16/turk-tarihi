@@ -56,8 +56,8 @@
       "label": "İncele",
       "audio": "d01_n03_hs_sandik_kilidi.wav",
       "required": true,
-      "text": "Demir kilit, sandığın kapalı tutulduğunu gösterir. Biçimi, üretildiği dönem hakkında ipucu verebilir. Üzerindeki aşınma, uzun kullanımı düşündürebilir.",
-      "sourceNote": "DOĞRULANMALI — D01 sandığındaki kilit biçimi, IX–XI. yüzyıl bozkır kültürüne ait müze örneğiyle doğrulanmalıdır."
+      "text": "Dokuzuncu ve onuncu yüzyıla ait bronz anahtar örnekleri bulunmuştur. Bu sandığın kilit biçimini bilmiyoruz.",
+      "sourceNote": "The Metropolitan Museum of Art, Key, 9th-10th century, Nishapur, Object 39.40.134, https://www.metmuseum.org/art/collection/search/449664. Anahtar mekanizması için karşılaştırmadır."
     },
     {
       "id": "hs_tomar",
@@ -70,8 +70,8 @@
       "label": "İncele",
       "audio": "d01_n03_hs_tomar.wav",
       "required": true,
-      "text": "Bu tomar yazılı bir kaynak olabilir. Ancak üzerindeki işaretler okunmadan içeriğini bilemeyiz. Malzemesi ve sarılma biçimi ayrıca incelenmelidir.",
-      "sourceNote": "DOĞRULANMALI — D01 sahnesinde kullanılacak tomarın malzemesi ve biçimi, dönemsel yazılı kaynak örnekleriyle doğrulanmalıdır."
+      "text": "Onuncu yüzyıla ait Orta Asya tomar örnekleri korunuyor. Bu tomarın içeriğini bilmiyoruz.",
+      "sourceNote": "British Library, International Dunhuang Programme, Tibetan manuscript scroll, 900-1000, IOL Tib J 470, https://idp.bl.uk/collection/69216F1E294E4CC4A074E5C19F18D245/. Biçim karşılaştırmasıdır; doğrudan Oğuz kaynağı değildir."
     },
     {
       "id": "hs_deri_kese",
@@ -84,8 +84,8 @@
       "label": "İncele",
       "audio": "d01_n03_hs_deri_kese.wav",
       "required": true,
-      "text": "Deri kese, küçük ve değerli eşyaları taşımaya yarayabilir. İçeriği bilinmeden kesin yorum yapılamaz. Dikişleri, nasıl üretildiğini araştırmamıza yardım edebilir.",
-      "sourceNote": "DOĞRULANMALI — Deri kesenin biçimi ve kullanım yorumu, güvenilir bozkır maddi kültürü referansıyla karşılaştırılmalıdır."
+      "text": "Deri kese küçük eşyaları taşımış olabilir. İçeriğini ve dönemsel biçimini bilmiyoruz.",
+      "sourceNote": null
     },
     {
       "id": "hs_bakir_ayna",
@@ -98,8 +98,8 @@
       "label": "İncele",
       "audio": "d01_n03_hs_bakir_ayna.wav",
       "required": false,
-      "text": "Bakır aynanın yüzeyi zamanla kararmış. Kullanım izleri, onun kişisel bir eşya olabileceğini bize düşündürür. Yüzeyindeki aşınma ayrıca kullanım biçimini araştırmaya yöneltir.",
-      "sourceNote": "DOĞRULANMALI — Bakır ayna tipi, IX–XI. yüzyıl Orta Asya veya erken Türk müze buluntularıyla doğrulanmalıdır."
+      "text": "Bronz aynaların cilalı yüzleri yansıtıcı olabilir. Bu aynanın sahibini bilmiyoruz.",
+      "sourceNote": "The Metropolitan Museum of Art, Mirror, 11th-12th century, Iran or Central Asia, Object 1976.158.1, https://www.metmuseum.org/art/collection/search/452809. Yakın dönem karşılaştırmasıdır; doğrudan Oğuz kaynağı değildir."
     },
     {
       "id": "hs_kilim_parcasi",
@@ -112,8 +112,8 @@
       "label": "İncele",
       "audio": "d01_n03_hs_kilim_parcasi.wav",
       "required": false,
-      "text": "Solmuş kilim parçası, dokuma geleneği hakkında ipucu taşıyabilir. Desenleri, kullanılan teknik ve renkleri araştırmaya yöneltir.",
-      "sourceNote": "DOĞRULANMALI — Kilim parçasının motifleri ve dokuma tekniği, seçilecek müze tekstiliyle birebir eşleştirilmelidir."
+      "text": "Sekizinci ve dokuzuncu yüzyıl Orta Asya dokumaları müzelerde korunuyor. Bu parçanın motif anlamını bilmiyoruz.",
+      "sourceNote": "The Metropolitan Museum of Art, Textile with Confronted Horses in Roundels, Central Asia, 8th-9th century, Object 2006.173, https://www.metmuseum.org/art/collection/search/73207. Dokuma karşılaştırmasıdır; eser kilim değildir."
     }
   ],
   "quest": {

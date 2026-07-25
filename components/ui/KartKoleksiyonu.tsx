@@ -25,12 +25,14 @@ export function KartKoleksiyonu({ onKapat }: { onKapat: () => void }) {
           <div className="koleksiyon-sekmeler">
             <button
               className={`koleksiyon-sekme ${sekme === "durak" ? "aktif" : ""}`}
+              aria-pressed={sekme === "durak"}
               onClick={() => setSekme("durak")}
             >
               🃏 Tarih Sandığı ({kartlar.length}/{DURAK_KARTLARI.length})
             </button>
             <button
               className={`koleksiyon-sekme ${sekme === "kesif" ? "aktif" : ""}`}
+              aria-pressed={sekme === "kesif"}
               onClick={() => setSekme("kesif")}
             >
               📜 Keşifler ({kesifler.length})

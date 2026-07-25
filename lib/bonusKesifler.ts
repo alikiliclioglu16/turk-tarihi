@@ -216,7 +216,7 @@ export const obaBonusKesifler: BonusKesif[] = [
     ad: "Yüklü Kağnı",
     pos: [-9.5, 1.1, -6.5],
     metin: "Araba yüklü duruyor. Yükün ne zaman ve nereye taşınacağını bilmiyoruz.",
-    kaynakNotu: "DOĞRULANMALI — kağnı tipi ve tekerlek yapısı kaynakla eşleştirilmeli.",
+    kaynakNotu: "Kağnı tipi ve tekerlek yapısı için dönemsel örnek bulunamadı; biçim temsilîdir.",
   },
   {
     id: "bk_agil",

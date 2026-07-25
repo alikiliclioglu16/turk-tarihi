@@ -112,6 +112,9 @@ export function SiralamaPaneli({
           const kilit = kilitli.has(o.id);
           return (
             <li key={o.id} className={`sira-kart ${kilit ? "kilitli" : ""}`}>
+              <span className="sr-only">
+                {i + 1}. sırada: {o.text}. {kilit ? "Doğru yerde." : "Taşınabilir."}
+              </span>
               <span className="sira-numara">{i + 1}</span>
               <span className="sira-metin">{o.text}</span>
               {kilit ? (

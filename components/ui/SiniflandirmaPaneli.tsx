@@ -144,6 +144,9 @@ export function SiniflandirmaPaneli({
 
   return (
     <section className="siniflandirma" aria-labelledby="sinif-baslik">
+      <span className="sr-only" aria-live="polite">
+        {yapilan} kart yerleşti, {toplam - yapilan} kart kaldı.
+      </span>
       <div className="sinif-ust">
         <span className="gorev-etiket">🎯 Görev</span>
         <span className="sinif-ilerleme">{yapilan} / {toplam}</span>
