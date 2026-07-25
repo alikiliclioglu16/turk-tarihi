@@ -1,5 +1,5 @@
 # Dede Korkut ile Türk Tarihi Discovery Tour
-## Teknik Görev Paketi 1.1 — D01 Oynanabilir Omurga + Görsel Yükseltme
+## Teknik Görev Paketi 1.3 — D01 Oynanabilir Omurga
 
 Bu paket, D01 bölümünün **oynanabilir çekirdeğidir**. Tam ürün değil; üzerine
 varlıkların, durakların ve seslerin eklendiği çalışan iskelet.
@@ -41,10 +41,11 @@ Tarayıcıda `http://localhost:3000` açın → "Keşfe Başla".
 | Prosedürel detaylı modeller (otağ, ocak, sandık, balbal, kopuz) | ✅ |
 | Bloom, ACES ton eşleme, vinyet (sinematik katman) | ✅ |
 | Kıvılcım, duman, ot, kaya, dağ silüetleri | ✅ |
-| Eşleştirme / çoklu seçim görev tipi | ✅ |
-| 2. durak (Ocak Ateşi ve Oba) | ✅ |
-| Ses oynatma | ⏳ Paket 4 |
-| Kalan görev tipleri (sırala, sınıflandır, bağlantı) | ⏳ Paket 5 |
+| İnsan oranlı Dede Korkut + tam yürüyüş döngüsü | ✅ |
+| Ses katmanı (sentez ambiyans + gerçek kayıt desteği) | ✅ |
+| 3 durak (kopuz · ocak · sandık) | ✅ |
+| Sınıflandırma / eşleştirme görev tipleri | ✅ |
+| Kalan görev tipleri (sırala, bağlantı) | ⏳ Paket 5 |
 | Supabase senkronizasyonu | ⏳ Paket 6 |
 
 ---
@@ -125,5 +126,5 @@ Yeni bir faz eklemek gerekirse tek değişiklik noktası bu ikilidir.
 - Faz 0'da hesap sistemi ve kişisel veri toplama **yoktur**. İlerleme yalnızca
   kullanıcının cihazında, anonim olarak tutulur.
 - Olay kayıtları geliştirme modunda yalnız konsola yazılır (`lib/progress.ts`).
-- Karakter ve tüm nesneler şu an greybox'tır; görsel değerlendirme için
-  değil, ölçek ve oynanış testi içindir.
+- Karakter ve nesneler prosedürel yer tutucudur. GLB modeller geldiğinde
+  `lib/assets.ts` içinden tek satırla devreye girerler.

@@ -1,11 +1,16 @@
 "use client";
 
+import { useEffect } from "react";
 import { useOyun } from "@/lib/store";
 import { Daktilo } from "./Daktilo";
 import { DedeYuz } from "./DedeYuz";
 import { anlatiCal, anlatiDurdur } from "@/lib/audio";
-import { useEffect } from "react";
 
+/**
+ * Keşif fazı arayüzü.
+ * Panel yalnızca bir hotspota dokunulduğunda açılır; kapatılınca sahne
+ * tamamen görünür kalır. Boşken ekranı kaplayan kutu yoktur.
+ */
 export function HotspotPanel() {
   const nodlar = useOyun((s) => s.nodlar);
   const aktifIndex = useOyun((s) => s.aktifIndex);
@@ -15,7 +20,8 @@ export function HotspotPanel() {
   const goreveGec = useOyun((s) => s.goreveGec);
 
   const nod = nodlar[aktifIndex];
-  const aktifSes = aktifId ? nod?.hotspots.find((h) => h.id === aktifId)?.audio : undefined;
+  const aktif = aktifId ? nod?.hotspots.find((h) => h.id === aktifId) : null;
+  const aktifSes = aktif?.audio;
 
   useEffect(() => {
     if (aktifSes) anlatiCal(aktifSes);
@@ -25,39 +31,67 @@ export function HotspotPanel() {
   if (!nod) return null;
 
   const zorunlu = nod.completion.requiredHotspots;
-  const kalan = zorunlu.filter((id) => !gezilen.includes(id)).length;
-  const hepsiGezildi = kalan === 0;
-  const aktif = aktifId ? nod.hotspots.find((h) => h.id === aktifId) : null;
+  const bulunan = zorunlu.filter((id) => gezilen.includes(id)).length;
+  const hepsiGezildi = bulunan >= zorunlu.length;
 
+  /* --- Panel kapalıyken: ince şerit + ilerleme noktaları --- */
+  if (!aktif) {
+    return (
+      <>
+        <div className="kesif-serit">
+          👆 Parlayan noktalara dokun
+          <span className="kesif-noktalar">
+            {zorunlu.map((id) => (
+              <span key={id} className={`kesif-nokta ${gezilen.includes(id) ? "bulundu" : ""}`} />
+            ))}
+          </span>
+          <span className="kesif-sayi">{bulunan}/{zorunlu.length}</span>
+        </div>
+
+        {hepsiGezildi && (
+          <div className="yuzen-dugme-alan">
+            <button className="ana-dugme buyuk" onClick={goreveGec}>
+              Göreve Geç 🎯
+            </button>
+          </div>
+        )}
+      </>
+    );
+  }
+
+  /* --- Bir noktaya dokunulduğunda: metin paneli --- */
   return (
     <div className="alt-panel">
       <div className="panel">
-        {aktif ? (
-          <>
-            <div className="anlatan">
-              <DedeYuz boyut={36} />
-              <div className="anlatan-ad">{aktif.label}</div>
+        <div className="anlatan">
+          <DedeYuz boyut={36} />
+          <div style={{ flex: 1 }}>
+            <div className="anlatan-ad">{aktif.label}</div>
+            <div className="anlatan-yer">
+              {bulunan}/{zorunlu.length} nokta keşfedildi
             </div>
-            <Daktilo key={aktif.id} metin={aktif.text} hiz={14} />
-            <div className="dugme-alan gorunur">
-              <button className="ikinci-dugme" onClick={kapat}>
-                Kapat
-              </button>
-            </div>
-          </>
-        ) : (
-          <div className="ipucu-satiri">
-            👆 Parlayan noktalara dokun · sürükleyerek etrafına bak
           </div>
-        )}
+          <button
+            className="mini-dugme"
+            title="Tekrar dinle"
+            aria-label="Tekrar dinle"
+            onClick={() => anlatiCal(aktif.audio)}
+          >
+            🔁
+          </button>
+        </div>
+
+        <Daktilo key={aktif.id} metin={aktif.text} hiz={14} />
 
         <div className="panel-alt">
-          <span className="sayac">
-            {zorunlu.length - kalan} / {zorunlu.length} nokta keşfedildi
-          </span>
-          <button className="ana-dugme kucuk" disabled={!hepsiGezildi} onClick={goreveGec}>
-            {hepsiGezildi ? "Göreve Geç 🎯" : "Önce hepsini keşfet"}
+          <button className="ikinci-dugme" onClick={kapat}>
+            Kapat · Keşfe Dön
           </button>
+          {hepsiGezildi && (
+            <button className="ana-dugme kucuk" onClick={goreveGec}>
+              Göreve Geç 🎯
+            </button>
+          )}
         </div>
       </div>
     </div>
