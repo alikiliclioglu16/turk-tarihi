@@ -18,7 +18,7 @@ export function Sis() {
 
   const katmanlar = useMemo(
     () =>
-      Array.from({ length: 22 }, () => {
+      Array.from({ length: 12 }, () => {
         const a = Math.random() * Math.PI * 2;
         const r = 6 + Math.random() * 42;
         return {

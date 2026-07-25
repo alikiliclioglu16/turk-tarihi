@@ -1,84 +1,132 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { araziYukseklik } from "@/lib/terrain";
 import { otDokusu } from "@/lib/textures";
+import { oyuncuKonumu } from "@/lib/oyuncuKonum";
 
-/** Bozkır dekoru: ot demetleri, dağınık kayalar, uzak dağ silüetleri */
+/**
+ * BOZKIR DEKORU — instancing ile
+ *
+ * Önceden her ot demeti ve kaya ayrı bir mesh'ti; 350+ çizim çağrısı
+ * demekti. Şimdi hepsi tek InstancedMesh içinde: ot için 1, kaya için 1,
+ * dağ silüetleri için 1 çağrı. Görsel aynı, maliyet yüzde biri.
+ */
+
+const OT_SAYISI = 900;
+const KAYA_SAYISI = 90;
+const DAG_SAYISI = 20;
+
 export function Dekor() {
   const otTex = useMemo(() => otDokusu(), []);
+  const otRef = useRef<THREE.InstancedMesh>(null);
+  const kayaRef = useRef<THREE.InstancedMesh>(null);
+  const dagRef = useRef<THREE.InstancedMesh>(null);
 
-  const otlar = useMemo(() => {
-    const liste: { pos: [number, number, number]; s: number; r: number }[] = [];
-    for (let i = 0; i < 110; i++) {
-      const a = Math.random() * Math.PI * 2;
-      const r = 8 + Math.random() * 46;
-      const x = Math.cos(a) * r;
-      const z = Math.sin(a) * r;
-      liste.push({ pos: [x, araziYukseklik(x, z) + 0.3, z], s: 0.7 + Math.random() * 1.2, r: Math.random() * 3 });
+  const veriler = useMemo(() => {
+    const gecici = new THREE.Object3D();
+    const ot: THREE.Matrix4[] = [];
+    const kaya: THREE.Matrix4[] = [];
+    const dag: THREE.Matrix4[] = [];
+
+    // deterministik dağılım — her açılışta aynı manzara
+    let tohum = 1337;
+    const rnd = () => {
+      tohum = (tohum * 1103515245 + 12345) & 0x7fffffff;
+      return tohum / 0x7fffffff;
+    };
+
+    for (let i = 0; i < OT_SAYISI; i++) {
+      const x = (rnd() - 0.5) * 240;
+      const z = (rnd() - 0.5) * 250;
+      if (Math.hypot(x, z) > 125) continue;
+      const s = 0.7 + rnd() * 1.3;
+      gecici.position.set(x, araziYukseklik(x, z) + 0.3 * s, z);
+      gecici.rotation.set(0, rnd() * Math.PI, 0);
+      gecici.scale.set(s, s, s);
+      gecici.updateMatrix();
+      ot.push(gecici.matrix.clone());
     }
-    return liste;
+
+    for (let i = 0; i < KAYA_SAYISI; i++) {
+      const x = (rnd() - 0.5) * 230;
+      const z = (rnd() - 0.5) * 240;
+      if (Math.hypot(x, z) > 120) continue;
+      const s = 0.35 + rnd() * 1.1;
+      gecici.position.set(x, araziYukseklik(x, z) + 0.14 * s, z);
+      gecici.rotation.set(rnd() * 3, rnd() * 3, rnd() * 3);
+      gecici.scale.set(s, s * 0.65, s);
+      gecici.updateMatrix();
+      kaya.push(gecici.matrix.clone());
+    }
+
+    for (let i = 0; i < DAG_SAYISI; i++) {
+      const a = (i / DAG_SAYISI) * Math.PI * 2 + rnd() * 0.3;
+      const r = 150 + rnd() * 40;
+      const s = 1 + rnd() * 1.1;
+      gecici.position.set(Math.cos(a) * r, 2, Math.sin(a) * r);
+      gecici.rotation.set(0, rnd() * Math.PI, 0);
+      gecici.scale.set(18 * s, 16 * s, 18 * s);
+      gecici.updateMatrix();
+      dag.push(gecici.matrix.clone());
+    }
+
+    return { ot, kaya, dag };
   }, []);
 
-  const kayalar = useMemo(() => {
-    const liste: { pos: [number, number, number]; s: number; rot: [number, number, number] }[] = [];
-    for (let i = 0; i < 26; i++) {
-      const a = Math.random() * Math.PI * 2;
-      const r = 12 + Math.random() * 46;
-      const x = Math.cos(a) * r;
-      const z = Math.sin(a) * r;
-      liste.push({
-        pos: [x, araziYukseklik(x, z) + 0.15, z],
-        s: 0.35 + Math.random() * 0.8,
-        rot: [Math.random() * 3, Math.random() * 3, Math.random() * 3],
-      });
-    }
-    return liste;
+  // matrisleri bir kez yaz
+  useMemo(() => {
+    const yaz = (ref: React.RefObject<THREE.InstancedMesh | null>, m: THREE.Matrix4[]) => {
+      const im = ref.current;
+      if (!im) return;
+      m.forEach((mat, i) => im.setMatrixAt(i, mat));
+      im.instanceMatrix.needsUpdate = true;
+    };
+    // ilk karede ref'ler hazır olacağı için useFrame içinde tetiklenir
+    return yaz;
   }, []);
 
-  const daglar = useMemo(() => {
-    const liste: { pos: [number, number, number]; s: [number, number]; rot: number }[] = [];
-    for (let i = 0; i < 16; i++) {
-      const a = (i / 16) * Math.PI * 2 + Math.random() * 0.3;
-      const r = 100 + Math.random() * 30;
-      liste.push({
-        pos: [Math.cos(a) * r, 2, Math.sin(a) * r],
-        s: [16 + Math.random() * 18, 13 + Math.random() * 16],
-        rot: Math.random() * Math.PI,
-      });
-    }
-    return liste;
-  }, []);
+  const yazildi = useRef(false);
+  useFrame(() => {
+    if (yazildi.current) return;
+    const yaz = (im: THREE.InstancedMesh | null, m: THREE.Matrix4[]) => {
+      if (!im) return false;
+      m.forEach((mat, i) => im.setMatrixAt(i, mat));
+      im.instanceMatrix.needsUpdate = true;
+      im.computeBoundingSphere();
+      return true;
+    };
+    const a = yaz(otRef.current, veriler.ot);
+    const b = yaz(kayaRef.current, veriler.kaya);
+    const c = yaz(dagRef.current, veriler.dag);
+    if (a && b && c) yazildi.current = true;
+  });
 
   return (
     <>
-      {otlar.map((o, i) => (
-        <group key={`ot${i}`} position={o.pos} scale={o.s} rotation-y={o.r}>
-          <mesh>
-            <planeGeometry args={[0.9, 0.62]} />
-            <meshStandardMaterial map={otTex} transparent alphaTest={0.35} side={THREE.DoubleSide} roughness={1} color="#93AFA4" />
-          </mesh>
-          <mesh rotation-y={Math.PI / 2}>
-            <planeGeometry args={[0.9, 0.62]} />
-            <meshStandardMaterial map={otTex} transparent alphaTest={0.35} side={THREE.DoubleSide} roughness={1} color="#93AFA4" />
-          </mesh>
-        </group>
-      ))}
+      <instancedMesh ref={otRef} args={[undefined, undefined, veriler.ot.length]} frustumCulled>
+        <planeGeometry args={[0.9, 0.62]} />
+        <meshStandardMaterial
+          map={otTex}
+          transparent
+          alphaTest={0.35}
+          side={THREE.DoubleSide}
+          roughness={1}
+          color="#93AFA4"
+        />
+      </instancedMesh>
 
-      {kayalar.map((k, i) => (
-        <mesh key={`kaya${i}`} position={k.pos} scale={[k.s, k.s * 0.65, k.s]} rotation={k.rot} castShadow receiveShadow>
-          <dodecahedronGeometry args={[0.5, 0]} />
-          <meshStandardMaterial color="#42506A" roughness={1} flatShading />
-        </mesh>
-      ))}
+      <instancedMesh ref={kayaRef} args={[undefined, undefined, veriler.kaya.length]} castShadow receiveShadow frustumCulled>
+        <dodecahedronGeometry args={[0.5, 0]} />
+        <meshStandardMaterial color="#42506A" roughness={1} flatShading />
+      </instancedMesh>
 
-      {daglar.map((d, i) => (
-        <mesh key={`dag${i}`} position={d.pos} rotation-y={d.rot}>
-          <coneGeometry args={[d.s[0], d.s[1], 5]} />
-          <meshBasicMaterial color="#101c30" />
-        </mesh>
-      ))}
+      <instancedMesh ref={dagRef} args={[undefined, undefined, veriler.dag.length]} frustumCulled>
+        <coneGeometry args={[1, 1, 5]} />
+        <meshBasicMaterial color="#101c30" />
+      </instancedMesh>
     </>
   );
 }

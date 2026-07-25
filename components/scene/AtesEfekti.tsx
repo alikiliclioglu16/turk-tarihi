@@ -15,7 +15,7 @@ export function AtesEfekti({ pos = [0, 0, 0] as [number, number, number] }) {
   const dumanGrup = useRef<THREE.Group>(null);
   const leke = useMemo(() => lekeDokusu(), []);
 
-  const KIV = 44;
+  const KIV = 26;
   const kivVeri = useMemo(
     () =>
       Array.from({ length: KIV }, () => ({
@@ -27,7 +27,7 @@ export function AtesEfekti({ pos = [0, 0, 0] as [number, number, number] }) {
     []
   );
   const kivPos = useMemo(() => new Float32Array(KIV * 3), []);
-  const dumanVeri = useMemo(() => Array.from({ length: 14 }, () => ({ t: Math.random() })), []);
+  const dumanVeri = useMemo(() => Array.from({ length: 9 }, () => ({ t: Math.random() })), []);
 
   const y = araziYukseklik(pos[0], pos[2]);
 
@@ -85,7 +85,7 @@ export function AtesEfekti({ pos = [0, 0, 0] as [number, number, number] }) {
 
   return (
     <group position={[pos[0], y, pos[2]]}>
-      <pointLight ref={isik} color="#f0a44a" intensity={26} distance={36} decay={2} position={[0, 1.4, 0]} castShadow />
+      <pointLight ref={isik} color="#f0a44a" intensity={26} distance={34} decay={2} position={[0, 1.4, 0]} />
 
       <mesh ref={alev1} position={[0, 0.82, 0]}>
         <coneGeometry args={[0.45, 1.4, 10]} />

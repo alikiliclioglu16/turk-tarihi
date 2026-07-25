@@ -1,7 +1,7 @@
 "use client";
 
 import { useOyun } from "@/lib/store";
-import { BONUS_KESIFLER, BONUS_TOPLAM } from "@/lib/bonusKesifler";
+import { bonusKesifBul, BONUS_TOPLAM } from "@/lib/bonusKesifler";
 import { DedeYuz } from "./DedeYuz";
 
 /** Bonus keşif bulunduğunda açılan küçük bilgi kartı */
@@ -10,7 +10,7 @@ export function BonusPanel() {
   const kapat = useOyun((s) => s.bonusKapat);
   const bulunan = useOyun((s) => s.bulunanBonuslar);
   if (!aktifId) return null;
-  const b = BONUS_KESIFLER.find((x) => x.id === aktifId);
+  const b = bonusKesifBul(aktifId);
   if (!b) return null;
 
   return (
