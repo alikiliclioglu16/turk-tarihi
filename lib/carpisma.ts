@@ -108,3 +108,54 @@ export const CARPISMA_YARICAP: Record<string, number> = {
   // hayvanlar ve kağnı
   B14: 0.5, B15: 1.4,
 };
+
+
+/**
+ * KAMERA ENGELİ
+ *
+ * Karakterden kameraya çizilen doğru üzerinde çarpıştırıcı varsa,
+ * kameranın gidebileceği en uzak orana (0-1) döner. 1 = engel yok.
+ * Böylece kamera çadırın veya kayanın içinden bakmaz.
+ */
+export function kameraEngeli(
+  ax: number, az: number, bx: number, bz: number, yaricap = 0.5
+): number {
+  const dx = bx - ax;
+  const dz = bz - az;
+  const uzunluk = Math.hypot(dx, dz);
+  if (uzunluk < 0.01) return 1;
+
+  let enYakin = 1;
+  const adim = Math.max(2, Math.ceil(uzunluk / HUCRE));
+
+  for (let a = 0; a <= adim; a++) {
+    const t = a / adim;
+    const px = ax + dx * t;
+    const pz = az + dz * t;
+    const hx = Math.floor(px / HUCRE);
+    const hz = Math.floor(pz / HUCRE);
+
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        const liste = izgara.get(`${hx + i},${hz + j}`);
+        if (!liste) continue;
+        for (const c of liste) {
+          // doğru üzerindeki en yakın nokta
+          const cx = c.x - ax;
+          const cz = c.z - az;
+          let s = (cx * dx + cz * dz) / (uzunluk * uzunluk);
+          s = Math.max(0, Math.min(1, s));
+          const yx = ax + dx * s - c.x;
+          const yz = az + dz * s - c.z;
+          const mesafe = Math.hypot(yx, yz);
+          if (mesafe < c.r + yaricap) {
+            // engelin başladığı orana kadar geri çek
+            const geri = Math.max(0.22, s - (c.r + yaricap) / uzunluk);
+            if (geri < enYakin) enYakin = geri;
+          }
+        }
+      }
+    }
+  }
+  return enYakin;
+}

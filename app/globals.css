@@ -607,3 +607,54 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--cini); outline-
 }
 .kalite-secenek.aktif { background: rgba(255,207,114,.18); border-color: rgba(255,207,114,.6); color: #FFCF72; }
 .kalite-not { font-size: 10.5px; color: #F7EBD366; margin-top: 3px; }
+
+/* ---------- Pusula ---------- */
+.pusula {
+  position: absolute; left: 50%; top: 54px; transform: translateX(-50%);
+  z-index: 23; width: min(560px, 80vw); pointer-events: none;
+}
+.pusula-serit {
+  position: relative; height: 34px;
+  background: linear-gradient(90deg, transparent, rgba(10,16,26,.6) 12%, rgba(10,16,26,.6) 88%, transparent);
+  border-radius: 999px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+}
+.pusula-yon {
+  position: absolute; top: 9px; transform: translateX(-50%);
+  font-size: 11px; font-weight: 800; color: #F7EBD388; letter-spacing: .1em;
+}
+.pusula-hedef {
+  position: absolute; top: 2px; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+}
+.pusula-simge { font-size: 13px; line-height: 1; }
+.pusula-mesafe { font-size: 9.5px; font-weight: 700; color: #FFCF72; }
+.pusula-hedef.kesif .pusula-mesafe { color: #7FD8CE; }
+.pusula-orta {
+  position: absolute; left: 50%; top: 0; width: 2px; height: 34px;
+  background: linear-gradient(180deg, transparent, rgba(255,207,114,.7), transparent);
+  transform: translateX(-50%);
+}
+
+/* ---------- Fotoğraf modu ---------- */
+.foto-cerceve { position: absolute; inset: 26px; z-index: 30; pointer-events: none; }
+.foto-kose {
+  position: absolute; width: 34px; height: 34px;
+  border: 2px solid rgba(255,255,255,.55);
+}
+.foto-kose.sol-ust { left: 0; top: 0; border-right: none; border-bottom: none; }
+.foto-kose.sag-ust { right: 0; top: 0; border-left: none; border-bottom: none; }
+.foto-kose.sol-alt { left: 0; bottom: 0; border-right: none; border-top: none; }
+.foto-kose.sag-alt { right: 0; bottom: 0; border-left: none; border-top: none; }
+.foto-ipucu {
+  position: absolute; left: 50%; bottom: 60px; transform: translateX(-50%);
+  z-index: 31; background: rgba(10,16,26,.85); color: #F7EBD3;
+  padding: 9px 18px; border-radius: 999px; font-size: 13.5px; font-weight: 600;
+  border: 1px solid rgba(255,255,255,.25);
+}
+.foto-cikis {
+  position: absolute; right: 20px; top: 20px; z-index: 31;
+  background: rgba(10,16,26,.72); border: 1px solid rgba(255,255,255,.3);
+  color: #F7EBD3; border-radius: 999px; padding: 8px 15px; font-size: 13px; font-weight: 700;
+}

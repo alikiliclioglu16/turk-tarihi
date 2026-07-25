@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { araziYukseklik } from "@/lib/terrain";
@@ -24,6 +24,8 @@ export function Dekor() {
   const otRef = useRef<THREE.InstancedMesh>(null);
   const kayaRef = useRef<THREE.InstancedMesh>(null);
   const dagRef = useRef<THREE.InstancedMesh>(null);
+  const otMat = useRef<THREE.MeshStandardMaterial>(null);
+  const ruzgarZaman = useRef({ value: 0 });
 
   const veriler = useMemo(() => {
     const gecici = new THREE.Object3D();
@@ -88,6 +90,41 @@ export function Dekor() {
     return yaz;
   }, []);
 
+  /**
+   * RÜZGÂR
+   * Otların üst köşeleri gölgelendiricide salınır. Kök sabit kalır,
+   * uç oynar; bozkır sürekli hareket hâlinde görünür.
+   */
+  useEffect(() => {
+    const m = otMat.current;
+    if (!m || m.userData.ruzgarEkli) return;
+    m.userData.ruzgarEkli = true;
+    m.onBeforeCompile = (shader) => {
+      shader.uniforms.zaman = ruzgarZaman.current;
+      shader.vertexShader = shader.vertexShader
+        .replace("#include <common>", "#include <common>\n uniform float zaman;")
+        .replace(
+          "#include <begin_vertex>",
+          `#include <begin_vertex>
+           #ifdef USE_INSTANCING
+             vec3 kok = vec3(instanceMatrix[3][0], instanceMatrix[3][1], instanceMatrix[3][2]);
+           #else
+             vec3 kok = vec3(0.0);
+           #endif
+           float ucOran = max(0.0, uv.y - 0.25) * 1.3;
+           float dalga = sin(zaman * 1.7 + kok.x * 0.35 + kok.z * 0.27)
+                       + sin(zaman * 2.9 + kok.x * 0.11) * 0.4;
+           transformed.x += dalga * 0.13 * ucOran;
+           transformed.z += dalga * 0.07 * ucOran;`
+        );
+    };
+    m.needsUpdate = true;
+  }, []);
+
+  useFrame((_, delta) => {
+    ruzgarZaman.current.value += delta;
+  });
+
   const yazildi = useRef(false);
   useFrame(() => {
     if (yazildi.current) return;
@@ -107,8 +144,9 @@ export function Dekor() {
   return (
     <>
       <instancedMesh ref={otRef} args={[undefined, undefined, veriler.ot.length]} frustumCulled>
-        <planeGeometry args={[0.9, 0.62]} />
+        <planeGeometry args={[0.9, 0.62, 1, 3]} />
         <meshStandardMaterial
+          ref={otMat}
           map={otTex}
           transparent
           alphaTest={0.35}

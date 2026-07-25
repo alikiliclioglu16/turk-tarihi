@@ -276,3 +276,127 @@ export function otDokusu(): THREE.CanvasTexture {
   t.colorSpace = THREE.SRGBColorSpace;
   return t;
 }
+
+
+/* ============================================================
+   ZEMİN DOKULARI — eğim ve yüksekliğe göre harmanlanır
+   ============================================================ */
+
+let _cim: THREE.CanvasTexture | null = null;
+let _kuruToprak: THREE.CanvasTexture | null = null;
+let _kayaZemin: THREE.CanvasTexture | null = null;
+let _patikaDoku: THREE.CanvasTexture | null = null;
+
+function benekle(
+  g: CanvasRenderingContext2D, boyut: number,
+  temel: string, benekler: [string, number, number, number][]
+) {
+  g.fillStyle = temel;
+  g.fillRect(0, 0, boyut, boyut);
+  for (const [renk, adet, minR, maxR] of benekler) {
+    g.fillStyle = renk;
+    for (let i = 0; i < adet; i++) {
+      const x = Math.random() * boyut;
+      const y = Math.random() * boyut;
+      const r = minR + Math.random() * (maxR - minR);
+      g.beginPath();
+      g.ellipse(x, y, r, r * (0.5 + Math.random() * 0.9), Math.random() * 3.14, 0, Math.PI * 2);
+      g.fill();
+    }
+  }
+}
+
+/** Bozkır otu — seyrek, kuru yeşil */
+export function cimDokusu(): THREE.CanvasTexture {
+  if (_cim) return _cim;
+  const { c, g } = tuval(256, 256);
+  benekle(g, 256, "#6E7A4A", [
+    ["#7E8A55", 900, 1, 3],
+    ["#5C6840", 700, 1, 2.6],
+    ["#8C9660", 400, 0.8, 2],
+    ["#4E5836", 300, 1, 3.4],
+  ]);
+  // ot tutamları
+  g.strokeStyle = "#7A8752";
+  g.lineWidth = 1;
+  for (let i = 0; i < 500; i++) {
+    const x = Math.random() * 256, y = Math.random() * 256;
+    g.beginPath();
+    g.moveTo(x, y);
+    g.lineTo(x + (Math.random() - 0.5) * 4, y - 3 - Math.random() * 4);
+    g.stroke();
+  }
+  _cim = new THREE.CanvasTexture(c);
+  _cim.wrapS = _cim.wrapT = THREE.RepeatWrapping;
+  _cim.colorSpace = THREE.SRGBColorSpace;
+  return _cim;
+}
+
+/** Kuru toprak — çatlaklı, açık kahve */
+export function kuruToprakDokusu(): THREE.CanvasTexture {
+  if (_kuruToprak) return _kuruToprak;
+  const { c, g } = tuval(256, 256);
+  benekle(g, 256, "#9A8763", [
+    ["#A99874", 600, 1, 3],
+    ["#87755A", 700, 1, 3.2],
+    ["#B5A184", 400, 1, 2.4],
+  ]);
+  // çatlaklar
+  g.strokeStyle = "#6E5F47";
+  g.lineWidth = 1.2;
+  for (let i = 0; i < 26; i++) {
+    let x = Math.random() * 256, y = Math.random() * 256;
+    g.beginPath();
+    g.moveTo(x, y);
+    for (let j = 0; j < 5; j++) {
+      x += (Math.random() - 0.5) * 40;
+      y += (Math.random() - 0.5) * 40;
+      g.lineTo(x, y);
+    }
+    g.stroke();
+  }
+  _kuruToprak = new THREE.CanvasTexture(c);
+  _kuruToprak.wrapS = _kuruToprak.wrapT = THREE.RepeatWrapping;
+  _kuruToprak.colorSpace = THREE.SRGBColorSpace;
+  return _kuruToprak;
+}
+
+/** Kaya yüzeyi — dik eğimlerde görünür */
+export function kayaZeminDokusu(): THREE.CanvasTexture {
+  if (_kayaZemin) return _kayaZemin;
+  const { c, g } = tuval(256, 256);
+  benekle(g, 256, "#6B6A63", [
+    ["#7B7A72", 500, 2, 7],
+    ["#585850", 600, 2, 6],
+    ["#8A897E", 300, 1.5, 5],
+  ]);
+  // katman çizgileri
+  g.strokeStyle = "#4E4E48";
+  g.lineWidth = 2;
+  for (let i = 0; i < 12; i++) {
+    const y = Math.random() * 256;
+    g.beginPath();
+    g.moveTo(0, y);
+    for (let x = 0; x <= 256; x += 32) g.lineTo(x, y + (Math.random() - 0.5) * 14);
+    g.stroke();
+  }
+  _kayaZemin = new THREE.CanvasTexture(c);
+  _kayaZemin.wrapS = _kayaZemin.wrapT = THREE.RepeatWrapping;
+  _kayaZemin.colorSpace = THREE.SRGBColorSpace;
+  return _kayaZemin;
+}
+
+/** Patika — ayak basmaktan sıkışmış çıplak toprak */
+export function patikaDokusu(): THREE.CanvasTexture {
+  if (_patikaDoku) return _patikaDoku;
+  const { c, g } = tuval(256, 256);
+  benekle(g, 256, "#8A7554", [
+    ["#7A6647", 700, 1, 3.5],
+    ["#9C875F", 500, 1, 3],
+    ["#6B5A3E", 300, 1.5, 4],
+  ]);
+  _patikaDoku = new THREE.CanvasTexture(c);
+  _patikaDoku.wrapS = _patikaDoku.wrapT = THREE.RepeatWrapping;
+  _patikaDoku.colorSpace = THREE.SRGBColorSpace;
+  return _patikaDoku;
+}

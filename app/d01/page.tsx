@@ -18,6 +18,8 @@ import { FinalSinavi } from "@/components/ui/FinalSinavi";
 import { KartKoleksiyonu } from "@/components/ui/KartKoleksiyonu";
 import { MobilKontroller } from "@/components/ui/MobilKontroller";
 import { KaliteAyari } from "@/components/ui/KaliteAyari";
+import { Pusula } from "@/components/ui/Pusula";
+import { FotoModu } from "@/components/ui/FotoModu";
 import { AcilisAnlatisi } from "@/components/ui/AcilisAnlatisi";
 import { BolgeGirisi } from "@/components/ui/BolgeGirisi";
 import { KisiPanel } from "@/components/ui/KisiPanel";
@@ -61,6 +63,7 @@ export default function D01Page() {
   const hepsiGezildi = zorunlu.length > 0 && bulunan >= zorunlu.length;
   const [hata, setHata] = useState<string | null>(null);
   const [koleksiyon, setKoleksiyon] = useState(false);
+  const [foto, setFoto] = useState(false);
 
   useEffect(() => {
     let iptal = false;
@@ -111,15 +114,17 @@ export default function D01Page() {
           <AcilisAnlatisi />
         </div>
       )}
-      {faz !== "yukleniyor" && <Hud onKoleksiyon={() => setKoleksiyon(true)} />}
-      {faz !== "yukleniyor" && <MiniHarita />}
-      {faz !== "yukleniyor" && <MobilKontroller />}
-      {faz !== "yukleniyor" && <KaliteAyari />}
+      <FotoModu aktif={foto} setAktif={setFoto} />
+      {faz !== "yukleniyor" && !foto && <Hud onKoleksiyon={() => setKoleksiyon(true)} />}
+      {faz !== "yukleniyor" && !foto && <MiniHarita />}
+      {faz !== "yukleniyor" && !foto && <MobilKontroller />}
+      {faz !== "yukleniyor" && !foto && <KaliteAyari />}
+      {!foto && <Pusula />}
       {faz !== "yukleniyor" && faz !== "acilis" && <BolgeGirisi />}
 
       <KisiPanel />
 
-      {faz === "anlati" && <AnlatiSeridi />}
+      {faz === "anlati" && !foto && <AnlatiSeridi />}
 
       {/* keşif fazı: kart yoksa ince ipucu şeridi */}
       {faz === "kesif" && !aktifKesifKarti && (

@@ -7,7 +7,7 @@ import { araziYukseklik, DUNYA_YARICAP } from "@/lib/terrain";
 import { hareketVektoru, klavyeyiBagla } from "@/lib/input";
 import { useOyun } from "@/lib/store";
 import { oyuncuKonumu } from "@/lib/oyuncuKonum";
-import { hareketiCoz } from "@/lib/carpisma";
+import { hareketiCoz, kameraEngeli } from "@/lib/carpisma";
 import { GezginModel } from "./models/GezginModel";
 
 const HIZ = 4.6;
@@ -257,6 +257,22 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
       kameraHedef.current.y,
       araziYukseklik(kameraHedef.current.x, kameraHedef.current.z) + 1.0
     );
+
+    // KAMERA ÇARPIŞMASI: karakter ile kamera arasında engel varsa
+    // kamerayı öne çek — duvarın içinden bakılmaz
+    const engel = kameraEngeli(
+      g.position.x, g.position.z,
+      kameraHedef.current.x, kameraHedef.current.z,
+      0.55
+    );
+    if (engel < 1) {
+      kameraHedef.current.x = g.position.x + (kameraHedef.current.x - g.position.x) * engel;
+      kameraHedef.current.z = g.position.z + (kameraHedef.current.z - g.position.z) * engel;
+      kameraHedef.current.y = Math.max(
+        g.position.y + 1.3,
+        araziYukseklik(kameraHedef.current.x, kameraHedef.current.z) + 0.8
+      );
+    }
     camera.position.lerp(kameraHedef.current, Math.min(1, dt * 5));
     // bakış noktası: karakterin biraz önü — nereye gidiyorsa orayı görürsün
     camera.lookAt(
