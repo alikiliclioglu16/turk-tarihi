@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { D01_YERLESIM } from "@/lib/assets";
 import { HALK } from "@/lib/halk";
+import { obaCadirlari } from "@/lib/buyukObaVeri";
 import { DUNYA_OLCEK } from "@/lib/dunyaOlcek";
 import {
   carpistiriciEkle, carpistiricilariTemizle, CARPISMA_YARICAP, carpistiriciSayisi,
@@ -25,6 +26,37 @@ export function CarpismaKurulumu() {
         r: temel * (y.olcek ?? 1),
         alcak: temel < 0.6,
       });
+    }
+
+    // BÜYÜK OBA ÇADIRLARI — 320 adet, önceden çarpışma listesinde yoktu
+    for (const o of obaCadirlari()) {
+      carpistiriciEkle({
+        x: o.x * DUNYA_OLCEK,
+        z: o.z * DUNYA_OLCEK,
+        r: (o.beyMi ? 3.3 : 2.75) * o.s,
+      });
+    }
+
+    // girilebilir otağlar: kapı boşluklu halka — içeri girilebilsin
+    const girilebilir: [number, number, number, number][] = [
+      [-27, -14, 0.75, 1.5], [36, 23, -0.6, 1.25],
+      [-84, 52, 2.0, 1.2], [52, -76, 1.4, 1.2],
+    ];
+    for (const [gx, gz, rot, olc] of girilebilir) {
+      const merkezX = gx * DUNYA_OLCEK;
+      const merkezZ = gz * DUNYA_OLCEK;
+      const R = 3.1 * olc;
+      // 16 parçalık halka; kapı yönünde üç parça atlanır
+      for (let i = 0; i < 16; i++) {
+        const a = (i / 16) * Math.PI * 2;
+        const kapiFarki = Math.abs(((a - rot + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
+        if (kapiFarki < 0.42) continue; // kapı boşluğu
+        carpistiriciEkle({
+          x: merkezX + Math.cos(a) * R,
+          z: merkezZ + Math.sin(a) * R,
+          r: 0.62,
+        });
+      }
     }
 
     // oba halkı da katı — içinden geçilmez

@@ -7,6 +7,13 @@ import { BOLGELER, BOLGE_SIRASI } from "@/lib/bolgeler";
 import { DUNYA_OLCEK } from "@/lib/dunyaOlcek";
 import { DUNYA_YARICAP } from "@/lib/terrain";
 import { bonusKesifler } from "@/lib/bonusKesifler";
+import { OGRENME_NOKTALARI } from "@/lib/ogrenmeNoktalari";
+
+const TUM_KESIFLER = [...bonusKesifler, ...OGRENME_NOKTALARI];
+const TIP_RENK: Record<string, string> = {
+  zanaat: "240,164,74", kultur: "224,106,168", yasam: "127,212,106",
+  yapi: "201,162,75", doga: "95,199,216", tarih: "185,140,232",
+};
 
 /**
  * MİNİ HARİTA
@@ -23,6 +30,7 @@ export function MiniHarita() {
   const nodlar = useOyun((s) => s.nodlar);
   const aktifIndex = useOyun((s) => s.aktifIndex);
   const bulunan = useOyun((s) => s.bulunanBonuslar);
+  const tamamlanan = useOyun((s) => s.tamamlananNodIndexleri);
   const faz = useOyun((s) => s.faz);
   const [buyuk, setBuyuk] = useState(false);
   const boyut = buyuk ? BUYUK : KUCUK;
@@ -123,22 +131,44 @@ export function MiniHarita() {
         g.setLineDash([]);
       }
 
-      // keşifler
-      bonusKesifler.forEach((b) => {
+      // ---- ÖĞRENME NOKTALARI ----
+      // Öğrenilmemiş olanlar parlar ve nabız gibi atar; öğrenilenin ışığı söner.
+      const nabiz = 0.55 + Math.sin(Date.now() / 380) * 0.45;
+      TUM_KESIFLER.forEach((b) => {
         const px = hx(b.pos[0] * DUNYA_OLCEK);
         const pz = hz(b.pos[2] * DUNYA_OLCEK);
-        g.fillStyle = bulunan.includes(b.id) ? "rgba(120,215,205,0.95)" : "rgba(240,212,138,0.5)";
-        g.beginPath();
-        g.arc(px, pz, buyuk ? 3 : 1.9, 0, Math.PI * 2);
-        g.fill();
+        const ogrenildi = bulunan.includes(b.id);
+        const tip = (b as { tip?: string }).tip ?? "bonus";
+        const renk = TIP_RENK[tip] ?? "240,212,138";
+        if (ogrenildi) {
+          g.fillStyle = "rgba(120,215,205,0.5)";
+          g.beginPath();
+          g.arc(px, pz, buyuk ? 2.6 : 1.6, 0, Math.PI * 2);
+          g.fill();
+        } else {
+          // hale
+          const r = (buyuk ? 9 : 5.5) * nabiz;
+          const hale = g.createRadialGradient(px, pz, 0, px, pz, r);
+          hale.addColorStop(0, `rgba(${renk},0.85)`);
+          hale.addColorStop(1, `rgba(${renk},0)`);
+          g.fillStyle = hale;
+          g.beginPath();
+          g.arc(px, pz, r, 0, Math.PI * 2);
+          g.fill();
+          // çekirdek
+          g.fillStyle = `rgba(${renk},1)`;
+          g.beginPath();
+          g.arc(px, pz, buyuk ? 3.2 : 2.1, 0, Math.PI * 2);
+          g.fill();
+        }
       });
 
       // duraklar
       nodlar.forEach((n, i) => {
         const px = hx(n.world.guidePosition[0]);
         const pz = hz(n.world.guidePosition[2]);
-        const gecti = i < aktifIndex;
-        const aktif = i === aktifIndex;
+        const gecti = tamamlanan.includes(i);
+        const aktif = i === aktifIndex && !gecti;
         g.beginPath();
         g.arc(px, pz, aktif ? (buyuk ? 7 : 4.6) : (buyuk ? 5 : 3), 0, Math.PI * 2);
         g.fillStyle = gecti ? "#4BB3A9" : aktif ? "#FFCF72" : "rgba(247,235,211,0.4)";
@@ -219,7 +249,7 @@ export function MiniHarita() {
     };
     ciz();
     return () => cancelAnimationFrame(raf);
-  }, [nodlar, aktifIndex, bulunan, boyut, buyuk]);
+  }, [nodlar, aktifIndex, bulunan, tamamlanan, boyut, buyuk]);
 
   if (faz === "yukleniyor" || faz === "acilis") return null;
 
@@ -231,6 +261,9 @@ export function MiniHarita() {
     <div className={`mini-harita ${buyuk ? "buyuk" : ""}`}>
       <canvas ref={kanvas} style={{ width: boyut, height: boyut }} />
       <div className="mini-harita-etiket">{bolgeAd}</div>
+      <div className="mini-harita-sayac">
+        ✨ {bulunan.length}/{TUM_KESIFLER.length} · 🏛 {tamamlanan.length}/{nodlar.length}
+      </div>
       <button
         type="button"
         className="mini-harita-dugme"

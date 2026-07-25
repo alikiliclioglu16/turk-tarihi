@@ -267,13 +267,15 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
     camera.rotation.z += Math.sin(t * 0.61) * 0.004;
 
     /* ---------- DURAK TETİKLEME ---------- */
-    const { nodlar, aktifIndex, faz: oyunFazi, duragiBaslat } = useOyun.getState();
+    // SERBEST TUR: hangi durağın yanına gelirsen o açılır, sıra beklemez
+    const { nodlar, faz: oyunFazi, tamamlananNodIndexleri, duragaGir } = useOyun.getState();
     if (oyunFazi === "gezinti") {
-      const nod = nodlar[aktifIndex];
-      if (nod) {
-        const [hx, , hz] = nod.world.guidePosition;
-        if (Math.hypot(g.position.x - hx, g.position.z - hz) < nod.world.triggerRadius) {
-          duragiBaslat();
+      for (let i = 0; i < nodlar.length; i++) {
+        if (tamamlananNodIndexleri.includes(i)) continue;
+        const [hx, , hz] = nodlar[i].world.guidePosition;
+        if (Math.hypot(g.position.x - hx, g.position.z - hz) < nodlar[i].world.triggerRadius) {
+          duragaGir(i);
+          break;
         }
       }
     }

@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { araziYukseklik } from "@/lib/terrain";
 import { keceDokusu, kilimDokusu, lekeDokusu } from "@/lib/textures";
+import { obaCadirlari } from "@/lib/buyukObaVeri";
 
 /**
  * BÜYÜK OBA — uzaktaki kalabalık
@@ -18,57 +19,8 @@ import { keceDokusu, kilimDokusu, lekeDokusu } from "@/lib/textures";
  * Sonuç: ufka bakınca binlerce kişilik bir oba görürsünüz.
  */
 
-const OTAG_SAYISI = 320;
 const KALABALIK = 240;
 const DUMAN_SAYISI = 90;
-
-/** Otağların yerleşimi: merkez meydan çevresinde halkalar + mahalle kümeleri */
-function otagKonumlari() {
-  const liste: { x: number; z: number; s: number; r: number }[] = [];
-  let tohum = 20260725;
-  const rnd = () => {
-    tohum = (tohum * 1103515245 + 12345) & 0x7fffffff;
-    return tohum / 0x7fffffff;
-  };
-
-  // 1) merkez meydan çevresinde 6 halka
-  for (let halka = 0; halka < 6; halka++) {
-    const yaricap = 55 + halka * 26;
-    const adet = 14 + halka * 5;
-    for (let i = 0; i < adet; i++) {
-      const a = (i / adet) * Math.PI * 2 + rnd() * 0.16;
-      const r = yaricap + (rnd() - 0.5) * 14;
-      const x = Math.cos(a) * r;
-      const z = Math.sin(a) * r + 30;
-      // ana rota ve mahalle alanlarını boş bırak
-      if (Math.hypot(x, z - 30) < 42) continue;
-      liste.push({ x, z, s: 0.72 + rnd() * 0.5, r: rnd() * Math.PI * 2 });
-    }
-  }
-
-  // 2) dış mahalle kümeleri
-  const kumeler: [number, number][] = [
-    [-150, 90], [140, 100], [-170, -30], [175, -40],
-    [-90, 170], [95, 175], [0, 210], [-210, 60], [205, 55],
-    [-130, -120], [130, -130], [0, -180],
-  ];
-  for (const [kx, kz] of kumeler) {
-    const adet = 14 + Math.floor(rnd() * 12);
-    for (let i = 0; i < adet; i++) {
-      const a = rnd() * Math.PI * 2;
-      const r = rnd() * 34;
-      liste.push({
-        x: kx + Math.cos(a) * r,
-        z: kz + Math.sin(a) * r,
-        s: 0.65 + rnd() * 0.55,
-        r: rnd() * Math.PI * 2,
-      });
-    }
-  }
-
-  // dünya sınırı dışına taşanları ele
-  return liste.filter((o) => Math.hypot(o.x, o.z) < 300).slice(0, OTAG_SAYISI);
-}
 
 export function BuyukOba() {
   const kece = useMemo(() => keceDokusu(), []);
@@ -80,10 +32,13 @@ export function BuyukOba() {
   const kusakRef = useRef<THREE.InstancedMesh>(null);
   const halkRef = useRef<THREE.InstancedMesh>(null);
   const dumanRef = useRef<THREE.InstancedMesh>(null);
+  const beyGovdeRef = useRef<THREE.InstancedMesh>(null);
+  const beyCatiRef = useRef<THREE.InstancedMesh>(null);
+  const beyTugRef = useRef<THREE.InstancedMesh>(null);
   const yazildi = useRef(false);
 
   const veri = useMemo(() => {
-    const otaglar = otagKonumlari();
+    const otaglar = obaCadirlari();
     let tohum = 777;
     const rnd = () => {
       tohum = (tohum * 1103515245 + 12345) & 0x7fffffff;
@@ -111,7 +66,9 @@ export function BuyukOba() {
       .slice(0, DUMAN_SAYISI)
       .map((o) => ({ x: o.x, z: o.z, s: 0.8 + rnd() * 0.8 }));
 
-    return { otaglar, kisiler, dumanlar };
+    const siradan = otaglar.filter((o) => !o.beyMi);
+    const beyler = otaglar.filter((o) => o.beyMi);
+    return { otaglar, siradan, beyler, kisiler, dumanlar };
   }, []);
 
   useFrame(({ clock }) => {
@@ -121,7 +78,7 @@ export function BuyukOba() {
     const yazOtag = () => {
       const gm = govdeRef.current, cm = catiRef.current, km = kusakRef.current;
       if (!gm || !cm || !km) return false;
-      veri.otaglar.forEach((o, i) => {
+      veri.siradan.forEach((o, i) => {
         const y = araziYukseklik(o.x, o.z);
         g.position.set(o.x, y + 1.0 * o.s, o.z);
         g.rotation.set(0, o.r, 0);
@@ -172,23 +129,44 @@ export function BuyukOba() {
       return true;
     };
 
-    if (yazOtag() && yazHalk() && yazDuman()) yazildi.current = true;
+    const yazBey = () => {
+      const gm = beyGovdeRef.current, cm = beyCatiRef.current, tm = beyTugRef.current;
+      if (!gm || !cm || !tm) return false;
+      veri.beyler.forEach((o, i) => {
+        const y = araziYukseklik(o.x, o.z);
+        g.position.set(o.x, y + 1.25 * o.s, o.z);
+        g.rotation.set(0, o.r, 0);
+        g.scale.setScalar(o.s);
+        g.updateMatrix();
+        gm.setMatrixAt(i, g.matrix);
+        g.position.set(o.x, y + 3.75 * o.s, o.z);
+        g.updateMatrix();
+        cm.setMatrixAt(i, g.matrix);
+        g.position.set(o.x, y + 5.4 * o.s, o.z);
+        g.updateMatrix();
+        tm.setMatrixAt(i, g.matrix);
+      });
+      [gm, cm, tm].forEach((m) => { m.instanceMatrix.needsUpdate = true; m.computeBoundingSphere(); });
+      return true;
+    };
+
+    if (yazOtag() && yazHalk() && yazDuman() && yazBey()) yazildi.current = true;
   });
 
   return (
     <group>
       {/* otağ gövdeleri */}
-      <instancedMesh ref={govdeRef} args={[undefined, undefined, veri.otaglar.length]} castShadow receiveShadow frustumCulled>
+      <instancedMesh ref={govdeRef} args={[undefined, undefined, veri.siradan.length]} castShadow receiveShadow frustumCulled>
         <cylinderGeometry args={[2.6, 2.9, 2.0, 10]} />
         <meshStandardMaterial map={kece} roughness={0.97} />
       </instancedMesh>
       {/* çatılar */}
-      <instancedMesh ref={catiRef} args={[undefined, undefined, veri.otaglar.length]} castShadow frustumCulled>
+      <instancedMesh ref={catiRef} args={[undefined, undefined, veri.siradan.length]} castShadow frustumCulled>
         <coneGeometry args={[3.1, 1.9, 10]} />
         <meshStandardMaterial color="#C9BA98" roughness={0.97} />
       </instancedMesh>
       {/* kilim kuşakları */}
-      <instancedMesh ref={kusakRef} args={[undefined, undefined, veri.otaglar.length]} frustumCulled>
+      <instancedMesh ref={kusakRef} args={[undefined, undefined, veri.siradan.length]} frustumCulled>
         <cylinderGeometry args={[2.93, 2.95, 0.55, 10, 1, true]} />
         <meshStandardMaterial map={kilim} roughness={0.92} side={THREE.DoubleSide} />
       </instancedMesh>
@@ -197,6 +175,20 @@ export function BuyukOba() {
       <instancedMesh ref={halkRef} args={[undefined, undefined, veri.kisiler.length]} castShadow frustumCulled>
         <capsuleGeometry args={[0.2, 0.95, 4, 8]} />
         <meshStandardMaterial color="#B9A98C" roughness={0.95} />
+      </instancedMesh>
+
+      {/* ileri gelen çadırları — daha büyük, kırmızı çatılı, tuğlu */}
+      <instancedMesh ref={beyGovdeRef} args={[undefined, undefined, veri.beyler.length]} castShadow receiveShadow frustumCulled>
+        <cylinderGeometry args={[3.0, 3.35, 2.5, 12]} />
+        <meshStandardMaterial map={kece} color="#EBE0C4" roughness={0.95} />
+      </instancedMesh>
+      <instancedMesh ref={beyCatiRef} args={[undefined, undefined, veri.beyler.length]} castShadow frustumCulled>
+        <coneGeometry args={[3.7, 2.6, 12]} />
+        <meshStandardMaterial color="#9E3A32" roughness={0.9} />
+      </instancedMesh>
+      <instancedMesh ref={beyTugRef} args={[undefined, undefined, veri.beyler.length]} castShadow frustumCulled>
+        <cylinderGeometry args={[0.13, 0.16, 5.2, 6]} />
+        <meshStandardMaterial color="#6E4B26" roughness={0.9} />
       </instancedMesh>
 
       {/* ocak dumanları */}

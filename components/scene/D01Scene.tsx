@@ -37,6 +37,7 @@ export function D01Scene() {
   const aktifIndex = useOyun((s) => s.aktifIndex);
   const faz = useOyun((s) => s.faz);
   const gezilen = useOyun((s) => s.gezilenHotspotlar);
+  const tamamlanan = useOyun((s) => s.tamamlananNodIndexleri);
   const nod = nodlar[aktifIndex];
 
   return (
@@ -84,7 +85,14 @@ export function D01Scene() {
 
         <AcilisUcusu />
         <AltinYol />
-        {(faz === "gezinti" || faz === "kesif" || faz === "acilis") && nod && (
+        {/* SERBEST TUR: tamamlanmamış tüm durakların ışığı görünür */}
+        {(faz === "gezinti" || faz === "acilis") &&
+          nodlar.map((n, i) =>
+            tamamlanan.includes(i) ? null : (
+              <DurakIsigi key={n.nodeId} pos={n.world.guidePosition} />
+            )
+          )}
+        {(faz === "kesif" || faz === "anlati") && nod && (
           <DurakIsigi pos={nod.world.guidePosition} />
         )}
         {faz === "kesif" &&

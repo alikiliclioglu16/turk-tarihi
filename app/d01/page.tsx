@@ -14,6 +14,7 @@ import { DurakKartiPaneli } from "@/components/ui/DurakKartiPaneli";
 import { KesifKartiPaneli } from "@/components/ui/KesifKartiPaneli";
 import { AnlatiSeridi } from "@/components/ui/AnlatiSeridi";
 import { MiniHarita } from "@/components/ui/MiniHarita";
+import { FinalSinavi } from "@/components/ui/FinalSinavi";
 import { KisiPanel } from "@/components/ui/KisiPanel";
 
 // R3F sunucuda render edilemez
@@ -141,6 +142,7 @@ export default function D01Page() {
         <DurakKartiPaneli kart={nod.reward} onBitti={odulAlindi} />
       )}
       {faz === "kapanis" && <ClosingPanel />}
+      {faz === "sinav" && <FinalSinavi />}
 
       {faz === "bolumBitti" && (
         <div className="ortu">

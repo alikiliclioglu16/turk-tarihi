@@ -39,6 +39,7 @@ export type Faz =
   | "gorev"      // görev paneli
   | "odul"       // kart kazanıldı
   | "kapanis"    // durak kapanış repliği
+  | "sinav"      // final değerlendirmesi
   | "bolumBitti";
 
 interface Durum {
@@ -53,6 +54,7 @@ interface Durum {
   sonGeriBildirim: string | null;
   ipucu: string | null;
   dogruSecilenler: string[];
+  tamamlananNodIndexleri: number[];
   bulunanBonuslar: string[];
   aktifBonusId: string | null;
   kisiBilgi: { id: string; ad: string; metin: string } | null;
@@ -61,6 +63,8 @@ interface Durum {
 
   nodlariYukle: (n: TourNode[]) => void;
   duragiBaslat: () => void;
+  duragaGir: (index: number) => void;
+  sinaviBitir: () => void;
   sonrakiAnlati: () => void;
   hotspotAc: (id: string) => void;
   hotspotKapat: () => void;
@@ -91,6 +95,7 @@ export const useOyun = create<Durum>((set, get) => ({
   sonGeriBildirim: null,
   ipucu: null,
   dogruSecilenler: [],
+  tamamlananNodIndexleri: [],
   bulunanBonuslar: [],
   aktifBonusId: null,
   kisiBilgi: null,
@@ -114,6 +119,22 @@ export const useOyun = create<Durum>((set, get) => ({
       anlatiIndex: 0,
       gezilenHotspotlar: [],
       kazanilanKartlar: [],
+    });
+  },
+
+  /** Yakınına gelinen durağı başlatır — sıra şartı yok */
+  duragaGir: (index: number) => {
+    const { faz, tamamlananNodIndexleri } = get();
+    if (faz !== "gezinti") return;
+    if (tamamlananNodIndexleri.includes(index)) return;
+    input.kilitli = false;
+    olayKaydet("durak_baslatildi", { index });
+    set({
+      aktifIndex: index,
+      faz: "anlati",
+      anlatiIndex: 0,
+      gezilenHotspotlar: [],
+      denemeSayisi: 0,
     });
   },
 
@@ -210,6 +231,8 @@ export const useOyun = create<Durum>((set, get) => ({
 
   bonusKapat: () => set({ aktifBonusId: null }),
 
+  sinaviBitir: () => set({ faz: "bolumBitti" }),
+
   kisiBilgiAc: (id, ad, metin) => set({ kisiBilgi: { id, ad, metin } }),
   kisiBilgiKapat: () => set({ kisiBilgi: null }),
 
@@ -276,20 +299,25 @@ export const useOyun = create<Durum>((set, get) => ({
   },
 
   kapanisBitti: () => {
-    const { nodlar, aktifIndex } = get();
-    if (aktifIndex + 1 < nodlar.length) {
-      input.kilitli = false;
+    const { nodlar, aktifIndex, tamamlananNodIndexleri } = get();
+    const yeniTamam = tamamlananNodIndexleri.includes(aktifIndex)
+      ? tamamlananNodIndexleri
+      : [...tamamlananNodIndexleri, aktifIndex];
+    input.kilitli = false;
+
+    // Serbest tur: sıradaki durağa zorlanmaz, gezintiye dönülür.
+    // Hepsi bitince final sınavı açılır.
+    if (yeniTamam.length >= nodlar.length) {
+      set({ tamamlananNodIndexleri: yeniTamam, faz: "sinav" });
+    } else {
       set({
-        aktifIndex: aktifIndex + 1,
+        tamamlananNodIndexleri: yeniTamam,
         faz: "gezinti",
         anlatiIndex: 0,
         gezilenHotspotlar: [],
         sonGeriBildirim: null,
         ipucu: null,
       });
-    } else {
-      input.kilitli = false;
-      set({ faz: "bolumBitti" });
     }
   },
 

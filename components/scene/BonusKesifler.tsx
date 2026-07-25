@@ -4,12 +4,16 @@ import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { bonusKesifler, bonusKesifBul } from "@/lib/bonusKesifler";
+import { OGRENME_NOKTALARI } from "@/lib/ogrenmeNoktalari";
+
+/** Serbest keşif: Meraklı Gözler + bölge öğrenme noktaları */
+const TUM_KESIFLER = [...bonusKesifler, ...OGRENME_NOKTALARI];
 
 // store'un keşif kartı üretebilmesi için köprü
 if (typeof globalThis !== "undefined") {
   (globalThis as { __bonusMetin?: (id: string) => { ad: string; metin: string } | null }).__bonusMetin =
     (id: string) => {
-      const b = bonusKesifBul(id);
+      const b = TUM_KESIFLER.find((x) => x.id === id) ?? bonusKesifBul(id);
       return b ? { ad: b.ad, metin: b.metin } : null;
     };
 }
@@ -19,7 +23,13 @@ import { oyuncuKonumu } from "@/lib/oyuncuKonum";
 import { lekeDokusu } from "@/lib/textures";
 import { DUNYA_OLCEK } from "@/lib/dunyaOlcek";
 
-const GORUNUR_MESAFE = 95; // metre — bu uzaklıktan öteye çizilmez
+const GORUNUR_MESAFE = 95;
+
+/** Öğrenme noktası türüne göre renk — mini haritayla aynı dil */
+const TIP_RENK: Record<string, string> = {
+  zanaat: "#F0A44A", kultur: "#E06AA8", yasam: "#7FD46A",
+  yapi: "#C9A24B", doga: "#5FC7D8", tarih: "#B98CE8", bonus: "#F0D48A",
+}; // metre — bu uzaklıktan öteye çizilmez
 
 /**
  * MERAKLI GÖZLER
@@ -61,7 +71,7 @@ export function BonusKesifler() {
 
   return (
     <group ref={grup}>
-      {bonusKesifler.map((b) => {
+      {TUM_KESIFLER.map((b) => {
         const acildi = bulunan.includes(b.id);
         const p: [number, number, number] = [b.pos[0]*DUNYA_OLCEK, b.pos[1]*DUNYA_OLCEK, b.pos[2]*DUNYA_OLCEK];
         return (
@@ -81,7 +91,7 @@ export function BonusKesifler() {
             <mesh>
               <octahedronGeometry args={[acildi ? 0.1 : 0.14, 0]} />
               <meshBasicMaterial
-                color={acildi ? "#4BB3A9" : "#F0D48A"}
+                color={acildi ? "#4BB3A9" : (TIP_RENK[(b as { tip?: string }).tip ?? "bonus"] ?? "#F0D48A")}
                 transparent
                 opacity={acildi ? 0.5 : 0.95}
               />
