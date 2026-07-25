@@ -7,6 +7,7 @@ import { araziYukseklik, DUNYA_YARICAP } from "@/lib/terrain";
 import { hareketVektoru, klavyeyiBagla } from "@/lib/input";
 import { useOyun } from "@/lib/store";
 import { oyuncuKonumu } from "@/lib/oyuncuKonum";
+import { hareketiCoz } from "@/lib/carpisma";
 import { GezginModel } from "./models/GezginModel";
 
 const HIZ = 4.6;
@@ -132,16 +133,20 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
       const aci = Math.atan2(yon.current.x, yon.current.z) + camYaw.current + Math.PI;
       const nx = g.position.x + Math.sin(aci) * hiz * guc * dt;
       const nz = g.position.z + Math.cos(aci) * hiz * guc * dt;
-      const yeniUz = Math.hypot(nx, nz);
-      if (yeniUz < DUNYA_YARICAP) {
-        g.position.x = nx;
-        g.position.z = nz;
-      } else {
-        // sınıra teğet kayarak dur — sert duvar hissi olmasın
+      // nesnelerle çarpışma — teğet kayarak dolaş
+      const coz = hareketiCoz(g.position.x, g.position.z, nx, nz, 0.5, ziplamaYuk.current);
+      let hx = coz.x;
+      let hz = coz.z;
+
+      // dünya sınırı
+      const yeniUz = Math.hypot(hx, hz);
+      if (yeniUz > DUNYA_YARICAP) {
         const oran = DUNYA_YARICAP / yeniUz;
-        g.position.x = nx * oran;
-        g.position.z = nz * oran;
+        hx *= oran;
+        hz *= oran;
       }
+      g.position.x = hx;
+      g.position.z = hz;
       hedefAci.current = aci;
       adimFaz.current += dt * ADIM_TEMPO * guc * (kosuyor.current ? 1.5 : 1);
     }

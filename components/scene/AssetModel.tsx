@@ -26,6 +26,7 @@ interface Props {
   pos: [number, number, number];
   rotY?: number;
   olcek?: number;
+  varyant?: number;
 }
 
 function Gercek({ path, rotY = 0, olcek = 1 }: { path: string; rotY?: number; olcek?: number }) {
@@ -34,20 +35,20 @@ function Gercek({ path, rotY = 0, olcek = 1 }: { path: string; rotY?: number; ol
 }
 
 /** GLB yokken gösterilen prosedürel model — "çocuksu kutu" değil, özenli yer tutucu */
-function Prosedurel({ kod, olcek = 1 }: { kod: string; olcek?: number }) {
+function Prosedurel({ kod, olcek = 1, varyant = 0 }: { kod: string; olcek?: number; varyant?: number }) {
   switch (kod) {
     case "A02": return <KopuzModel />;
     case "A03": return <SandikModel />;
-    case "A04": return <OtagModel olcek={olcek} />;
+    case "A04": return <OtagModel olcek={olcek} varyant={varyant} />;
     case "A05": return <OcakModel />;
-    case "A06": return <SacayakKazanModel />;
+    case "A06": return <SacayakKazanModel varyant={varyant} />;
     case "A07": return <BalbalModel olcek={olcek} />;
-    case "A08": return <KilimModel />;
+    case "A08": return <KilimModel varyant={varyant} />;
     case "C01": return <KayaModel olcek={olcek} />;
     case "B13": return <AgilModel />;
     case "B14": return <KoyunModel olcek={olcek} />;
     case "B15": return <KagniModel />;
-    case "B16": return <TezgahModel />;
+    case "B16": return <TezgahModel varyant={varyant} />;
     case "B17": return <KurutmaSehpasiModel />;
     case "B18": return <OdunYiginiModel />;
     case "B19": return <TulumSehpasiModel />;
@@ -96,7 +97,7 @@ function Prosedurel({ kod, olcek = 1 }: { kod: string; olcek?: number }) {
   }
 }
 
-export function AssetModel({ kod, pos, rotY = 0, olcek = 1 }: Props) {
+export function AssetModel({ kod, pos, rotY = 0, olcek = 1, varyant = 0 }: Props) {
   const v = varlik(kod);
   if (!v) return null;
   const y = pos[1] + araziYukseklik(pos[0], pos[2]);
@@ -108,7 +109,7 @@ export function AssetModel({ kod, pos, rotY = 0, olcek = 1 }: Props) {
           <Gercek path={v.path} olcek={olcek} />
         </Suspense>
       ) : (
-        <Prosedurel kod={kod} olcek={olcek} />
+        <Prosedurel kod={kod} olcek={olcek} varyant={varyant} />
       )}
     </group>
   );

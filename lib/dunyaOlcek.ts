@@ -13,7 +13,7 @@
  * birbirine yakın, aralar boş kalmıyor.
  * oba mahalleleriyle birlikte toplam gezinme 9–11 dakika.
  */
-export const DUNYA_OLCEK = 2.9;
+export const DUNYA_OLCEK = 4.0;
 
 export function olcekle(p: [number, number, number]): [number, number, number] {
   return [p[0] * DUNYA_OLCEK, p[1] * DUNYA_OLCEK, p[2] * DUNYA_OLCEK];

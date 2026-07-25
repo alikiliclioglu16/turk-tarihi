@@ -7,7 +7,7 @@
 
 import { DUNYA_OLCEK } from "./dunyaOlcek";
 
-export type BolgeId = "oba" | "balbal_sirti" | "su_basi" | "eski_yurt";
+export type BolgeId = "oba" | "pazaryeri" | "balbal_sirti" | "su_basi" | "eski_yurt";
 
 export interface Bolge {
   id: BolgeId;
@@ -32,6 +32,12 @@ export const BOLGELER: Record<BolgeId, Bolge> = {
     ortamRenk: "#2c3d63", ortamGuc: 0.35, ayGuc: 0.6,
     gokUst: "#050a16", gokUfuk: "#2a3f6a",
   },
+  pazaryeri: {
+    id: "pazaryeri", ad: "Pazaryeri", merkez: [46, -34], yaricap: 34, duygu: "canlı",
+    sisRenk: "#CFC7AE", sisYogunluk: 0.0014,
+    ortamRenk: "#C8B48A", ortamGuc: 0.5, ayGuc: 0.9,
+    gokUst: "#3E7CC4", gokUfuk: "#E2D6B4",
+  },
   balbal_sirti: {
     id: "balbal_sirti", ad: "Balbal Sırtı", merkez: [-57, 62], yaricap: 40, duygu: "saygılı",
     sisRenk: "#CFD2C0", sisYogunluk: 0.0011,
@@ -52,7 +58,7 @@ export const BOLGELER: Record<BolgeId, Bolge> = {
   },
 };
 
-export const BOLGE_SIRASI: BolgeId[] = ["oba", "balbal_sirti", "su_basi", "eski_yurt"];
+export const BOLGE_SIRASI: BolgeId[] = ["oba", "pazaryeri", "balbal_sirti", "su_basi", "eski_yurt"];
 
 /** Oyuncunun hangi bölgede olduğunu bulur (en yakın merkez) */
 function m(b: Bolge): [number, number] {

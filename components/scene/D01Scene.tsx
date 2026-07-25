@@ -17,6 +17,7 @@ import { GirilebilirOtag } from "./GirilebilirOtag";
 import { Suru } from "./Suru";
 import { Canlilar } from "./Canlilar";
 import { SinirKusagi } from "./SinirKusagi";
+import { CarpismaKurulumu } from "./CarpismaKurulumu";
 import { HotspotMarker } from "./HotspotMarker";
 import { DurakIsigi } from "./DurakIsigi";
 import { AltinYol } from "./AltinYol";
@@ -53,6 +54,7 @@ export function D01Scene() {
       <PerformanceMonitor onDecline={() => { /* düşük başarımda dpr otomatik iner */ }} />
       <AdaptiveDpr pixelated={false} />
       <Suspense fallback={null}>
+        <CarpismaKurulumu />
         <IBL />
         {/* PCSS yumuşak gölgeler: temasta keskin, uzaklaştıkça yumuşayan */}
         <SoftShadows size={9} samples={8} focus={0.75} />

@@ -51,7 +51,7 @@ export function YakinVarliklar() {
       {yakinlar.map((i) => {
         const y = D01_YERLESIM[i];
         return (
-          <AssetModel key={`${y.kod}-${i}`} kod={y.kod} pos={y.pos} rotY={y.rotY} olcek={y.olcek} />
+          <AssetModel key={`${y.kod}-${i}`} kod={y.kod} pos={y.pos} rotY={y.rotY} olcek={y.olcek} varyant={i} />
         );
       })}
     </>

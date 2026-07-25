@@ -74,6 +74,28 @@ function canlilariUret(): Canli[] {
   suru("kedi", -8, 10, 3, 9);
   suru("kedi", 26, 22, 2, 7);
 
+  // ---- BÖLGE SÜRÜLERİ ----
+  // Pazaryeri: hayvan pazarı
+  suru("at", 58, -50, 12, 8);
+  suru("koyun", 63, -46, 20, 8);
+  suru("inek", 66, -40, 10, 7, 1.05);
+  suru("esek", 44, -44, 6, 7);
+  suru("kopek", 46, -36, 4, 12);
+  suru("kedi", 42, -32, 3, 8);
+  // Balbal Sırtı: dağ keçisi yerine seyrek koyun ve at
+  suru("koyun", -50, 54, 14, 14);
+  suru("at", -62, 66, 8, 12);
+  suru("kopek", -52, 58, 3, 10);
+  // Su Başı: sulanan sürüler
+  suru("inek", 66, 26, 16, 12, 1.05);
+  suru("at", 70, 14, 12, 11);
+  suru("koyun", 56, 30, 18, 11);
+  suru("kopek", 62, 22, 3, 9);
+  // Eski Yurt: az hayvan — terk edilmişlik
+  suru("koyun", -32, -64, 8, 12);
+  suru("kopek", -36, -70, 2, 10);
+  suru("kedi", -34, -68, 3, 8);
+
   return liste;
 }
 
@@ -105,11 +127,16 @@ export function Canlilar() {
       {/* ahırlar */}
       <Yerlesik x={46} z={-14} rot={0.4}><AhirModel /></Yerlesik>
       <Yerlesik x={-40} z={38} rot={2.1}><AhirModel /></Yerlesik>
+      <Yerlesik x={62} z={-44} rot={1.2}><AhirModel /></Yerlesik>
+      <Yerlesik x={68} z={24} rot={0.6}><AhirModel /></Yerlesik>
+      <Yerlesik x={-58} z={64} rot={2.6}><AhirModel /></Yerlesik>
 
       {/* gökyüzünde kartallar */}
       <Kartal merkez={[0, 30 * OL]} yaricap={60} yukseklik={46} hiz={0.09} />
       <Kartal merkez={[-40 * OL, 50 * OL]} yaricap={48} yukseklik={62} hiz={0.13} />
       <Kartal merkez={[55 * OL, 10 * OL]} yaricap={54} yukseklik={40} hiz={-0.11} />
+      <Kartal merkez={[-55 * OL, 60 * OL]} yaricap={70} yukseklik={70} hiz={0.07} />
+      <Kartal merkez={[46 * OL, -34 * OL]} yaricap={58} yukseklik={52} hiz={-0.1} />
     </>
   );
 }

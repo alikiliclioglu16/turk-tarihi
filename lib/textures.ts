@@ -4,6 +4,7 @@ import * as THREE from "three";
 
 /** Prosedürel dokular — GLB gelene kadar sahneye gerçek malzeme hissi verir */
 
+const _kilimler: (THREE.CanvasTexture | null)[] = [null, null, null, null, null];
 let _kilim: THREE.CanvasTexture | null = null;
 let _kece: THREE.CanvasTexture | null = null;
 let _tamga: THREE.CanvasTexture | null = null;
@@ -17,8 +18,61 @@ function tuval(w: number, h: number) {
   return { c, g: c.getContext("2d")! };
 }
 
-/** Kilim: kök boya kırmızısı zemin, koçboynuzu ve baklava motifleri */
-export function kilimDokusu(): THREE.CanvasTexture {
+/** Kilim palet çeşitleri — her tezgâhtan farklı desen çıkar */
+const KILIM_PALETLERI = [
+  { zemin: "#A63A32", cerceve: "#F7EBD3", m1: "#4BB3A9", m2: "#F0A44A", ic: "#2A2118" },
+  { zemin: "#7A2E28", cerceve: "#E8DCC0", m1: "#C9A24B", m2: "#8A6A24", ic: "#241C14" },
+  { zemin: "#3E5A52", cerceve: "#F2E6CB", m1: "#B8433A", m2: "#E0C878", ic: "#1E2A26" },
+  { zemin: "#8A6A24", cerceve: "#F7EBD3", m1: "#A63A32", m2: "#4BB3A9", ic: "#2E2416" },
+  { zemin: "#4A3A5E", cerceve: "#EFE0C4", m1: "#D9A441", m2: "#7FA8A0", ic: "#241C2E" },
+];
+
+/**
+ * Kilim dokusu — beş farklı palet ve desen düzeni.
+ * Her tezgâh ve yaygı farklı çıksın diye varyant alır.
+ */
+export function kilimDokusu(varyant = 0): THREE.CanvasTexture {
+  const v = ((varyant % KILIM_PALETLERI.length) + KILIM_PALETLERI.length) % KILIM_PALETLERI.length;
+  const onbellek = _kilimler[v];
+  if (onbellek) return onbellek;
+  const P = KILIM_PALETLERI[v];
+  const { c, g } = tuval(256, 256);
+  g.fillStyle = P.zemin;
+  g.fillRect(0, 0, 256, 256);
+  g.strokeStyle = P.cerceve;
+  g.lineWidth = 5;
+  g.strokeRect(14, 14, 228, 228);
+  const motifSayisi = 2 + (v % 3);
+  for (let i = 0; i < motifSayisi; i++) {
+    const cx = 128 + (i - (motifSayisi - 1) / 2) * 68;
+    g.fillStyle = i % 2 === 0 ? P.m1 : P.m2;
+    if (v % 2 === 0) {
+      g.beginPath();
+      g.moveTo(cx, 84); g.lineTo(cx + 34, 128); g.lineTo(cx, 172); g.lineTo(cx - 34, 128);
+      g.closePath(); g.fill();
+    } else {
+      g.fillRect(cx - 28, 100, 56, 56);
+      g.fillStyle = P.cerceve;
+      g.fillRect(cx - 14, 114, 28, 28);
+    }
+    g.fillStyle = P.ic;
+    g.beginPath();
+    g.moveTo(cx, 112); g.lineTo(cx + 13, 128); g.lineTo(cx, 144); g.lineTo(cx - 13, 128);
+    g.closePath(); g.fill();
+  }
+  g.fillStyle = P.cerceve;
+  const adim = 26 + (v % 3) * 6;
+  for (let x = 34; x < 240; x += adim) {
+    g.fillRect(x, 30, 12, 12);
+    g.fillRect(x, 214, 12, 12);
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  _kilimler[v] = t;
+  return t;
+}
+
+function _eskiKilim(): THREE.CanvasTexture {
   if (_kilim) return _kilim;
   const { c, g } = tuval(256, 256);
   g.fillStyle = "#A63A32";
@@ -54,12 +108,18 @@ export function kilimDokusu(): THREE.CanvasTexture {
   _kilim.colorSpace = THREE.SRGBColorSpace;
   return _kilim;
 }
+void _eskiKilim;
 
 /** Keçe: yıpranmış yün dokusu, dikiş şeritleri */
-export function keceDokusu(): THREE.CanvasTexture {
-  if (_kece) return _kece;
+const KECE_RENKLERI = ["#D9CBAA", "#C9BEA0", "#E0D4B6", "#CFC0A2", "#BFB393"];
+const _keceler: (THREE.CanvasTexture | null)[] = [null, null, null, null, null];
+
+/** Keçe dokusu — beş ton, her otağ biraz farklı */
+export function keceDokusu(varyant = 0): THREE.CanvasTexture {
+  const v = ((varyant % 5) + 5) % 5;
+  if (_keceler[v]) return _keceler[v]!;
   const { c, g } = tuval(256, 256);
-  g.fillStyle = "#D9CBAA";
+  g.fillStyle = KECE_RENKLERI[v];
   g.fillRect(0, 0, 256, 256);
   for (let i = 0; i < 2600; i++) {
     g.fillStyle = Math.random() > 0.5 ? "#C6B694" : "#E4D9BE";
@@ -74,11 +134,13 @@ export function keceDokusu(): THREE.CanvasTexture {
     g.lineTo(256, y);
     g.stroke();
   }
-  _kece = new THREE.CanvasTexture(c);
-  _kece.wrapS = _kece.wrapT = THREE.RepeatWrapping;
-  _kece.repeat.set(3, 1);
-  _kece.colorSpace = THREE.SRGBColorSpace;
-  return _kece;
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(3, 1);
+  t.colorSpace = THREE.SRGBColorSpace;
+  _keceler[v] = t;
+  void _kece;
+  return t;
 }
 
 /** Balbal yüzeyi: aşınmış granit + kazınmış yüz ve kemer */

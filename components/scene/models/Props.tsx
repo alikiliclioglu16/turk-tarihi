@@ -10,13 +10,22 @@ import { ahsapDokusu, keceDokusu, kilimDokusu, tamgaDokusu } from "@/lib/texture
    Her biri, gerçek modeli geldiğinde tek satırla devre dışı kalır.
    ============================================================ */
 
-export function OtagModel({ olcek = 1 }: { olcek?: number }) {
-  const kece = useMemo(() => keceDokusu(), []);
-  const kilim = useMemo(() => kilimDokusu(), []);
+/**
+ * OTAĞ — beş görsel varyant
+ * Keçe tonu, kilim deseni, çatı yüksekliği, kapı yönü ve kuşak genişliği
+ * varyanta göre değişir. Aynı obada iki özdeş çadır olmaz.
+ */
+export function OtagModel({ olcek = 1, varyant = 0 }: { olcek?: number; varyant?: number }) {
+  const v = ((varyant % 5) + 5) % 5;
+  const kece = useMemo(() => keceDokusu(v), [v]);
+  const kilim = useMemo(() => kilimDokusu(v + 1), [v]);
   const ahsap = useMemo(() => ahsapDokusu(), []);
+  const catiYuk = 1.7 + (v % 3) * 0.28;
+  const kusakGen = 0.42 + (v % 4) * 0.12;
+  const govdeYuk = 1.85 + (v % 2) * 0.35;
 
   return (
-    <group scale={olcek}>
+    <group scale={olcek} rotation-y={v * 0.4}>
       {/* keçe gövde */}
       <mesh position={[0, 1.0, 0]} castShadow receiveShadow>
         <cylinderGeometry args={[2.6, 2.9, 2.0, 18]} />
@@ -96,7 +105,10 @@ export function OcakModel() {
   );
 }
 
-export function SacayakKazanModel() {
+export function SacayakKazanModel({ varyant = 0 }: { varyant?: number }) {
+  const v = ((varyant % 3) + 3) % 3;
+  const kazanR = [0.42, 0.52, 0.36][v];
+  const kazanRenk = ["#2C2C34", "#4A3E2E", "#3A3A42"][v];
   return (
     <group>
       {[0, 1, 2].map((i) => {
@@ -118,11 +130,11 @@ export function SacayakKazanModel() {
         <meshStandardMaterial color="#2C2C34" metalness={0.6} roughness={0.5} />
       </mesh>
       <mesh position={[0, 1.72, 0]} castShadow>
-        <sphereGeometry args={[0.42, 18, 12, 0, Math.PI * 2, Math.PI * 0.34, Math.PI * 0.66]} />
-        <meshStandardMaterial color="#2C2C34" metalness={0.55} roughness={0.5} side={THREE.DoubleSide} />
+        <sphereGeometry args={[kazanR, 18, 12, 0, Math.PI * 2, Math.PI * 0.34, Math.PI * 0.66]} />
+        <meshStandardMaterial color={kazanRenk} metalness={0.55} roughness={0.5} side={THREE.DoubleSide} />
       </mesh>
       <mesh position={[0, 2.06, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[0.4, 0.45, 16]} />
+        <ringGeometry args={[kazanR - 0.02, kazanR + 0.03, 16]} />
         <meshStandardMaterial color="#1E1E24" metalness={0.6} roughness={0.4} side={THREE.DoubleSide} />
       </mesh>
     </group>
@@ -221,8 +233,8 @@ export function KopuzModel() {
   );
 }
 
-export function KilimModel() {
-  const kilim = useMemo(() => kilimDokusu(), []);
+export function KilimModel({ varyant = 0 }: { varyant?: number }) {
+  const kilim = useMemo(() => kilimDokusu(varyant), [varyant]);
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]} receiveShadow>
       <planeGeometry args={[2.8, 1.9]} />
@@ -340,9 +352,9 @@ export function KagniModel() {
   );
 }
 
-export function TezgahModel() {
+export function TezgahModel({ varyant = 0 }: { varyant?: number }) {
   const ahsap = useMemo(() => ahsapDokusu(), []);
-  const kilim = useMemo(() => kilimDokusu(), []);
+  const kilim = useMemo(() => kilimDokusu(varyant + 2), [varyant]);
   return (
     <group>
       {[-0.85, 0.85].map((x) => (
