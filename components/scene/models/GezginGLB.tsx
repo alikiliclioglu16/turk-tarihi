@@ -53,6 +53,33 @@ export function GezginGLB({ klip, gecis = 0.28, tempo = 1 }: Props) {
     });
   }, [scene]);
 
+  /**
+   * KOL DÜZELTMESİ
+   *
+   * Meshy'nin bekleme klibinde üst kollar gövdeden fazla açık duruyor.
+   * Animasyon doğru çalışıyor; sorun klibin kendi duruşunda.
+   *
+   * Çözüm: animasyon uygulandıktan SONRA üst kol kemiklerine küçük bir
+   * içe dönüş ekleniyor. Yalnız duran ve yürüyen hâllerde devrede;
+   * koşu, oturma ve iş kliplerine dokunulmuyor.
+   *
+   * Düzeltmeyi kapatmak için KOL_DUZELTME = 0 yapmak yeterli.
+   */
+  const KOL_DUZELTME = 0.26; // radyan (~15°)
+  const kollar = useRef<{ sol: THREE.Bone | null; sag: THREE.Bone | null }>({
+    sol: null,
+    sag: null,
+  });
+
+  useEffect(() => {
+    scene.traverse((o) => {
+      const b = o as THREE.Bone;
+      if (!b.isBone) return;
+      if (b.name === "LeftArm") kollar.current.sol = b;
+      if (b.name === "RightArm") kollar.current.sag = b;
+    });
+  }, [scene]);
+
   const oncekiKlip = useRef<string | null>(null);
 
   useEffect(() => {
@@ -80,7 +107,15 @@ export function GezginGLB({ klip, gecis = 0.28, tempo = 1 }: Props) {
     if (!ad || !actions[ad]) return;
     const hareketli = klip === "walk" || klip === "run";
     actions[ad]!.timeScale = hareketli ? Math.max(0.4, tempo) : 1;
-  });
+
+    // Karışım tamamlandıktan sonra kolları hafifçe içeri al
+    const uygula = klip === "idle" || klip === "walk";
+    const { sol, sag } = kollar.current;
+    if (uygula && KOL_DUZELTME > 0) {
+      if (sol) sol.rotation.z -= KOL_DUZELTME;
+      if (sag) sag.rotation.z += KOL_DUZELTME;
+    }
+  }, 1);
 
   useEffect(() => () => { mixer.stopAllAction(); }, [mixer]);
 
