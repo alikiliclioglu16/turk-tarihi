@@ -133,7 +133,87 @@ export const asci: KemikDuzeltme = {
   },
 };
 
+/** ÇOBAN — asaya dayanmış, sürüye bakıyor */
+export const coban: KemikDuzeltme = {
+  uygula: (k, t) => {
+    const bak = Math.sin(t * 0.5);
+    const sag = d(k, "RightArm");
+    const sagOn = d(k, "RightForeArm");
+    const bas = d(k, "Head");
+    if (sag) { sag.rotation.x -= 0.35; sag.rotation.z -= 0.15; }
+    if (sagOn) sagOn.rotation.x -= 0.35;
+    if (bas) bas.rotation.y += bak * 0.35;
+  },
+};
+
+/** AVCI — omzunda yük, ağır yürüyor */
+export const avci: KemikDuzeltme = {
+  uygula: (k) => {
+    const sag = d(k, "RightArm");
+    const sagOn = d(k, "RightForeArm");
+    const govde = d(k, "Spine1");
+    if (govde) govde.rotation.z += 0.09;
+    if (sag) { sag.rotation.x -= 1.15; sag.rotation.z -= 0.25; }
+    if (sagOn) sagOn.rotation.x -= 0.55;
+  },
+};
+
+/** PAZARCI — malı gösteriyor, el uzatıyor */
+export const pazarci: KemikDuzeltme = {
+  uygula: (k, t) => {
+    const goster = Math.sin(t * 1.1);
+    const sag = d(k, "RightArm");
+    const sagOn = d(k, "RightForeArm");
+    if (sag) sag.rotation.x -= 0.55 + goster * 0.2;
+    if (sagOn) sagOn.rotation.x -= 0.4;
+  },
+};
+
+/** TARTAN — terazi tutuyor, dengeye bakıyor */
+export const tartan: KemikDuzeltme = {
+  uygula: (k, t) => {
+    const sallan = Math.sin(t * 1.7) * 0.07;
+    const sag = d(k, "RightArm");
+    const sagOn = d(k, "RightForeArm");
+    const bas = d(k, "Head");
+    if (sag) sag.rotation.x -= 1.25 + sallan;
+    if (sagOn) sagOn.rotation.x -= 0.35;
+    if (bas) bas.rotation.x += 0.3;
+  },
+};
+
+/** ASKER — yay çekiyor (yedek klip üstünde) */
+export const askerOk: KemikDuzeltme = {
+  uygula: (k, t) => {
+    const dongu = (t % 3.2) / 3.2;
+    const cek = dongu < 0.6 ? dongu / 0.6 : 0;
+    const sol = d(k, "LeftArm");
+    const sag = d(k, "RightArm");
+    const sagOn = d(k, "RightForeArm");
+    const govde = d(k, "Spine1");
+    if (sol) { sol.rotation.x -= 1.5; sol.rotation.z += 0.15; }  // yay tutan kol ileri
+    if (sag) { sag.rotation.x -= 1.35; sag.rotation.z -= 0.25 - cek * 0.35; }
+    if (sagOn) sagOn.rotation.x -= 0.6 + cek * 0.9;   // kirişi çek
+    if (govde) govde.rotation.y += 0.25;
+  },
+};
+
+/** GÜREŞÇİ — duruş, karşılıklı salınım */
+export const guresci: KemikDuzeltme = {
+  uygula: (k, t) => {
+    const sal = Math.sin(t * 1.5);
+    const sol = d(k, "LeftArm");
+    const sag = d(k, "RightArm");
+    const govde = d(k, "Spine1");
+    if (govde) { govde.rotation.x += 0.4; govde.rotation.y += sal * 0.2; }
+    if (sol) { sol.rotation.x -= 1.1; sol.rotation.z += 0.5; }
+    if (sag) { sag.rotation.x -= 1.1; sag.rotation.z -= 0.5; }
+  },
+};
+
 /** Aktivite adı → düzeltme */
 export const ZANAAT_DUZELTMELERI: Record<string, KemikDuzeltme> = {
   demirci, okYapan, dokumaci, deriGeren, comlekci, ipBuken, keceBasan, asci,
+  coban, avci, pazarci, tartan, guresci,
+  asker: askerOk,
 };

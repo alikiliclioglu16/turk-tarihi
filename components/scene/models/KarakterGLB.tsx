@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, useAnimations } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { SkeletonUtils } from "three-stdlib";
@@ -55,8 +55,12 @@ export function KarakterGLB({
   const klipler = useMemo(() => klipleriIsle(animations), [animations]);
   const sozluk = useMemo(() => klipSozlugu(klipler.map((k) => k.name)), [klipler]);
 
-  const mixer = useMemo(() => new THREE.AnimationMixer(kopya), [kopya]);
-  const eylemler = useRef<Record<string, THREE.AnimationAction>>({});
+  /**
+   * Karışım drei'nin useAnimations'ı ile kuruluyor.
+   * Elle AnimationMixer kurmak bu bileşende çalışmadı; useAnimations
+   * hem mixer'ı hem güncelleme döngüsünü kendisi yönetiyor.
+   */
+  const { actions, mixer } = useAnimations(klipler, grup);
   const onceki = useRef<string | null>(null);
 
   /** Kemik sözlüğü — prosedürel düzeltme için */
@@ -98,36 +102,35 @@ export function KarakterGLB({
   /** Klip değişimi */
   useEffect(() => {
     const ad = klipSec(sozluk, klip);
-    if (!ad) return;
-    if (!eylemler.current[ad]) {
-      const k = klipler.find((x) => x.name === ad);
-      if (!k) return;
-      eylemler.current[ad] = mixer.clipAction(k);
-    }
-    const yeni = eylemler.current[ad];
+    if (!ad || !actions[ad]) return;
+    const yeni = actions[ad]!;
     const donguSuz = klip === "jump";
     yeni.setLoop(donguSuz ? THREE.LoopOnce : THREE.LoopRepeat, Infinity);
     yeni.clampWhenFinished = donguSuz;
+    yeni.timeScale = tempo;
 
-    if (onceki.current && onceki.current !== ad && eylemler.current[onceki.current]) {
+    const oncekiAd = onceki.current;
+    if (oncekiAd && oncekiAd !== ad && actions[oncekiAd]) {
       yeni.reset().setEffectiveWeight(1).play();
-      eylemler.current[onceki.current].crossFadeTo(yeni, 0.3, false);
-    } else if (onceki.current !== ad) {
+      actions[oncekiAd]!.crossFadeTo(yeni, 0.3, false);
+    } else if (oncekiAd !== ad) {
       yeni.reset().play();
       // faz kayması: kalabalık aynı anda aynı hareketi yapmasın
-      yeni.time = (yeni.getClip().duration * faz) % yeni.getClip().duration;
+      const sure = yeni.getClip().duration;
+      yeni.time = (sure * faz) % sure;
     }
     onceki.current = ad;
-  }, [klip, sozluk, klipler, mixer, faz]);
-
-  useFrame((_, dt) => {
-    mixer.update(dt * tempo);
-  });
+  }, [klip, sozluk, actions, faz, tempo]);
 
   /** Prosedürel katman — animasyon karışımından SONRA çalışır */
+  /**
+   * Prosedürel katman. useAnimations kendi güncellemesini öncelik 0'da
+   * yapar; bu geri çağrı ondan SONRA kaydedildiği için kemikler
+   * animasyon uygulandıktan sonra düzeltilir.
+   */
   useFrame(({ clock }) => {
     if (duzeltme) duzeltme.uygula(kemikler, clock.elapsedTime + faz * 10);
-  }, 1);
+  });
 
   useEffect(() => () => { mixer.stopAllAction(); }, [mixer]);
 

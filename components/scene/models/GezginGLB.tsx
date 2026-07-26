@@ -115,7 +115,7 @@ export function GezginGLB({ klip, gecis = 0.28, tempo = 1 }: Props) {
       if (sol) sol.rotation.z -= KOL_DUZELTME;
       if (sag) sag.rotation.z += KOL_DUZELTME;
     }
-  }, 1);
+  });
 
   useEffect(() => () => { mixer.stopAllAction(); }, [mixer]);
 
