@@ -1,134 +1,144 @@
-import type { OyunKlibi } from "./klipEsleme";
+"use client";
 
-/**
- * KARAKTER KAYDI
- *
- * Hangi aktivite hangi karakter modelini ve hangi klibi kullanır,
- * hangi renk varyantını alır — hepsi burada.
- *
- * Yeni bir karakter GLB'si geldiğinde yalnız bu dosyaya bir satır
- * eklenir; sahne kodu değişmez.
- */
+import { useEffect, useMemo, useRef } from "react";
+import { useGLTF, useAnimations } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
+import { klipSozlugu, klipSec, type OyunKlibi } from "@/lib/klipEsleme";
+import { klipleriIsle } from "@/lib/klipIsleme";
 
-export type KarakterTuru =
-  | "gezgin" | "zanaatkar_erkek" | "kadin_zanaat" | "asker"
-  | "yasli_erkek" | "yasli_kadin" | "cocuk_erkek" | "cocuk_kiz";
+const YOL = "/assets/d01/characters/glb/karakter_gezgin.glb";
 
-const KOK = "/assets/d01/characters/glb";
-const DOKU_KOK = "/assets/d01/characters/doku";
-
-/** Hangi karakter GLB'leri hazır — geldikçe true yapılır */
-export const HAZIR_KARAKTERLER: Record<KarakterTuru, boolean> = {
-  gezgin: true,
-  zanaatkar_erkek: true,
-  kadin_zanaat: false,
-  asker: true,
-  yasli_erkek: false,
-  yasli_kadin: false,
-  cocuk_erkek: false,
-  cocuk_kiz: false,
-};
-
-/** Aktivite → hangi karakter modelini kullanır */
-export const AKTIVITE_KARAKTER: Record<string, KarakterTuru> = {
-  // zanaatkâr erkek — sekiz farklı iş, tek model
-  demirci: "zanaatkar_erkek",
-  okYapan: "zanaatkar_erkek",
-  comlekci: "zanaatkar_erkek",
-  deriGeren: "zanaatkar_erkek",
-  ipBuken: "zanaatkar_erkek",
-  keceBasan: "zanaatkar_erkek",
-  avci: "zanaatkar_erkek",
-  coban: "zanaatkar_erkek",
-  pazarci: "zanaatkar_erkek",
-  tartan: "zanaatkar_erkek",
-  sohbet: "zanaatkar_erkek",
-  dinleyen: "zanaatkar_erkek",
-  dinleyenOturan: "zanaatkar_erkek",
-  izleyenComelmis: "zanaatkar_erkek",
-  anlatan: "zanaatkar_erkek",
-  bekleyen: "zanaatkar_erkek",
-  // henüz modeli gelmeyenler
-  // kadın modeli gelene kadar zanaatkâr modeli kullanılır
-  dokumaci: "zanaatkar_erkek",
-  asci: "zanaatkar_erkek",
-  asker: "asker",
-  guresci: "asker",
-  kilicTalimi: "asker",
-  ozan: "zanaatkar_erkek",
-  dansci: "zanaatkar_erkek",
-  cocuk: "zanaatkar_erkek",
-  asikAtan: "zanaatkar_erkek",
-  asikIzleyen: "zanaatkar_erkek",
-  atTerbiyecisi: "asker",
-  baltaci: "asker",
-  nobetci: "asker",
-};
-
-/** Aktivite → hangi taban klip */
-export const AKTIVITE_KLIP: Record<string, OyunKlibi> = {
-  demirci: "work_hammer",
-  okYapan: "work_hammer",
-  comlekci: "sit",
-  ipBuken: "sit",
-  ozan: "sit",
-  dokumaci: "work_pull",
-  deriGeren: "work_pull",
-  keceBasan: "work_ground",
-  asci: "work_ground",
-  asikAtan: "sit",
-  asikIzleyen: "sit",
-  asker: "shoot_bow",
-  guresci: "wrestle",
-  baltaci: "axe",
-  kilicTalimi: "sword_practice",
-  nobetci: "idle",
-  atTerbiyecisi: "idle",
-  dansci: "dance",
-  pazarci: "talk",
-  tartan: "talk",
-  sohbet: "talk",
-  dinleyen: "idle",
-  dinleyenOturan: "sit",
-  izleyenComelmis: "sit",
-  anlatan: "talk",
-  bekleyen: "idle",
-  coban: "walk",
-  avci: "walk",
-  // "jump" klibi Meshy'de "Jump_Over_Obstacle" — karakter öne dalıyor.
-  // Çocuklar için uygun değil; koşu ve konuşma kullanılır.
-  cocuk: "run",
-};
-
-/** Renk varyantları — koddan üretilenler */
-export const DOKU_VARYANTLARI = ["kahve", "kiremit", "kum", "mavi", "mor", "yesil"] as const;
-
-export function glbVarMi(aktivite: string): boolean {
-  const t = AKTIVITE_KARAKTER[aktivite];
-  return Boolean(t && HAZIR_KARAKTERLER[t]);
-}
-
-export function karakterYolu(aktivite: string): string {
-  const t = AKTIVITE_KARAKTER[aktivite] ?? "zanaatkar_erkek";
-  return `${KOK}/karakter_${t}.glb`;
+interface Props {
+  klip: OyunKlibi;
+  gecis?: number;
+  tempo?: number;
 }
 
 /**
- * Kişi kimliğinden kararlı bir renk varyantı seçer.
- * Aynı kişi her açılışta aynı rengi alır; kalabalık ise çeşitlenir.
+ * GEZGİN — gerçek 3B karakter
+ *
+ * ÖNEMLİ: Giydirilmiş (skinned) mesh `scene.clone()` ile KOPYALANMAZ.
+ * Klonlama iskelet bağlarını kırar; mesh ya görünmez ya da bind pozunda
+ * donar. Oyuncu karakteri tek örnek olduğu için sahne doğrudan kullanılır.
+ *
+ * Klip adları Meshy'nin kendi adlandırmasıyla gelir; `klipEsleme.ts`
+ * bunları oyunun anlamsal adlarına bağlar.
  */
-export function dokuYolu(kisiId: string, aktivite: string): string | null {
-  const t = AKTIVITE_KARAKTER[aktivite];
-  if (!t || !HAZIR_KARAKTERLER[t]) return null;
-  let h = 0;
-  for (let i = 0; i < kisiId.length; i++) h = (h * 31 + kisiId.charCodeAt(i)) >>> 0;
-  const v = DOKU_VARYANTLARI[h % DOKU_VARYANTLARI.length];
-  return `${DOKU_KOK}/karakter_${t}_${v}.jpg`;
+export function GezginGLB({ klip, gecis = 0.28, tempo = 1 }: Props) {
+  const grup = useRef<THREE.Group>(null);
+  const { scene, animations } = useGLTF(YOL);
+  // klipler işlenir: root motion temizlenir, aşırı genlikler kısılır
+  const klipler = useMemo(() => klipleriIsle(animations), [animations]);
+  const { actions, mixer } = useAnimations(klipler, grup);
+
+  const sozluk = useMemo(
+    () => klipSozlugu(klipler.map((a) => a.name)),
+    [klipler]
+  );
+
+  /** Gölge ve malzeme uyumu — sahne doğrudan kullanılıyor, klonlanmıyor */
+  useEffect(() => {
+    scene.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (!m.isMesh && !(o as THREE.SkinnedMesh).isSkinnedMesh) return;
+      m.castShadow = true;
+      m.receiveShadow = true;
+      m.frustumCulled = false;
+      const mat = m.material as THREE.MeshStandardMaterial;
+      if (mat && !mat.userData.ayarlandi) {
+        mat.userData.ayarlandi = true;
+        mat.roughness = Math.max(0.55, mat.roughness ?? 1);
+        mat.metalness = Math.min(0.1, mat.metalness ?? 0);
+        mat.envMapIntensity = 0.55;
+        mat.needsUpdate = true;
+      }
+    });
+  }, [scene]);
+
+  /**
+   * KOL DÜZELTMESİ
+   *
+   * Meshy'nin bekleme klibinde üst kollar gövdeden fazla açık duruyor.
+   * Animasyon doğru çalışıyor; sorun klibin kendi duruşunda.
+   *
+   * Çözüm: animasyon uygulandıktan SONRA üst kol kemiklerine küçük bir
+   * içe dönüş ekleniyor. Yalnız duran ve yürüyen hâllerde devrede;
+   * koşu, oturma ve iş kliplerine dokunulmuyor.
+   *
+   * Düzeltmeyi kapatmak için KOL_DUZELTME = 0 yapmak yeterli.
+   */
+  const KOL_DUZELTME = 0.26; // radyan (~15°)
+  const kollar = useRef<{ sol: THREE.Bone | null; sag: THREE.Bone | null }>({
+    sol: null,
+    sag: null,
+  });
+
+  useEffect(() => {
+    scene.traverse((o) => {
+      const b = o as THREE.Bone;
+      if (!b.isBone) return;
+      if (b.name === "LeftArm") kollar.current.sol = b;
+      if (b.name === "RightArm") kollar.current.sag = b;
+    });
+  }, [scene]);
+
+  const oncekiKlip = useRef<string | null>(null);
+
+  useEffect(() => {
+    const hedefAd = klipSec(sozluk, klip);
+    if (!hedefAd || !actions[hedefAd]) return;
+    const yeni = actions[hedefAd]!;
+
+    // zıplama gibi döngüsüz klipler son karede kalsın
+    const donguSuz = klip === "jump";
+    yeni.setLoop(donguSuz ? THREE.LoopOnce : THREE.LoopRepeat, Infinity);
+    yeni.clampWhenFinished = donguSuz;
+
+    const oncekiAd = oncekiKlip.current;
+    if (oncekiAd && oncekiAd !== hedefAd && actions[oncekiAd]) {
+      yeni.reset().setEffectiveWeight(1).play();
+      actions[oncekiAd]!.crossFadeTo(yeni, gecis, false);
+    } else if (oncekiAd !== hedefAd) {
+      yeni.reset().fadeIn(gecis).play();
+    }
+    oncekiKlip.current = hedefAd;
+  }, [klip, actions, sozluk, gecis]);
+
+  useFrame(() => {
+    const ad = oncekiKlip.current;
+    if (!ad || !actions[ad]) return;
+    const hareketli = klip === "walk" || klip === "run";
+    actions[ad]!.timeScale = hareketli ? Math.max(0.4, tempo) : 1;
+
+    // Karışım tamamlandıktan sonra kolları hafifçe içeri al
+    // birikme koruması
+    const eylem = ad ? actions[ad] : null;
+    if (!eylem) return;
+    if (!eylem.isRunning()) { eylem.reset().play(); return; }
+
+    // açı sınırlayıcı — birikme olursa bile kontrolden çıkmaz
+    const s = kollar.current;
+    for (const b of [s.sol, s.sag]) {
+      if (!b) continue;
+      b.rotation.z = THREE.MathUtils.clamp(b.rotation.z, -2.2, 2.2);
+      b.rotation.x = THREE.MathUtils.clamp(b.rotation.x, -2.2, 2.2);
+    }
+    const uygula = klip === "idle" || klip === "walk";
+    const { sol, sag } = kollar.current;
+    if (uygula && KOL_DUZELTME > 0) {
+      if (sol) sol.rotation.z -= KOL_DUZELTME;
+      if (sag) sag.rotation.z += KOL_DUZELTME;
+    }
+  });
+
+  useEffect(() => () => { mixer.stopAllAction(); }, [mixer]);
+
+  return (
+    <group ref={grup} dispose={null}>
+      <primitive object={scene} />
+    </group>
+  );
 }
 
-/** Kişi kimliğinden kararlı faz kayması — kalabalık senkron yürümesin */
-export function fazHesapla(kisiId: string): number {
-  let h = 7;
-  for (let i = 0; i < kisiId.length; i++) h = (h * 131 + kisiId.charCodeAt(i)) >>> 0;
-  return (h % 1000) / 1000;
-}
+useGLTF.preload(YOL);
