@@ -5,6 +5,7 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { klipSozlugu, klipSec, type OyunKlibi } from "@/lib/klipEsleme";
+import { klipleriIsle } from "@/lib/klipIsleme";
 
 const YOL = "/assets/d01/characters/glb/karakter_gezgin.glb";
 
@@ -27,11 +28,13 @@ interface Props {
 export function GezginGLB({ klip, gecis = 0.28, tempo = 1 }: Props) {
   const grup = useRef<THREE.Group>(null);
   const { scene, animations } = useGLTF(YOL);
-  const { actions, mixer } = useAnimations(animations, grup);
+  // klipler işlenir: root motion temizlenir, aşırı genlikler kısılır
+  const klipler = useMemo(() => klipleriIsle(animations), [animations]);
+  const { actions, mixer } = useAnimations(klipler, grup);
 
   const sozluk = useMemo(
-    () => klipSozlugu(animations.map((a) => a.name)),
-    [animations]
+    () => klipSozlugu(klipler.map((a) => a.name)),
+    [klipler]
   );
 
   /** Gölge ve malzeme uyumu — sahne doğrudan kullanılıyor, klonlanmıyor */

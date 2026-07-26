@@ -66,7 +66,7 @@ export const YEDEK_ZINCIR: Record<OyunKlibi, OyunKlibi[]> = {
   run: ["walk", "idle"],
   talk: ["idle"],
   sit: ["idle"],
-  jump: ["run", "idle"],
+  jump: ["run", "idle"],   // engel atlama klibi çocuklarda kullanılmıyor
   work_hammer: ["work_pull", "talk", "idle"],
   work_ground: ["work_pull", "work_hammer", "sit", "idle"],
   work_pull: ["work_hammer", "talk", "idle"],

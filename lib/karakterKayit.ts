@@ -70,8 +70,8 @@ export const AKTIVITE_KLIP: Record<string, OyunKlibi> = {
   deriGeren: "work_pull",
   keceBasan: "work_ground",
   asci: "work_ground",
-  asikAtan: "work_ground",
-  asikIzleyen: "work_ground",
+  asikAtan: "sit",
+  asikIzleyen: "sit",
   asker: "shoot_bow",
   guresci: "wrestle",
   kilicTalimi: "sword_practice",
@@ -83,7 +83,9 @@ export const AKTIVITE_KLIP: Record<string, OyunKlibi> = {
   bekleyen: "idle",
   coban: "walk",
   avci: "walk",
-  cocuk: "jump",
+  // "jump" klibi Meshy'de "Jump_Over_Obstacle" — karakter öne dalıyor.
+  // Çocuklar için uygun değil; koşu ve konuşma kullanılır.
+  cocuk: "run",
 };
 
 /** Renk varyantları — koddan üretilenler */

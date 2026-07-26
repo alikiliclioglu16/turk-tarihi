@@ -35,7 +35,15 @@ export function rootMotionTemizle(klip: THREE.AnimationClip): THREE.AnimationCli
 
 /**
  * Belirli kemiklerin dönüş genliğini kısar.
- * İlk kareye doğru slerp yapar: oran 1 = değişiklik yok, 0.4 = %60 kısılma.
+ *
+ * ÖNEMLİ DÜZELTME: Önceki sürüm genliği İLK KAREYE doğru kısıyordu.
+ * Ama birçok Meshy klibinin ilk karesi bind pozuna (T-pozu) yakındır;
+ * bu yüzden kısma yaptıkça karakterler kollarını açıyordu.
+ *
+ * Doğrusu: klibin ORTALAMA pozuna doğru kısmak. Böylece hareketin
+ * merkezi korunur, yalnız genliği azalır.
+ *
+ * oran 1 = değişiklik yok · 0.6 = %40 kısılma
  */
 export function genlikKis(
   klip: THREE.AnimationClip,
@@ -43,21 +51,35 @@ export function genlikKis(
   oran: number
 ): THREE.AnimationClip {
   const a = new THREE.Quaternion();
-  const ilk = new THREE.Quaternion();
+  const orta = new THREE.Quaternion();
+  const sonuc = new THREE.Quaternion();
+
   for (const iz of klip.tracks) {
     if (!iz.name.endsWith(".quaternion")) continue;
-    const kemik = iz.name.split(".")[0].replace("mixamorig:", "");
-    if (!kemikler.includes(kemik)) continue;
+    const kemikAdi = iz.name.split(".")[0].replace("mixamorig:", "");
+    // ad eşleşmesi büyük/küçük harf ve Spine1/Spine01 farkını yok sayar
+    const normal = (s: string) => s.toLowerCase().replace(/0(\d)/, "$1").replace(/[_:]/g, "");
+    if (!kemikler.some((x) => normal(x) === normal(kemikAdi))) continue;
 
     const v = iz.values as Float32Array;
-    if (v.length < 4) continue;
-    ilk.set(v[0], v[1], v[2], v[3]);
+    const kare = v.length / 4;
+    if (kare < 2) continue;
+
+    // ---- 1) Ortalama poz: ardışık slerp ile yaklaşık ortalama ----
+    orta.set(v[0], v[1], v[2], v[3]);
+    for (let i = 4; i < v.length; i += 4) {
+      a.set(v[i], v[i + 1], v[i + 2], v[i + 3]);
+      // kuaterniyon işaret tutarlılığı — en kısa yol
+      if (orta.dot(a) < 0) a.set(-a.x, -a.y, -a.z, -a.w);
+      orta.slerp(a, 1 / (i / 4 + 1));
+    }
+
+    // ---- 2) Her kareyi ortalamaya doğru çek ----
     for (let i = 0; i < v.length; i += 4) {
       a.set(v[i], v[i + 1], v[i + 2], v[i + 3]);
-      ilk.slerp(a, oran); // ilk kare → mevcut kare arası
-      const s = ilk.clone();
-      ilk.set(v[0], v[1], v[2], v[3]); // ilk kareyi geri yükle
-      v[i] = s.x; v[i + 1] = s.y; v[i + 2] = s.z; v[i + 3] = s.w;
+      if (orta.dot(a) < 0) a.set(-a.x, -a.y, -a.z, -a.w);
+      sonuc.copy(orta).slerp(a, oran);
+      v[i] = sonuc.x; v[i + 1] = sonuc.y; v[i + 2] = sonuc.z; v[i + 3] = sonuc.w;
     }
   }
   return klip;
@@ -88,8 +110,8 @@ export const VARSAYILAN_DUZELTMELER: KlipDuzeltme[] = [
     // Savaş savurmasını zanaat çekicine çevir
     esles: "hammer",
     genlik: {
-      kemikler: ["RightArm", "RightForeArm", "Spine", "Spine1", "Spine2", "Hips"],
-      oran: 0.42,
+      kemikler: ["RightArm", "RightForeArm", "Spine", "Spine01", "Spine02", "Hips"],
+      oran: 0.68,
     },
     sure: 1.15,
   },
@@ -97,15 +119,15 @@ export const VARSAYILAN_DUZELTMELER: KlipDuzeltme[] = [
     // "Turp çekme" abartısını tezgâh çekmesine indir
     esles: "pull",
     genlik: {
-      kemikler: ["Spine", "Spine1", "Spine2", "Hips", "LeftUpLeg", "RightUpLeg"],
-      oran: 0.45,
+      kemikler: ["Spine", "Spine01", "Spine02", "Hips", "LeftUpLeg", "RightUpLeg"],
+      oran: 0.7,
     },
     sure: 1.25,
   },
   {
     // Aşırı hevesli konuşmayı sakinleştir
     esles: "passionately",
-    genlik: { kemikler: ["LeftArm", "RightArm", "Spine1", "Spine2"], oran: 0.6 },
+    genlik: { kemikler: ["LeftArm", "RightArm", "Spine01", "Spine02"], oran: 0.78 },
   },
 ];
 

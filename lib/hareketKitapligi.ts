@@ -83,14 +83,57 @@ export function takip(deger: number, gecikme: number, t: number, hz: number): nu
 
 export type Kemikler = Record<string, THREE.Bone>;
 
-export const kemik = (k: Kemikler, ad: string): THREE.Bone | null => k[ad] ?? null;
+/**
+ * KEMİK ADI EŞ ANLAMLILARI
+ *
+ * Meshy iskeletinde omurga `Spine01`/`Spine02`, boyun ise küçük harfle
+ * `neck` diye adlandırılmış. Kodda `Spine1`, `Spine2`, `Neck` yazıyordum
+ * ve bu düzeltmeler SESSİZCE hiç uygulanmıyordu — kollar oynuyor ama
+ * gövde donuk kalıyordu, sonuç tutarsız duruşlardı.
+ *
+ * Bu tablo yaygın adlandırma farklarını köprüler. Yeni bir iskelet
+ * gelirse buraya bir satır eklemek yeterli.
+ */
+const ES_ANLAMLI: Record<string, string[]> = {
+  Spine:        ["Spine", "spine", "Spine0", "mixamorigSpine"],
+  Spine1:       ["Spine01", "Spine1", "spine_01", "mixamorigSpine1"],
+  Spine2:       ["Spine02", "Spine2", "spine_02", "mixamorigSpine2"],
+  Neck:         ["neck", "Neck", "mixamorigNeck"],
+  Head:         ["Head", "head", "mixamorigHead"],
+  LeftShoulder: ["LeftShoulder", "leftShoulder", "Left_Shoulder"],
+  RightShoulder:["RightShoulder", "rightShoulder", "Right_Shoulder"],
+  LeftArm:      ["LeftArm", "leftArm", "Left_Arm", "LeftUpperArm"],
+  RightArm:     ["RightArm", "rightArm", "Right_Arm", "RightUpperArm"],
+  LeftForeArm:  ["LeftForeArm", "LeftLowerArm", "leftForeArm"],
+  RightForeArm: ["RightForeArm", "RightLowerArm", "rightForeArm"],
+  LeftHand:     ["LeftHand", "leftHand"],
+  RightHand:    ["RightHand", "rightHand"],
+  LeftUpLeg:    ["LeftUpLeg", "LeftUpperLeg", "leftUpLeg"],
+  RightUpLeg:   ["RightUpLeg", "RightUpperLeg", "rightUpLeg"],
+  Hips:         ["Hips", "hips", "Pelvis", "root"],
+};
+
+/** Sözlükte adı ara; bulamazsa eş anlamlılarına bak */
+export function kemik(k: Kemikler, ad: string): THREE.Bone | null {
+  if (k[ad]) return k[ad];
+  const adaylar = ES_ANLAMLI[ad];
+  if (adaylar) {
+    for (const a of adaylar) if (k[a]) return k[a];
+  }
+  // son çare: büyük/küçük harf duyarsız arama
+  const kucuk = ad.toLowerCase();
+  for (const anahtar of Object.keys(k)) {
+    if (anahtar.toLowerCase() === kucuk) return k[anahtar];
+  }
+  return null;
+}
 
 /** Kemiğe ekleme yapar (animasyonu ezmez) */
 export function ekle(
   k: Kemikler, ad: string,
   x = 0, y = 0, z = 0
 ): void {
-  const b = k[ad];
+  const b = kemik(k, ad);
   if (!b) return;
   b.rotation.x += x;
   b.rotation.y += y;
