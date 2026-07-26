@@ -21,9 +21,9 @@ const ESLEME: [OyunKlibi, string[]][] = [
   ["ride_idle",      ["ride_idle", "horse_idle", "riding_idle", "mounted_idle"]],
   ["sword_practice", ["sword", "fencing", "saber", "blade"]],
   ["shoot_bow",      ["bow", "archer", "arrow", "shoot"]],
-  ["work_hammer",    ["hammer", "blacksmith", "forge", "anvil"]],
+  ["work_hammer",    ["hammer", "blacksmith", "forge", "anvil", "swing"]],
   ["work_ground",    ["pick", "kneel", "crouch", "gather", "ground"]],
-  ["work_pull",      ["pull", "rope", "drag", "weav"]],
+  ["work_pull",      ["pull", "rope", "drag", "weav", "radish"]],
   ["wrestle",        ["wrestl", "grapple", "fight_stance", "combat_idle"]],
   ["dance",          ["dance", "dancing"]],
   ["jump",           ["jump", "leap", "hop"]],
@@ -31,7 +31,7 @@ const ESLEME: [OyunKlibi, string[]][] = [
   ["walk",           ["walk"]],
   ["sit",            ["sit"]],
   ["talk",           ["talk", "greet", "wave", "converse"]],
-  ["idle",           ["idle", "breath", "stand"]],
+  ["idle",           ["idle", "breath", "stand", "look_around", "dumbfounded"]],
 ];
 
 /** GLB klip adını oyun klibine çevirir; eşleşme yoksa null */

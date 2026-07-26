@@ -4,14 +4,29 @@ import { useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { HALK, type HalkKaydi } from "@/lib/halk";
+import { Suspense } from "react";
 import { InsanModel } from "./models/InsanModel";
+import { KarakterGLB } from "./models/KarakterGLB";
+import { ZANAAT_DUZELTMELERI } from "@/lib/zanaatDuzeltmeleri";
+import { AKTIVITE_KLIP, karakterYolu, dokuYolu, glbVarMi, fazHesapla } from "@/lib/karakterKayit";
 import { araziYukseklik } from "@/lib/terrain";
 import { oyuncuKonumu } from "@/lib/oyuncuKonum";
 import { DUNYA_OLCEK as OL } from "@/lib/dunyaOlcek";
 import { useOyun } from "@/lib/store";
 import { tik } from "@/lib/audio";
 
-const GORUNUR = 90;   // metre
+const GORUNUR = 90;
+
+/**
+ * GLB MESAFE SINIRI
+ *
+ * Gerçek karakter 24.000 üçgen; 309 figürün hepsi GLB olamaz
+ * (11 milyon üçgen = tarayıcı kilitlenir).
+ *
+ * Bu mesafe içinde gerçek GLB, dışında prosedürel figür çizilir.
+ * 30 m'de tipik olarak 15-25 figür görünür → ~0,6M üçgen, rahat.
+ */
+const GLB_MESAFE = 30;   // metre
 const BILGI_MESAFE = 6;
 
 /** Tek bir kişi — yürüyense rotasında ilerler */
@@ -19,6 +34,8 @@ function Kisi({ k, onBilgi }: { k: HalkKaydi; onBilgi: (k: HalkKaydi) => void })
   const grup = useRef<THREE.Group>(null);
   const ilerleme = useRef(Math.random());
   const tohum = useMemo(() => Math.random() * 10, []);
+  const faz = useMemo(() => fazHesapla(k.id), [k.id]);
+  const [yakinMi, setYakinMi] = useState(false);
 
   useFrame((_, delta) => {
     const g = grup.current;
@@ -42,6 +59,11 @@ function Kisi({ k, onBilgi }: { k: HalkKaydi; onBilgi: (k: HalkKaydi) => void })
       g.position.set(px, araziYukseklik(px, pz), pz);
       g.rotation.y = k.yon ?? 0;
     }
+
+    // GLB mi prosedürel mi — mesafeye göre, histerezisle (titremesin)
+    const d = Math.hypot(oyuncuKonumu.x - g.position.x, oyuncuKonumu.z - g.position.z);
+    const esik = yakinMi ? GLB_MESAFE + 4 : GLB_MESAFE;
+    if (d < esik !== yakinMi) setYakinMi(d < esik);
   });
 
   return (
@@ -59,13 +81,27 @@ function Kisi({ k, onBilgi }: { k: HalkKaydi; onBilgi: (k: HalkKaydi) => void })
       onPointerOver={() => k.bilgi && (document.body.style.cursor = "pointer")}
       onPointerOut={() => (document.body.style.cursor = "auto")}
     >
-      <InsanModel
-        aktivite={k.aktivite}
-        renk={k.renk}
-        kusakRenk={k.kusak}
-        boy={k.boy}
-        tohum={tohum}
-      />
+      {yakinMi && glbVarMi(k.aktivite) ? (
+        <Suspense fallback={null}>
+          <KarakterGLB
+            yol={karakterYolu(k.aktivite)}
+            klip={AKTIVITE_KLIP[k.aktivite] ?? "idle"}
+            faz={faz}
+            olcek={(k.boy ?? 1.72) / 1.70}
+            doku={dokuYolu(k.id, k.aktivite)}
+            duzeltme={ZANAAT_DUZELTMELERI[k.aktivite] ?? null}
+          />
+        </Suspense>
+      ) : (
+        <InsanModel
+          aktivite={k.aktivite}
+          renk={k.renk}
+          kusakRenk={k.kusak}
+          boy={k.boy}
+          tohum={tohum}
+        />
+      )}
+
       {k.bilgi && (
         <sprite position={[0, 2.15, 0]} scale={[0.42, 0.42, 1]}>
           <spriteMaterial color="#F0D48A" transparent opacity={0.75} depthWrite={false} />
