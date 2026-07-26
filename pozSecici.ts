@@ -1,0 +1,406 @@
+import type { Aktivite } from "@/components/scene/models/InsanModel";
+
+/**
+ * OBA HALKI — kim, nerede, ne yapıyor
+ *
+ * Konumlar dünya ölçeğinde (metre). Oba dört mahalleye ayrıldı:
+ *   Meydan · Zanaat Sokağı · Talim Alanı · Otlak ve Ağıllar
+ *
+ * Her figürün `bilgi` alanı varsa yakınına gelince kısa bir kültür notu
+ * gösterilir. Bunlar Meraklı Gözler'den ayrıdır; sayaca girmez.
+ */
+
+export interface HalkKaydi {
+  id: string;
+  aktivite: Aktivite;
+  pos: [number, number];      // x, z (y araziden alınır)
+  yon?: number;
+  renk?: string;
+  kusak?: string;
+  boy?: number;
+  /** yürüyen figürler için devriye noktaları */
+  rota?: [number, number][];
+  bilgi?: { ad: string; metin: string };
+}
+
+const HALK_ANA: HalkKaydi[] = [
+  /* ---------- MEYDAN: ozan, dans, sohbet ---------- */
+  {
+    id: "h_ozan", aktivite: "ozan", pos: [4, 26], yon: 3.4, renk: "#E3D4B0", kusak: "#8A2C25",
+    bilgi: { ad: "Ozan", metin: "Kopuz eşliğinde söylenen destanlar, yazı olmadan da tarih taşırdı. Ozan hem eğlendirir hem hatırlatırdı." },
+  },
+  { id: "h_dinleyen_1", aktivite: "asci", pos: [1.5, 29], yon: 0.5, renk: "#CBB99A" },
+  { id: "h_dinleyen_2", aktivite: "asci", pos: [7, 29.5], yon: 5.6, renk: "#BFAE93", kusak: "#4A6B6B" },
+  {
+    id: "h_dansci_1", aktivite: "dansci", pos: [-2, 31], renk: "#D8C4A0", kusak: "#B8433A",
+    bilgi: { ad: "Halka Oyunu", metin: "Bozkırda oyun, birlikte hareket etmenin dilidir. Halka kurulur, ayak vuruşları ezgiye eşlik eder." },
+  },
+  { id: "h_dansci_2", aktivite: "dansci", pos: [-4.5, 28.5], renk: "#CDBB98", kusak: "#4BB3A9" },
+  { id: "h_dansci_3", aktivite: "dansci", pos: [-1, 34], renk: "#C7B392", kusak: "#8A6A24" },
+
+  /* ---------- ZANAAT SOKAĞI ---------- */
+  {
+    id: "h_demirci", aktivite: "demirci", pos: [-26, 8], yon: 1.2, renk: "#A89372", kusak: "#5A3D20",
+    bilgi: { ad: "Demirci", metin: "Demir dövmek bilgi ve sabır ister. Bir ustanın elinden çıkan uç, yıllarca kullanılabilirdi." },
+  },
+  {
+    id: "h_dokumaci", aktivite: "dokumaci", pos: [-20, 22], yon: 0.4, renk: "#DCCBA6", kusak: "#B8433A",
+    bilgi: { ad: "Dokumacı", metin: "Kilimdeki her motif bir dilektir: bereket, yol, yuva. Desenler ustadan çırağa geçerdi." },
+  },
+  {
+    id: "h_terzi", aktivite: "dokumaci", pos: [-16, 14], yon: 2.2, renk: "#C9B896", kusak: "#8A6A24",
+    bilgi: { ad: "Keçeci", metin: "Yün, sıcak su ve emekle keçeye dönüşür. Otağın örtüsü de, çizmenin astarı da bu yolla yapılırdı." },
+  },
+  {
+    id: "h_asci", aktivite: "asci", pos: [-11, 3], yon: 5.0, renk: "#D6C4A2", kusak: "#A8382F",
+    bilgi: { ad: "Ocak Başı", metin: "Kazan ortak kaynar, sofra birlikte kurulur. Yemek paylaşmak obada bir bağ kurma biçimidir." },
+  },
+
+  /* ---------- PAZAR YERİ ---------- */
+  {
+    id: "h_pazarci_1", aktivite: "pazarci", pos: [24, 18], yon: 3.6, renk: "#D9C9A6", kusak: "#4BB3A9",
+    bilgi: { ad: "Pazar Yeri", metin: "Kervanlar uzaktan ipek, baharat ve kap getirirdi. Karşılığında deri, at ve dokuma verilirdi." },
+  },
+  { id: "h_pazarci_2", aktivite: "pazarci", pos: [29, 21], yon: 3.9, renk: "#CDBB98", kusak: "#8A2C25" },
+  { id: "h_tartan", aktivite: "tartan", pos: [26.5, 19], yon: 3.4, renk: "#D9C9A6", kusak: "#8A6A24",
+    bilgi: { ad: "Ölçü ve Tartı", metin: "Tartı güven meselesiydi. Anlaşmazlık pazar büyüğüne götürülürdü." } },
+  { id: "h_musteri_1", aktivite: "demirci", pos: [26, 15], yon: 0.6, renk: "#C4B292" },
+  { id: "h_musteri_2", aktivite: "bekleyen", pos: [31, 16.5], yon: 1.1, renk: "#BDAB8C", kusak: "#6B5636" },
+  { id: "h_kervanci", aktivite: "deriGeren", pos: [34, 24], yon: 4.4, renk: "#CFC0A0", kusak: "#8A6A24" },
+
+  /* ---------- TALİM ALANI ---------- */
+  {
+    id: "h_asker_1", aktivite: "asker", pos: [16, -22], yon: 3.1, renk: "#B8A98C", kusak: "#5A3D20",
+    bilgi: { ad: "Talim Alanı", metin: "Ok atmak günlük bir uğraştı. Hedefe isabet kadar, at üstünde denge kurmak da öğrenilirdi." },
+  },
+
+  /* ---------- ÇOCUKLAR: aşık oyunu (P04 alanı: 10.5, 13.5) ---------- */
+  {
+    id: "h_cocuk_1", aktivite: "asikAtan", pos: [10.5, 12.5], yon: 3.14,
+    renk: "#E0D0AE", kusak: "#4BB3A9", boy: 1.15,
+    bilgi: { ad: "Aşık Oyunu", metin: "Çocuklar koyun aşık kemikleriyle oynardı. Oyun, sırasını beklemeyi ve kuralı öğretirdi." },
+  },
+  { id: "h_cocuk_2", aktivite: "asikIzleyen", pos: [11.6, 14.4], yon: 4.2, renk: "#DBC9A6", kusak: "#B8433A", boy: 1.1 },
+  { id: "h_cocuk_3", aktivite: "asikIzleyen", pos: [9.4, 14.4], yon: 2.1, renk: "#D6C3A0", kusak: "#8A6A24", boy: 1.2 },
+  { id: "h_cocuk_4", aktivite: "asikIzleyen", pos: [10.5, 15.0], yon: 0.0, renk: "#E4D6B4", kusak: "#6B5636", boy: 1.05 },
+
+  /* ---------- ZANAAT SAHNELERİNİN BAŞINDAKİLER ---------- */
+  { id: "h_ipbuken", aktivite: "ipBuken", pos: [-6, 18.7], yon: 0.2, renk: "#DCCBA6", kusak: "#4A6B6B",
+    bilgi: { ad: "İp Bükme", metin: "Kıl ve yünden ip bükülürdü. Çadırın gergisi de yükün bağı da ipe emanetti." } },
+
+  /* ---------- GÜREŞ VE AT EĞİTİMİ ---------- */
+  { id: "h_gures_seyirci_1", aktivite: "bekleyen", pos: [11, -23], yon: 0.9, renk: "#CDBB98", kusak: "#6B5636" },
+  { id: "h_gures_seyirci_2", aktivite: "sohbet", pos: [17.5, -22], yon: 3.6, renk: "#D2C09C", kusak: "#8A6A24" },
+
+  /* ---------- OTLAK, ÇOBAN, AVCILAR ---------- */
+  {
+    id: "h_coban", aktivite: "coban", pos: [40, -8], renk: "#C2B091", kusak: "#6B5636",
+    rota: [[40, -8], [48, -2], [44, 6], [36, 2]],
+    bilgi: { ad: "Çoban", metin: "Sürü otlağa göre gezdirilir. Hayvanın nereye, ne zaman götürüleceği yılların bilgisidir." },
+  },
+  {
+    id: "h_avci_1", aktivite: "avci", pos: [-34, -18], renk: "#B5A283", kusak: "#5A3D20",
+    rota: [[-40, -26], [-30, -18], [-18, -10], [-8, -4]],
+    bilgi: { ad: "Avdan Dönüş", metin: "Av yalnız yiyecek değildi; iz sürmeyi, sabrı ve birlikte hareket etmeyi öğretirdi." },
+  },
+  { id: "h_avci_2", aktivite: "avci", pos: [-36, -22], renk: "#AE9B7E", kusak: "#5A3D20",
+    rota: [[-42, -30], [-32, -22], [-20, -14], [-10, -8]] },
+
+  /* ---------- GEZİNENLER ---------- */
+  { id: "h_gezen_1", aktivite: "coban", pos: [0, 40], renk: "#C9B896", kusak: "#4BB3A9",
+    rota: [[-10, 44], [6, 46], [14, 36], [2, 32]] },
+  { id: "h_gezen_2", aktivite: "coban", pos: [-14, -6], renk: "#BFAE93", kusak: "#8A2C25",
+    rota: [[-14, -6], [-6, 2], [-14, 10], [-22, 2]] },
+];
+
+/** Sürü hayvanları — koyun ve at konumları */
+export const SURU: { kod: string; pos: [number, number]; olcek?: number; rota?: [number, number][] }[] = [
+  { kod: "B14", pos: [42, -6], olcek: 1.0 },
+  { kod: "B14", pos: [44.5, -3], olcek: 0.9 },
+  { kod: "B14", pos: [39, -1], olcek: 1.05 },
+  { kod: "B14", pos: [46, 2], olcek: 0.95 },
+  { kod: "B14", pos: [41, 4], olcek: 1.0 },
+  { kod: "B14", pos: [37, -5], olcek: 0.88 },
+  { kod: "F06", pos: [-30, 30], olcek: 1.0 },
+  { kod: "F06", pos: [-34, 34], olcek: 0.95 },
+  { kod: "F06", pos: [26, -30], olcek: 1.0 },
+];
+
+/* ---------- OBA DOLGUSU — günlük hayat figürleri ---------- */
+export const OBA_DOLGU: HalkKaydi[] = [
+  { id: "hd_00", aktivite: "sohbet", pos: [-26.1, 9.8], yon: 0.45, renk: "#C9B896", kusak: "#A8382F", boy: 1.73, rota: [[-26.1,9.8],[-18.1,14.8],[-22.1,21.8],[-30.1,15.8]], },
+  { id: "hd_02", aktivite: "pazarci", pos: [-1.6, 25.2], yon: 0.56, renk: "#BFAE93", kusak: "#8A6A24", boy: 1.61, },
+  { id: "hd_03", aktivite: "asci", pos: [9.1, 23.9], yon: 1.38, renk: "#CDBB98", kusak: "#6B5636", boy: 1.62, },
+  { id: "hd_04", aktivite: "dokumaci", pos: [25.5, 23.4], yon: 2.46, renk: "#D2C09C", kusak: "#8A2C25", boy: 1.72, },
+  { id: "hd_05", aktivite: "cocuk", pos: [35.7, 14.6], yon: 5.32, renk: "#C4B292", kusak: "#4A6B6B", boy: 1.15, },
+  { id: "hd_06", aktivite: "coban", pos: [13.5, -22.3], yon: 1.91, renk: "#DCCBA6", kusak: "#A8382F", boy: 1.62, },
+  { id: "hd_07", aktivite: "demirci", pos: [-4.2, -11.8], yon: 3.96, renk: "#B9A688", kusak: "#4BB3A9", boy: 1.72, rota: [[-4.2,-11.8],[3.8,-6.8],[-0.2,0.2],[-8.2,-5.8]], },
+  { id: "hd_08", aktivite: "asker", pos: [36.5, 4.6], yon: 0.37, renk: "#C9B896", kusak: "#8A6A24", boy: 1.61, },
+  { id: "hd_09", aktivite: "dansci", pos: [-33.5, 28.2], yon: 1.95, renk: "#D8C4A0", kusak: "#6B5636", boy: 1.69, },
+  { id: "hd_10", aktivite: "deriGeren", pos: [1.0, 37.4], yon: 4.93, renk: "#BFAE93", kusak: "#8A2C25", boy: 1.66, },
+  { id: "hd_12", aktivite: "pazarci", pos: [24.5, 10.8], yon: 6.08, renk: "#D2C09C", kusak: "#A8382F", boy: 1.66, },
+  { id: "hd_13", aktivite: "asci", pos: [-24.6, -3.0], yon: 0.94, renk: "#C4B292", kusak: "#4BB3A9", boy: 1.75, },
+  { id: "hd_14", aktivite: "dokumaci", pos: [33.9, -13.5], yon: 4.74, renk: "#DCCBA6", kusak: "#8A6A24", boy: 1.73, rota: [[33.9,-13.5],[41.9,-8.5],[37.9,-1.5],[29.9,-7.5]], },
+  { id: "hd_15", aktivite: "cocuk", pos: [-23.1, 18.5], yon: 1.95, renk: "#B9A688", kusak: "#6B5636", boy: 1.15, },
+  { id: "hd_16", aktivite: "coban", pos: [-13.7, 21.1], yon: 2.83, renk: "#C9B896", kusak: "#8A2C25", boy: 1.72, },
+  { id: "hd_17", aktivite: "demirci", pos: [8.1, 31.3], yon: 4.12, renk: "#D8C4A0", kusak: "#4A6B6B", boy: 1.69, },
+  { id: "hd_18", aktivite: "asker", pos: [4.7, 22.4], yon: 6.16, renk: "#BFAE93", kusak: "#A8382F", boy: 1.73, },
+  { id: "hd_19", aktivite: "dansci", pos: [27.9, 15.4], yon: 4.15, renk: "#CDBB98", kusak: "#4BB3A9", boy: 1.68, },
+  { id: "hd_20", aktivite: "ipBuken", pos: [24.3, 19.5], yon: 0.73, renk: "#D2C09C", kusak: "#8A6A24", boy: 1.63, },
+  { id: "hd_22", aktivite: "pazarci", pos: [-9.3, -3.5], yon: 2.78, renk: "#DCCBA6", kusak: "#8A2C25", boy: 1.62, },
+  { id: "hd_23", aktivite: "asci", pos: [38.6, 8.6], yon: 5.36, renk: "#B9A688", kusak: "#4A6B6B", boy: 1.76, },
+  { id: "hd_24", aktivite: "dokumaci", pos: [-32.7, 25.0], yon: 5.48, renk: "#C9B896", kusak: "#A8382F", boy: 1.67, },
+  { id: "hd_25", aktivite: "cocuk", pos: [5.5, 33.8], yon: 1.09, renk: "#D8C4A0", kusak: "#4BB3A9", boy: 1.15, },
+  { id: "hd_26", aktivite: "coban", pos: [-9.2, 2.8], yon: 3.65, renk: "#BFAE93", kusak: "#8A6A24", boy: 1.7, },
+  { id: "hd_27", aktivite: "demirci", pos: [17.2, 2.0], yon: 2.29, renk: "#CDBB98", kusak: "#6B5636", boy: 1.68, },
+  { id: "hd_29", aktivite: "dansci", pos: [35.4, -5.9], yon: 5.58, renk: "#C4B292", kusak: "#4A6B6B", boy: 1.61, },
+  { id: "hd_31", aktivite: "bekleyen", pos: [-17.2, 15.2], yon: 0.39, renk: "#B9A688", kusak: "#4BB3A9", boy: 1.73, },
+  { id: "hd_32", aktivite: "pazarci", pos: [-1.2, 22.5], yon: 2.11, renk: "#C9B896", kusak: "#8A6A24", boy: 1.63, },
+  { id: "hd_33", aktivite: "asci", pos: [4.6, 14.0], yon: 0.63, renk: "#D8C4A0", kusak: "#6B5636", boy: 1.63, },
+  { id: "hd_34", aktivite: "dokumaci", pos: [22.4, 12.3], yon: 3.81, renk: "#BFAE93", kusak: "#8A2C25", boy: 1.77, },
+  { id: "hd_35", aktivite: "cocuk", pos: [25.8, 17.0], yon: 2.15, renk: "#CDBB98", kusak: "#4A6B6B", boy: 1.15, rota: [[25.8,17.0],[33.8,22.0],[29.8,29.0],[21.8,23.0]], },
+  { id: "hd_36", aktivite: "coban", pos: [14.4, -22.5], yon: 6.16, renk: "#D2C09C", kusak: "#A8382F", boy: 1.77, },
+  { id: "hd_37", aktivite: "demirci", pos: [-8.4, -8.2], yon: 0.63, renk: "#C4B292", kusak: "#4BB3A9", boy: 1.62, },
+  { id: "hd_38", aktivite: "asker", pos: [36.1, 1.2], yon: 1.0, renk: "#DCCBA6", kusak: "#8A6A24", boy: 1.77, },
+  { id: "hd_39", aktivite: "dansci", pos: [-35.7, 31.4], yon: 0.91, renk: "#B9A688", kusak: "#6B5636", boy: 1.71, },
+];
+
+
+/* ============================================================
+   BÖLGE NÜFUSLARI — her bölgenin kendi yaşam döngüsü
+   ============================================================ */
+export const BOLGE_HALKI: HalkKaydi[] = [
+  /* --- PAZARYERİ: en kalabalık yer --- */
+  { id: "pz_00", aktivite: "pazarci", pos: [46.7, -24.1], yon: 3.13, renk: "#C9B896", kusak: "#A8382F", boy: 1.78, rota: [[46.7,-24.1],[53.7,-20.1],[49.7,-14.1],[41.7,-19.1]], bilgi: { ad: "Pazar Günü", metin: "Kervanlar belli günlerde gelirdi. Pazar, obanın dışarıyla buluştuğu yerdi." }, },
+  { id: "pz_01", aktivite: "pazarci", pos: [49.0, -41.2], yon: 1.8, renk: "#D8C4A0", kusak: "#4BB3A9", boy: 1.8, bilgi: { ad: "Takas", metin: "Para her zaman kullanılmazdı. Deri, at ve dokuma karşılıklı değiştirilebilirdi." }, },
+  { id: "pz_02", aktivite: "pazarci", pos: [52.2, -37.5], yon: 4.03, renk: "#BFAE93", kusak: "#8A6A24", boy: 1.79, bilgi: { ad: "Kervan Yolu", metin: "Uzaktan gelen mal, uzaktan gelen haber demekti. Pazar bilgi de taşırdı." }, },
+  { id: "pz_03", aktivite: "tartan", pos: [39.2, -30.0], yon: 1.53, renk: "#CDBB98", kusak: "#6B5636", boy: 1.77, bilgi: { ad: "Hayvan Pazarı", metin: "At ve koyun pazarın ayrı bir köşesinde satılırdı. Alıcı hayvanı dikkatle incelerdi." }, },
+  { id: "pz_04", aktivite: "tartan", pos: [39.3, -35.0], yon: 3.01, renk: "#D2C09C", kusak: "#8A2C25", boy: 1.62, },
+  { id: "pz_05", aktivite: "cocuk", pos: [56.7, -38.5], yon: 3.44, renk: "#C4B292", kusak: "#4A6B6B", boy: 1.15, },
+  { id: "pz_06", aktivite: "asci", pos: [45.1, -31.1], yon: 6.02, renk: "#DCCBA6", kusak: "#7A3A5E", boy: 1.62, rota: [[45.1,-31.1],[52.1,-27.1],[48.1,-21.1],[40.1,-26.1]], },
+  { id: "pz_07", aktivite: "pazarci", pos: [53.8, -34.6], yon: 4.92, renk: "#B9A688", kusak: "#A8382F", boy: 1.64, },
+  { id: "pz_08", aktivite: "pazarci", pos: [56.6, -22.1], yon: 3.93, renk: "#CFC0A0", kusak: "#4BB3A9", boy: 1.64, },
+  { id: "pz_09", aktivite: "pazarci", pos: [42.2, -29.3], yon: 3.78, renk: "#C9B896", kusak: "#8A6A24", boy: 1.73, },
+  { id: "pz_10", aktivite: "tartan", pos: [56.0, -28.5], yon: 4.82, renk: "#D8C4A0", kusak: "#6B5636", boy: 1.64, },
+  { id: "pz_11", aktivite: "bekleyen", pos: [53.5, -29.8], yon: 1.77, renk: "#BFAE93", kusak: "#8A2C25", boy: 1.75, },
+  { id: "pz_12", aktivite: "tartan", pos: [54.8, -30.1], yon: 6.14, renk: "#CDBB98", kusak: "#4A6B6B", boy: 1.75, rota: [[54.8,-30.1],[61.8,-26.1],[57.8,-20.1],[49.8,-25.1]], },
+  { id: "pz_13", aktivite: "cocuk", pos: [38.0, -27.8], yon: 3.78, renk: "#D2C09C", kusak: "#7A3A5E", boy: 1.15, },
+  { id: "pz_14", aktivite: "asci", pos: [48.1, -34.8], yon: 2.09, renk: "#C4B292", kusak: "#A8382F", boy: 1.66, },
+  { id: "pz_15", aktivite: "pazarci", pos: [39.4, -39.2], yon: 1.8, renk: "#DCCBA6", kusak: "#4BB3A9", boy: 1.69, },
+  { id: "pz_16", aktivite: "pazarci", pos: [44.3, -37.3], yon: 4.49, renk: "#B9A688", kusak: "#8A6A24", boy: 1.71, },
+  { id: "pz_17", aktivite: "pazarci", pos: [51.1, -46.6], yon: 5.42, renk: "#CFC0A0", kusak: "#6B5636", boy: 1.79, },
+  { id: "pz_18", aktivite: "sohbet", pos: [47.1, -49.4], yon: 0.03, renk: "#C9B896", kusak: "#8A2C25", boy: 1.7, rota: [[47.1,-49.4],[54.1,-45.4],[50.1,-39.4],[42.1,-44.4]], },
+  { id: "pz_19", aktivite: "bekleyen", pos: [44.1, -36.0], yon: 5.9, renk: "#D8C4A0", kusak: "#4A6B6B", boy: 1.7, },
+  { id: "pz_20", aktivite: "tartan", pos: [56.2, -36.1], yon: 0.14, renk: "#BFAE93", kusak: "#7A3A5E", boy: 1.69, },
+  { id: "pz_21", aktivite: "cocuk", pos: [45.3, -27.6], yon: 4.03, renk: "#CDBB98", kusak: "#A8382F", boy: 1.15, },
+  { id: "pz_22", aktivite: "asci", pos: [55.3, -32.2], yon: 3.47, renk: "#D2C09C", kusak: "#4BB3A9", boy: 1.71, },
+  { id: "pz_23", aktivite: "pazarci", pos: [49.5, -26.0], yon: 5.25, renk: "#C4B292", kusak: "#8A6A24", boy: 1.67, },
+  { id: "pz_24", aktivite: "pazarci", pos: [34.6, -44.6], yon: 5.42, renk: "#DCCBA6", kusak: "#6B5636", boy: 1.7, rota: [[34.6,-44.6],[41.6,-40.6],[37.6,-34.6],[29.6,-39.6]], },
+  { id: "pz_25", aktivite: "pazarci", pos: [49.1, -37.3], yon: 3.74, renk: "#B9A688", kusak: "#8A2C25", boy: 1.76, },
+  { id: "pz_26", aktivite: "coban", pos: [49.1, -40.6], yon: 3.44, renk: "#CFC0A0", kusak: "#4A6B6B", boy: 1.6, },
+  { id: "pz_27", aktivite: "bekleyen", pos: [42.2, -35.1], yon: 4.43, renk: "#C9B896", kusak: "#7A3A5E", boy: 1.67, },
+  { id: "pz_28", aktivite: "sohbet", pos: [49.2, -23.3], yon: 5.56, renk: "#D8C4A0", kusak: "#A8382F", boy: 1.66, },
+  { id: "pz_29", aktivite: "cocuk", pos: [47.9, -41.6], yon: 0.95, renk: "#BFAE93", kusak: "#4BB3A9", boy: 1.15, },
+  { id: "pz_30", aktivite: "asci", pos: [48.5, -41.3], yon: 0.65, renk: "#CDBB98", kusak: "#8A6A24", boy: 1.64, rota: [[48.5,-41.3],[55.5,-37.3],[51.5,-31.3],[43.5,-36.3]], },
+  { id: "pz_31", aktivite: "pazarci", pos: [59.9, -40.6], yon: 1.51, renk: "#D2C09C", kusak: "#6B5636", boy: 1.62, },
+  { id: "pz_32", aktivite: "pazarci", pos: [57.9, -38.7], yon: 2.65, renk: "#C4B292", kusak: "#8A2C25", boy: 1.6, },
+  { id: "pz_33", aktivite: "pazarci", pos: [45.4, -30.6], yon: 2.56, renk: "#DCCBA6", kusak: "#4A6B6B", boy: 1.78, },
+  /* --- BALBAL SIRTI --- */
+  { id: "bs_00", aktivite: "coban", pos: [-58.0, 70.3], yon: 1.52, renk: "#C9B896", kusak: "#A8382F", boy: 1.77, rota: [[-58.0,70.3],[-51.0,74.3],[-55.0,80.3],[-63.0,75.3]], bilgi: { ad: "Sırttaki Sessizlik", metin: "Burada ses azdır, rüzgâr çoktur. Taşların arasında konuşmak yerine bakmak öğrenilir." }, },
+  { id: "bs_01", aktivite: "sohbet", pos: [-58.6, 61.1], yon: 0.58, renk: "#D8C4A0", kusak: "#4BB3A9", boy: 1.64, bilgi: { ad: "Anma", metin: "Taş dikmek, hatırlamanın en dayanıklı biçimiydi. Yazı olmasa da iz kalırdı." }, },
+  { id: "bs_02", aktivite: "coban", pos: [-67.8, 70.6], yon: 0.67, renk: "#BFAE93", kusak: "#8A6A24", boy: 1.63, bilgi: { ad: "Yolcu Taşları", metin: "Yol kenarındaki taş yığınları yön gösterirdi. Geçen her yolcu bir taş eklerdi." }, },
+  { id: "bs_03", aktivite: "cocuk", pos: [-63.8, 67.1], yon: 2.1, renk: "#CDBB98", kusak: "#6B5636", boy: 1.15, },
+  { id: "bs_04", aktivite: "dokumaci", pos: [-60.6, 51.6], yon: 4.63, renk: "#D2C09C", kusak: "#8A2C25", boy: 1.76, },
+  { id: "bs_05", aktivite: "asker", pos: [-35.2, 60.8], yon: 5.7, renk: "#C4B292", kusak: "#4A6B6B", boy: 1.79, },
+  { id: "bs_06", aktivite: "bekleyen", pos: [-37.9, 55.5], yon: 1.59, renk: "#DCCBA6", kusak: "#7A3A5E", boy: 1.78, rota: [[-37.9,55.5],[-30.9,59.5],[-34.9,65.5],[-42.9,60.5]], },
+  { id: "bs_07", aktivite: "dokumaci", pos: [-70.2, 69.3], yon: 5.6, renk: "#B9A688", kusak: "#A8382F", boy: 1.79, },
+  { id: "bs_08", aktivite: "coban", pos: [-72.4, 67.4], yon: 0.88, renk: "#CFC0A0", kusak: "#4BB3A9", boy: 1.69, },
+  { id: "bs_09", aktivite: "cocuk", pos: [-59.6, 57.0], yon: 1.71, renk: "#C9B896", kusak: "#8A6A24", boy: 1.15, },
+  { id: "bs_10", aktivite: "dokumaci", pos: [-57.2, 65.0], yon: 5.29, renk: "#D8C4A0", kusak: "#6B5636", boy: 1.78, },
+  { id: "bs_11", aktivite: "asker", pos: [-64.6, 58.5], yon: 3.35, renk: "#BFAE93", kusak: "#8A2C25", boy: 1.75, },
+  { id: "bs_12", aktivite: "asci", pos: [-52.7, 60.6], yon: 4.21, renk: "#CDBB98", kusak: "#4A6B6B", boy: 1.74, rota: [[-52.7,60.6],[-45.7,64.6],[-49.7,70.6],[-57.7,65.6]], },
+  { id: "bs_13", aktivite: "deriGeren", pos: [-51.2, 52.5], yon: 0.21, renk: "#D2C09C", kusak: "#7A3A5E", boy: 1.72, },
+  { id: "bs_14", aktivite: "coban", pos: [-53.0, 62.1], yon: 2.3, renk: "#C4B292", kusak: "#A8382F", boy: 1.71, },
+  { id: "bs_15", aktivite: "cocuk", pos: [-57.4, 40.3], yon: 0.86, renk: "#DCCBA6", kusak: "#4BB3A9", boy: 1.15, },
+  { id: "bs_16", aktivite: "dokumaci", pos: [-59.3, 58.3], yon: 0.58, renk: "#B9A688", kusak: "#8A6A24", boy: 1.61, },
+  { id: "bs_17", aktivite: "asker", pos: [-54.2, 67.2], yon: 4.19, renk: "#CFC0A0", kusak: "#6B5636", boy: 1.79, },
+  { id: "bs_18", aktivite: "dokumaci", pos: [-55.1, 73.0], yon: 4.95, renk: "#C9B896", kusak: "#8A2C25", boy: 1.68, rota: [[-55.1,73.0],[-48.1,77.0],[-52.1,83.0],[-60.1,78.0]], },
+  { id: "bs_19", aktivite: "sohbet", pos: [-63.0, 70.4], yon: 3.93, renk: "#D8C4A0", kusak: "#4A6B6B", boy: 1.74, },
+  { id: "bs_20", aktivite: "coban", pos: [-55.3, 48.6], yon: 1.98, renk: "#BFAE93", kusak: "#7A3A5E", boy: 1.6, },
+  { id: "bs_21", aktivite: "cocuk", pos: [-44.8, 65.3], yon: 1.91, renk: "#CDBB98", kusak: "#A8382F", boy: 1.15, },
+  /* --- SU BAŞI --- */
+  { id: "sb_00", aktivite: "coban", pos: [55.6, 20.0], yon: 2.43, renk: "#C9B896", kusak: "#A8382F", boy: 1.8, rota: [[55.6,20.0],[62.6,24.0],[58.6,30.0],[50.6,25.0]], bilgi: { ad: "Su Sırası", metin: "Su başında sıra vardı. Önce hayvanlar, sonra kaplar doldurulurdu." }, },
+  { id: "sb_01", aktivite: "asci", pos: [76.5, 16.9], yon: 3.54, renk: "#D8C4A0", kusak: "#4BB3A9", boy: 1.71, bilgi: { ad: "Söğüt Gölgesi", metin: "Söğüt hem gölge hem esneklik verirdi. Dalları sepet ve çit örmede kullanılabilirdi." }, },
+  { id: "sb_02", aktivite: "sohbet", pos: [57.5, 22.7], yon: 1.68, renk: "#BFAE93", kusak: "#8A6A24", boy: 1.71, bilgi: { ad: "Çamurdaki İzler", metin: "Islak toprak izi saklar. Kimin ne zaman geçtiği izlerden okunabilirdi." }, },
+  { id: "sb_03", aktivite: "cocuk", pos: [56.9, 13.7], yon: 4.0, renk: "#CDBB98", kusak: "#6B5636", boy: 1.15, },
+  { id: "sb_04", aktivite: "dokumaci", pos: [54.1, 24.6], yon: 2.5, renk: "#D2C09C", kusak: "#8A2C25", boy: 1.64, },
+  { id: "sb_05", aktivite: "bekleyen", pos: [55.7, 28.5], yon: 4.94, renk: "#C4B292", kusak: "#4A6B6B", boy: 1.73, },
+  { id: "sb_06", aktivite: "coban", pos: [67.8, 5.7], yon: 0.43, renk: "#DCCBA6", kusak: "#7A3A5E", boy: 1.76, rota: [[67.8,5.7],[74.8,9.7],[70.8,15.7],[62.8,10.7]], },
+  { id: "sb_07", aktivite: "asci", pos: [68.9, 24.1], yon: 2.29, renk: "#B9A688", kusak: "#A8382F", boy: 1.8, },
+  { id: "sb_08", aktivite: "coban", pos: [68.3, 11.3], yon: 5.13, renk: "#CFC0A0", kusak: "#4BB3A9", boy: 1.65, },
+  { id: "sb_09", aktivite: "cocuk", pos: [62.4, 24.6], yon: 5.95, renk: "#C9B896", kusak: "#8A6A24", boy: 1.15, },
+  { id: "sb_10", aktivite: "dokumaci", pos: [62.4, 17.7], yon: 6.0, renk: "#D8C4A0", kusak: "#6B5636", boy: 1.62, },
+  { id: "sb_11", aktivite: "dokumaci", pos: [75.7, 30.3], yon: 0.47, renk: "#BFAE93", kusak: "#8A2C25", boy: 1.78, },
+  { id: "sb_12", aktivite: "coban", pos: [67.5, 16.9], yon: 5.44, renk: "#CDBB98", kusak: "#4A6B6B", boy: 1.73, rota: [[67.5,16.9],[74.5,20.9],[70.5,26.9],[62.5,21.9]], },
+  { id: "sb_13", aktivite: "asci", pos: [66.8, 19.0], yon: 1.01, renk: "#D2C09C", kusak: "#7A3A5E", boy: 1.72, },
+  { id: "sb_14", aktivite: "coban", pos: [48.9, 31.7], yon: 3.33, renk: "#C4B292", kusak: "#A8382F", boy: 1.74, },
+  { id: "sb_15", aktivite: "cocuk", pos: [46.6, 31.2], yon: 5.79, renk: "#DCCBA6", kusak: "#4BB3A9", boy: 1.15, },
+  { id: "sb_16", aktivite: "dokumaci", pos: [72.5, 35.1], yon: 5.78, renk: "#B9A688", kusak: "#8A6A24", boy: 1.78, },
+  { id: "sb_17", aktivite: "bekleyen", pos: [69.7, 19.2], yon: 0.32, renk: "#CFC0A0", kusak: "#6B5636", boy: 1.74, },
+  { id: "sb_18", aktivite: "coban", pos: [75.5, 19.1], yon: 1.13, renk: "#C9B896", kusak: "#8A2C25", boy: 1.79, rota: [[75.5,19.1],[82.5,23.1],[78.5,29.1],[70.5,24.1]], },
+  { id: "sb_19", aktivite: "asci", pos: [46.7, 14.9], yon: 2.61, renk: "#D8C4A0", kusak: "#4A6B6B", boy: 1.77, },
+  { id: "sb_20", aktivite: "dokumaci", pos: [62.0, 18.3], yon: 2.04, renk: "#BFAE93", kusak: "#7A3A5E", boy: 1.74, },
+  { id: "sb_21", aktivite: "cocuk", pos: [64.6, 15.5], yon: 0.07, renk: "#CDBB98", kusak: "#A8382F", boy: 1.15, },
+  { id: "sb_22", aktivite: "dokumaci", pos: [75.9, 11.2], yon: 6.11, renk: "#D2C09C", kusak: "#4BB3A9", boy: 1.66, },
+  { id: "sb_23", aktivite: "asci", pos: [46.4, 32.5], yon: 2.95, renk: "#C4B292", kusak: "#8A6A24", boy: 1.76, },
+  /* --- ESKİ YURT YERİ --- */
+  { id: "ey_00", aktivite: "avci", pos: [-43.6, -55.9], yon: 3.27, renk: "#C9B896", kusak: "#A8382F", boy: 1.71, rota: [[-43.6,-55.9],[-36.6,-51.9],[-40.6,-45.9],[-48.6,-50.9]], bilgi: { ad: "Terk Edilmiş Yurt", metin: "Burada bir zamanlar oba vardı. Göç edenler geri dönmeyi umarak iz bırakırdı." }, },
+  { id: "ey_01", aktivite: "avci", pos: [-22.4, -77.1], yon: 2.82, renk: "#D8C4A0", kusak: "#4BB3A9", boy: 1.66, bilgi: { ad: "Ocak Külü", metin: "Sönmüş ocak, orada kimsenin kalmadığını gösterir. Kül yağmurla dağılır, taş kalır." }, },
+  { id: "ey_02", aktivite: "dokumaci", pos: [-55.5, -73.6], yon: 5.56, renk: "#BFAE93", kusak: "#8A6A24", boy: 1.72, bilgi: { ad: "Kalanı Okumak", metin: "Arkeologlar böyle yerlerde çalışır. Her parça yerinde bırakıldığında daha çok anlatır." }, },
+  { id: "ey_03", aktivite: "cocuk", pos: [-23.7, -69.0], yon: 1.62, renk: "#CDBB98", kusak: "#6B5636", boy: 1.15, },
+  { id: "ey_04", aktivite: "asci", pos: [-39.4, -75.1], yon: 0.67, renk: "#D2C09C", kusak: "#8A2C25", boy: 1.69, },
+  { id: "ey_05", aktivite: "avci", pos: [-44.7, -74.6], yon: 5.88, renk: "#C4B292", kusak: "#4A6B6B", boy: 1.79, },
+  { id: "ey_06", aktivite: "coban", pos: [-48.3, -59.3], yon: 2.83, renk: "#DCCBA6", kusak: "#7A3A5E", boy: 1.67, rota: [[-48.3,-59.3],[-41.3,-55.3],[-45.3,-49.3],[-53.3,-54.3]], },
+  { id: "ey_07", aktivite: "dokumaci", pos: [-41.5, -66.1], yon: 1.35, renk: "#B9A688", kusak: "#A8382F", boy: 1.74, },
+  { id: "ey_08", aktivite: "cocuk", pos: [-45.0, -65.0], yon: 0.47, renk: "#CFC0A0", kusak: "#4BB3A9", boy: 1.15, },
+  { id: "ey_09", aktivite: "asci", pos: [-33.8, -51.3], yon: 2.7, renk: "#C9B896", kusak: "#8A6A24", boy: 1.71, },
+  { id: "ey_10", aktivite: "sohbet", pos: [-40.8, -70.1], yon: 3.96, renk: "#D8C4A0", kusak: "#6B5636", boy: 1.65, },
+  { id: "ey_11", aktivite: "avci", pos: [-53.4, -68.8], yon: 2.16, renk: "#BFAE93", kusak: "#8A2C25", boy: 1.64, },
+  { id: "ey_12", aktivite: "dokumaci", pos: [-20.8, -67.2], yon: 0.67, renk: "#CDBB98", kusak: "#4A6B6B", boy: 1.67, rota: [[-20.8,-67.2],[-13.8,-63.2],[-17.8,-57.2],[-25.8,-62.2]], },
+  { id: "ey_13", aktivite: "cocuk", pos: [-43.6, -60.1], yon: 3.06, renk: "#D2C09C", kusak: "#7A3A5E", boy: 1.15, },
+  { id: "ey_14", aktivite: "asci", pos: [-32.4, -58.4], yon: 2.26, renk: "#C4B292", kusak: "#A8382F", boy: 1.62, },
+  { id: "ey_15", aktivite: "avci", pos: [-44.0, -71.3], yon: 4.14, renk: "#DCCBA6", kusak: "#4BB3A9", boy: 1.68, },
+  { id: "ey_16", aktivite: "coban", pos: [-30.4, -52.3], yon: 4.09, renk: "#B9A688", kusak: "#8A6A24", boy: 1.75, },
+  { id: "ey_17", aktivite: "dokumaci", pos: [-20.0, -73.0], yon: 2.37, renk: "#CFC0A0", kusak: "#6B5636", boy: 1.71, },
+  { id: "ey_18", aktivite: "cocuk", pos: [-29.3, -51.5], yon: 5.13, renk: "#C9B896", kusak: "#8A2C25", boy: 1.15, rota: [[-29.3,-51.5],[-22.3,-47.5],[-26.3,-41.5],[-34.3,-46.5]], },
+  { id: "ey_19", aktivite: "asci", pos: [-22.5, -62.1], yon: 4.44, renk: "#D8C4A0", kusak: "#4A6B6B", boy: 1.63, },
+];
+
+
+/* ---------- ORDUGÂH HALKI ---------- */
+export const ORDUGAH_HALKI: HalkKaydi[] = [
+  { id: "or_00", aktivite: "asker", pos: [11.4, -66.9], yon: 4.06, renk: "#B8A98C", kusak: "#5A3D20", boy: 1.67, rota: [[11.4,-66.9],[20.4,-63.9],[16.4,-55.9],[7.4,-60.9]], bilgi: { ad: "Ordugâh Düzeni", metin: "Çadırlar sıra sıra kurulurdu. Düzen, karanlıkta bile yerini bulmayı sağlardı." }, },
+  { id: "or_01", aktivite: "asker", pos: [16.1, -52.4], yon: 1.85, renk: "#B2A386", kusak: "#8A2C25", boy: 1.79, bilgi: { ad: "Ok Talimi", metin: "Hedefe isabet kadar duruş, nefes ve tempo da öğretilirdi." }, },
+  { id: "or_02", aktivite: "asker", pos: [11.3, -75.7], yon: 4.19, renk: "#BCAD90", kusak: "#4A6B6B", boy: 1.75, bilgi: { ad: "Atlı Talim", metin: "At üstünde ok atmak yıllar isterdi. Denge, elden çok bacakla kurulurdu." }, },
+  { id: "or_03", aktivite: "asker", pos: [7.8, -65.7], yon: 2.55, renk: "#A99A7E", kusak: "#6B5636", boy: 1.73, bilgi: { ad: "Onluk Düzen", metin: "Birlikler onlu gruplara ayrılırdı. Her grubun kendi sorumlusu olurdu." }, },
+  { id: "or_04", aktivite: "asker", pos: [-7.8, -60.0], yon: 3.68, renk: "#C0B196", kusak: "#5A3D20", boy: 1.76, bilgi: { ad: "Nöbet", metin: "Yüksek kuleden ufuk gözlenirdi. Haber, ateş ve duman işaretiyle iletilebilirdi." }, },
+  { id: "or_05", aktivite: "atTerbiyecisi", pos: [25.8, -74.6], yon: 5.36, renk: "#B8A98C", kusak: "#8A2C25", boy: 1.77, bilgi: { ad: "Sancak", metin: "Sancak yalnız süs değildi. Uzaktan hangi birliğin nerede olduğunu gösterirdi." }, },
+  { id: "or_06", aktivite: "guresci", pos: [-13.9, -61.2], yon: 1.2, renk: "#B2A386", kusak: "#4A6B6B", boy: 1.68, bilgi: { ad: "At Bakımı", metin: "Savaş atı günlerce hazırlanırdı. Nal, koşum ve yem düzenli kontrol edilirdi." }, },
+  { id: "or_07", aktivite: "demirci", pos: [-5.3, -60.3], yon: 0.52, renk: "#BCAD90", kusak: "#6B5636", boy: 1.8, rota: [[-5.3,-60.3],[3.7,-57.3],[-0.3,-49.3],[-9.3,-54.3]], bilgi: { ad: "Yay Bakımı", metin: "Yay nemden korunurdu. Kiriş her gün gözden geçirilirdi." }, },
+  { id: "or_08", aktivite: "asker", pos: [-13.0, -58.8], yon: 2.41, renk: "#A99A7E", kusak: "#5A3D20", boy: 1.67, },
+  { id: "or_09", aktivite: "asker", pos: [-6.3, -45.8], yon: 5.24, renk: "#C0B196", kusak: "#8A2C25", boy: 1.73, },
+  { id: "or_11", aktivite: "asker", pos: [17.1, -66.3], yon: 4.93, renk: "#B2A386", kusak: "#6B5636", boy: 1.69, },
+  { id: "or_12", aktivite: "asker", pos: [-13.0, -54.0], yon: 4.03, renk: "#BCAD90", kusak: "#5A3D20", boy: 1.82, },
+  { id: "or_13", aktivite: "atTerbiyecisi", pos: [20.5, -44.9], yon: 1.54, renk: "#A99A7E", kusak: "#8A2C25", boy: 1.77, },
+  { id: "or_14", aktivite: "guresci", pos: [-8.0, -69.7], yon: 5.37, renk: "#C0B196", kusak: "#4A6B6B", boy: 1.74, rota: [[-8.0,-69.7],[1.0,-66.7],[-3.0,-58.7],[-12.0,-63.7]], },
+  { id: "or_15", aktivite: "demirci", pos: [26.0, -51.9], yon: 1.23, renk: "#B8A98C", kusak: "#6B5636", boy: 1.81, },
+  { id: "or_16", aktivite: "asker", pos: [2.1, -65.9], yon: 4.7, renk: "#B2A386", kusak: "#5A3D20", boy: 1.74, },
+  { id: "or_17", aktivite: "asker", pos: [24.1, -56.5], yon: 3.62, renk: "#BCAD90", kusak: "#8A2C25", boy: 1.79, },
+  { id: "or_19", aktivite: "asker", pos: [3.2, -69.3], yon: 1.21, renk: "#C0B196", kusak: "#6B5636", boy: 1.79, },
+  { id: "or_20", aktivite: "asker", pos: [-0.3, -69.6], yon: 2.34, renk: "#B8A98C", kusak: "#5A3D20", boy: 1.8, },
+  { id: "or_21", aktivite: "atTerbiyecisi", pos: [13.1, -56.7], yon: 1.73, renk: "#B2A386", kusak: "#8A2C25", boy: 1.78, rota: [[13.1,-56.7],[22.1,-53.7],[18.1,-45.7],[9.1,-50.7]], },
+  { id: "or_22", aktivite: "guresci", pos: [3.7, -64.2], yon: 4.12, renk: "#BCAD90", kusak: "#4A6B6B", boy: 1.68, },
+  { id: "or_24", aktivite: "asker", pos: [-6.5, -72.6], yon: 1.79, renk: "#C0B196", kusak: "#5A3D20", boy: 1.72, },
+  { id: "or_26", aktivite: "asker", pos: [17.6, -54.3], yon: 0.93, renk: "#B2A386", kusak: "#4A6B6B", boy: 1.77, },
+  { id: "or_27", aktivite: "bekleyen", pos: [10.0, -48.2], yon: 1.85, renk: "#BCAD90", kusak: "#6B5636", boy: 1.68, },
+  { id: "or_29", aktivite: "atTerbiyecisi", pos: [4.5, -38.0], yon: 5.61, renk: "#C0B196", kusak: "#8A2C25", boy: 1.74, },
+  { id: "or_30", aktivite: "guresci", pos: [7.0, -61.9], yon: 0.59, renk: "#B8A98C", kusak: "#4A6B6B", boy: 1.68, },
+  { id: "or_31", aktivite: "demirci", pos: [13.3, -58.0], yon: 5.69, renk: "#B2A386", kusak: "#6B5636", boy: 1.76, },
+  { id: "or_33", aktivite: "asker", pos: [13.9, -56.9], yon: 4.95, renk: "#A99A7E", kusak: "#8A2C25", boy: 1.76, },
+  { id: "or_34", aktivite: "asker", pos: [3.9, -42.3], yon: 3.07, renk: "#C0B196", kusak: "#4A6B6B", boy: 1.75, },
+  { id: "or_35", aktivite: "asker", pos: [28.5, -52.2], yon: 5.13, renk: "#B8A98C", kusak: "#6B5636", boy: 1.74, rota: [[28.5,-52.2],[37.5,-49.2],[33.5,-41.2],[24.5,-46.2]], },
+  { id: "or_36", aktivite: "asker", pos: [12.9, -80.4], yon: 5.7, renk: "#B2A386", kusak: "#5A3D20", boy: 1.69, },
+  { id: "or_38", aktivite: "guresci", pos: [17.4, -56.8], yon: 2.01, renk: "#A99A7E", kusak: "#4A6B6B", boy: 1.8, },
+  { id: "or_39", aktivite: "demirci", pos: [9.0, -63.4], yon: 5.57, renk: "#C0B196", kusak: "#6B5636", boy: 1.81, },
+];
+
+
+/* ---------- OTAĞ ÇEVRESİ HALKI ---------- */
+export const OTAG_CEVRESI: HalkKaydi[] = [
+  { id: "oc_000", aktivite: "dokumaci", pos: [-155.5, 92.8], yon: 0.04, renk: "#D8C4A0", kusak: "#A8382F", boy: 1.62 },
+  { id: "oc_001", aktivite: "bekleyen", pos: [-135.2, 97.0], yon: 1.71, renk: "#CDBB98", kusak: "#4BB3A9", boy: 1.63 },
+  { id: "oc_002", aktivite: "asci", pos: [-158.8, 90.6], yon: 2.45, renk: "#C9B896", kusak: "#8A6A24", boy: 1.75 },
+  { id: "oc_003", aktivite: "dokumaci", pos: [-158.0, 86.4], yon: 1.25, renk: "#DCCBA6", kusak: "#6B5636", boy: 1.68 },
+  { id: "oc_004", aktivite: "cocuk", pos: [-159.8, 74.7], yon: 3.13, renk: "#D2C09C", kusak: "#8A2C25", boy: 1.12 },
+  { id: "oc_005", aktivite: "coban", pos: [137.1, 105.9], yon: 2.07, renk: "#BFAE93", kusak: "#A8382F", boy: 1.73 },
+  { id: "oc_006", aktivite: "asci", pos: [131.3, 118.5], yon: 2.12, renk: "#D8C4A0", kusak: "#4BB3A9", boy: 1.77 },
+  { id: "oc_007", aktivite: "dokumaci", pos: [138.4, 114.9], yon: 0.56, renk: "#CDBB98", kusak: "#8A6A24", boy: 1.64 },
+  { id: "oc_008", aktivite: "cocuk", pos: [126.4, 85.7], yon: 2.89, renk: "#C9B896", kusak: "#6B5636", boy: 1.12 },
+  { id: "oc_009", aktivite: "dansci", pos: [159.6, 101.1], yon: 2.95, renk: "#DCCBA6", kusak: "#8A2C25", boy: 1.65 },
+  { id: "oc_010", aktivite: "asci", pos: [-178.5, -14.7], yon: 0.73, renk: "#D2C09C", kusak: "#A8382F", boy: 1.64 },
+  { id: "oc_011", aktivite: "dokumaci", pos: [-180.1, -12.0], yon: 6.05, renk: "#BFAE93", kusak: "#4BB3A9", boy: 1.72 },
+  { id: "oc_012", aktivite: "cocuk", pos: [-170.6, -49.9], yon: 2.16, renk: "#D8C4A0", kusak: "#8A6A24", boy: 1.12 },
+  { id: "oc_013", aktivite: "dansci", pos: [-163.2, -45.0], yon: 6.07, renk: "#CDBB98", kusak: "#6B5636", boy: 1.65 },
+  { id: "oc_014", aktivite: "coban", pos: [-185.4, -16.5], yon: 3.29, renk: "#C9B896", kusak: "#8A2C25", boy: 1.67 },
+  { id: "oc_015", aktivite: "dokumaci", pos: [177.9, -27.5], yon: 1.91, renk: "#DCCBA6", kusak: "#A8382F", boy: 1.75 },
+  { id: "oc_016", aktivite: "cocuk", pos: [190.3, -33.6], yon: 2.61, renk: "#D2C09C", kusak: "#4BB3A9", boy: 1.12 },
+  { id: "oc_017", aktivite: "dansci", pos: [160.5, -39.3], yon: 1.14, renk: "#BFAE93", kusak: "#8A6A24", boy: 1.61 },
+  { id: "oc_018", aktivite: "coban", pos: [180.6, -18.8], yon: 1.76, renk: "#D8C4A0", kusak: "#6B5636", boy: 1.69 },
+  { id: "oc_019", aktivite: "sohbet", pos: [179.9, -55.6], yon: 4.56, renk: "#CDBB98", kusak: "#8A2C25", boy: 1.75 },
+  { id: "oc_020", aktivite: "cocuk", pos: [-87.5, 188.4], yon: 3.37, renk: "#C9B896", kusak: "#A8382F", boy: 1.12 },
+  { id: "oc_021", aktivite: "dansci", pos: [-90.4, 162.5], yon: 0.35, renk: "#DCCBA6", kusak: "#4BB3A9", boy: 1.76 },
+  { id: "oc_022", aktivite: "coban", pos: [-100.1, 150.2], yon: 5.44, renk: "#D2C09C", kusak: "#8A6A24", boy: 1.62 },
+  { id: "oc_023", aktivite: "dokumaci", pos: [-104.3, 174.3], yon: 5.93, renk: "#BFAE93", kusak: "#6B5636", boy: 1.72 },
+  { id: "oc_024", aktivite: "keceBasan", pos: [-94.5, 164.6], yon: 2.39, renk: "#D8C4A0", kusak: "#8A2C25", boy: 1.62 },
+  { id: "oc_025", aktivite: "dansci", pos: [84.1, 187.0], yon: 2.15, renk: "#CDBB98", kusak: "#A8382F", boy: 1.65 },
+  { id: "oc_026", aktivite: "coban", pos: [114.0, 172.7], yon: 3.5, renk: "#C9B896", kusak: "#4BB3A9", boy: 1.77 },
+  { id: "oc_027", aktivite: "asci", pos: [116.7, 173.1], yon: 5.12, renk: "#DCCBA6", kusak: "#8A6A24", boy: 1.69 },
+  { id: "oc_028", aktivite: "asci", pos: [114.9, 171.0], yon: 5.83, renk: "#D2C09C", kusak: "#6B5636", boy: 1.67 },
+  { id: "oc_029", aktivite: "asci", pos: [111.9, 181.9], yon: 5.15, renk: "#BFAE93", kusak: "#8A2C25", boy: 1.73 },
+  { id: "oc_030", aktivite: "coban", pos: [13.3, 223.6], yon: 4.56, renk: "#D8C4A0", kusak: "#A8382F", boy: 1.61 },
+  { id: "oc_031", aktivite: "sohbet", pos: [10.7, 212.9], yon: 3.61, renk: "#CDBB98", kusak: "#4BB3A9", boy: 1.73 },
+  { id: "oc_032", aktivite: "bekleyen", pos: [5.1, 215.9], yon: 0.27, renk: "#C9B896", kusak: "#8A6A24", boy: 1.65 },
+  { id: "oc_033", aktivite: "asci", pos: [-1.9, 197.6], yon: 3.19, renk: "#DCCBA6", kusak: "#6B5636", boy: 1.62 },
+  { id: "oc_034", aktivite: "dokumaci", pos: [-5.1, 215.2], yon: 5.3, renk: "#D2C09C", kusak: "#8A2C25", boy: 1.71 },
+  { id: "oc_035", aktivite: "sohbet", pos: [-215.5, 71.8], yon: 2.51, renk: "#BFAE93", kusak: "#A8382F", boy: 1.66 },
+  { id: "oc_036", aktivite: "bekleyen", pos: [-210.4, 53.3], yon: 4.57, renk: "#D8C4A0", kusak: "#4BB3A9", boy: 1.73 },
+  { id: "oc_037", aktivite: "asci", pos: [-216.9, 51.4], yon: 4.6, renk: "#CDBB98", kusak: "#8A6A24", boy: 1.78 },
+  { id: "oc_038", aktivite: "dokumaci", pos: [-202.9, 48.7], yon: 5.92, renk: "#C9B896", kusak: "#6B5636", boy: 1.69 },
+  { id: "oc_039", aktivite: "cocuk", pos: [-216.9, 56.1], yon: 1.79, renk: "#DCCBA6", kusak: "#8A2C25", boy: 1.12 },
+  { id: "oc_040", aktivite: "dokumaci", pos: [202.9, 46.3], yon: 3.34, renk: "#D2C09C", kusak: "#A8382F", boy: 1.64 },
+  { id: "oc_041", aktivite: "asci", pos: [186.8, 60.2], yon: 6.05, renk: "#BFAE93", kusak: "#4BB3A9", boy: 1.62 },
+  { id: "oc_042", aktivite: "dokumaci", pos: [192.0, 54.7], yon: 3.86, renk: "#D8C4A0", kusak: "#8A6A24", boy: 1.61 },
+  { id: "oc_043", aktivite: "cocuk", pos: [209.5, 78.4], yon: 2.83, renk: "#CDBB98", kusak: "#6B5636", boy: 1.12 },
+  { id: "oc_044", aktivite: "dansci", pos: [227.8, 57.8], yon: 3.23, renk: "#C9B896", kusak: "#8A2C25", boy: 1.74 },
+  { id: "oc_045", aktivite: "asci", pos: [-124.8, -115.5], yon: 5.78, renk: "#DCCBA6", kusak: "#A8382F", boy: 1.6 },
+  { id: "oc_046", aktivite: "dokumaci", pos: [-142.5, -109.6], yon: 5.62, renk: "#D2C09C", kusak: "#4BB3A9", boy: 1.75 },
+  { id: "oc_047", aktivite: "cocuk", pos: [-117.4, -132.6], yon: 4.99, renk: "#BFAE93", kusak: "#8A6A24", boy: 1.12 },
+  { id: "oc_048", aktivite: "dansci", pos: [-135.5, -113.2], yon: 3.7, renk: "#D8C4A0", kusak: "#6B5636", boy: 1.66 },
+  { id: "oc_049", aktivite: "coban", pos: [-124.0, -104.1], yon: 5.9, renk: "#CDBB98", kusak: "#8A2C25", boy: 1.68 },
+  { id: "oc_050", aktivite: "dokumaci", pos: [128.3, -120.4], yon: 3.77, renk: "#C9B896", kusak: "#A8382F", boy: 1.74 },
+  { id: "oc_051", aktivite: "cocuk", pos: [132.2, -124.2], yon: 0.68, renk: "#DCCBA6", kusak: "#4BB3A9", boy: 1.12 },
+  { id: "oc_052", aktivite: "dansci", pos: [128.1, -116.2], yon: 2.94, renk: "#D2C09C", kusak: "#8A6A24", boy: 1.6 },
+  { id: "oc_053", aktivite: "coban", pos: [129.7, -116.2], yon: 5.45, renk: "#BFAE93", kusak: "#6B5636", boy: 1.65 },
+  { id: "oc_054", aktivite: "coban", pos: [134.2, -134.6], yon: 1.17, renk: "#D8C4A0", kusak: "#8A2C25", boy: 1.64 },
+  { id: "oc_055", aktivite: "cocuk", pos: [-0.6, -160.5], yon: 2.88, renk: "#CDBB98", kusak: "#A8382F", boy: 1.12 },
+  { id: "oc_056", aktivite: "dansci", pos: [-18.1, -176.5], yon: 2.85, renk: "#C9B896", kusak: "#4BB3A9", boy: 1.67 },
+  { id: "oc_057", aktivite: "coban", pos: [7.4, -162.9], yon: 4.54, renk: "#DCCBA6", kusak: "#8A6A24", boy: 1.74 },
+  { id: "oc_058", aktivite: "sohbet", pos: [-1.5, -186.9], yon: 1.39, renk: "#D2C09C", kusak: "#6B5636", boy: 1.62 },
+  { id: "oc_059", aktivite: "asker", pos: [-16.2, -197.2], yon: 1.99, renk: "#BFAE93", kusak: "#8A2C25", boy: 1.63 },
+  { id: "oc_060", aktivite: "asci", pos: [110.8, 1.6], yon: 0.5, renk: "#D8C4A0", kusak: "#A8382F", boy: 1.68 },
+  { id: "oc_061", aktivite: "coban", pos: [40.7, 183.1], yon: 2.51, renk: "#CDBB98", kusak: "#4BB3A9", boy: 1.64 },
+  { id: "oc_062", aktivite: "asci", pos: [145.3, 98.5], yon: 3.18, renk: "#C9B896", kusak: "#8A6A24", boy: 1.76 },
+  { id: "oc_063", aktivite: "dokumaci", pos: [-57.0, 66.9], yon: 3.25, renk: "#DCCBA6", kusak: "#6B5636", boy: 1.61 },
+  { id: "oc_064", aktivite: "cocuk", pos: [-96.4, 68.9], yon: 1.03, renk: "#D2C09C", kusak: "#8A2C25", boy: 1.12 },
+  { id: "oc_065", aktivite: "dansci", pos: [-72.9, 6.6], yon: 4.15, renk: "#BFAE93", kusak: "#A8382F", boy: 1.61 },
+  { id: "oc_066", aktivite: "coban", pos: [-85.9, 83.5], yon: 1.5, renk: "#D8C4A0", kusak: "#4BB3A9", boy: 1.67 },
+  { id: "oc_067", aktivite: "asci", pos: [122.8, 57.4], yon: 2.24, renk: "#CDBB98", kusak: "#8A6A24", boy: 1.72 },
+  { id: "oc_068", aktivite: "bekleyen", pos: [55.5, -58.1], yon: 2.69, renk: "#C9B896", kusak: "#6B5636", boy: 1.76 },
+  { id: "oc_069", aktivite: "asci", pos: [-78.2, 41.0], yon: 6.01, renk: "#DCCBA6", kusak: "#8A2C25", boy: 1.67 },
+  { id: "oc_070", aktivite: "dokumaci", pos: [12.1, -85.4], yon: 5.94, renk: "#D2C09C", kusak: "#A8382F", boy: 1.71 },
+  { id: "oc_071", aktivite: "cocuk", pos: [-146.0, -25.0], yon: 2.12, renk: "#BFAE93", kusak: "#4BB3A9", boy: 1.12 },
+  { id: "oc_072", aktivite: "dansci", pos: [-132.0, -72.0], yon: 4.07, renk: "#D8C4A0", kusak: "#8A6A24", boy: 1.6 },
+  { id: "oc_073", aktivite: "coban", pos: [-117.1, 110.9], yon: 1.76, renk: "#CDBB98", kusak: "#6B5636", boy: 1.73 },
+  { id: "oc_074", aktivite: "asker", pos: [-9.4, -121.5], yon: 0.87, renk: "#C9B896", kusak: "#8A2C25", boy: 1.68 },
+  { id: "oc_075", aktivite: "coban", pos: [-87.8, -72.7], yon: 3.63, renk: "#DCCBA6", kusak: "#A8382F", boy: 1.68 },
+  { id: "oc_076", aktivite: "asci", pos: [-61.2, 137.3], yon: 4.21, renk: "#D2C09C", kusak: "#4BB3A9", boy: 1.71 },
+  { id: "oc_077", aktivite: "dokumaci", pos: [-20.6, 127.4], yon: 2.03, renk: "#BFAE93", kusak: "#8A6A24", boy: 1.65 },
+  { id: "oc_078", aktivite: "cocuk", pos: [-100.7, 27.4], yon: 0.86, renk: "#D8C4A0", kusak: "#6B5636", boy: 1.12 },
+  { id: "oc_079", aktivite: "dansci", pos: [22.1, 82.5], yon: 1.97, renk: "#CDBB98", kusak: "#8A2C25", boy: 1.76 },
+  { id: "oc_080", aktivite: "coban", pos: [-148.3, 45.3], yon: 3.05, renk: "#C9B896", kusak: "#A8382F", boy: 1.61 },
+  { id: "oc_081", aktivite: "sohbet", pos: [-4.6, 149.0], yon: 0.86, renk: "#DCCBA6", kusak: "#4BB3A9", boy: 1.71 },
+  { id: "oc_082", aktivite: "dokumaci", pos: [101.1, -8.5], yon: 2.99, renk: "#D2C09C", kusak: "#8A6A24", boy: 1.75 },
+  { id: "oc_083", aktivite: "asci", pos: [17.4, 96.0], yon: 4.53, renk: "#BFAE93", kusak: "#6B5636", boy: 1.64 },
+];
+
+export const HALK: HalkKaydi[] = [...HALK_ANA, ...OBA_DOLGU, ...BOLGE_HALKI, ...ORDUGAH_HALKI, ...OTAG_CEVRESI];
