@@ -12,6 +12,7 @@ import { Player } from "./Player";
 import { YakinVarliklar } from "./YakinVarliklar";
 import { UzakSiluetler } from "./UzakSiluetler";
 import { Halk } from "./Halk";
+import { EtkinlikSahneleri } from "./EtkinlikSahneleri";
 import { BuyukOba } from "./BuyukOba";
 import { GirilebilirOtag } from "./GirilebilirOtag";
 import { Suru } from "./Suru";
@@ -87,6 +88,7 @@ export function D01Scene() {
         <UzakSiluetler />
         <BuyukOba />
         <Halk />
+        <EtkinlikSahneleri />
         {/* girilebilir otağlar — kapıdan içeri girilir, çatı saydamlaşır */}
         <GirilebilirOtag pos={[-27, -14]} rotY={0.75} olcek={1.5} tur="bey" />
         <GirilebilirOtag pos={[36, 23]} rotY={-0.6} olcek={1.25} tur="aile" />
