@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { araziYukseklik, DUNYA_YARICAP } from "@/lib/terrain";
@@ -11,6 +11,8 @@ import { hareketiCoz, kameraEngeli } from "@/lib/carpisma";
 import { adimSesi, yankiAyarla, type Zemin } from "@/lib/audio";
 import { SU_KOTU } from "@/lib/terrain";
 import { GezginModel } from "./models/GezginModel";
+import { GezginGLB } from "./models/GezginGLB";
+import type { OyunKlibi } from "@/lib/klipEsleme";
 
 const HIZ = 4.6;
 const KOSU_CARPAN = 2.1;    // Shift ile hızlı gezinme (büyük harita için)
@@ -55,6 +57,9 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
   const havada = useRef(false);
   const sonAdimFazi = useRef(0);
   const sonYanki = useRef(false);
+  const klipRef = useRef<OyunKlibi>("idle");
+  const tempoRef = useRef(1);
+  const [klip, setKlip] = useState<OyunKlibi>("idle");
   const kameraHedef = useRef(new THREE.Vector3());
   const yon = useRef(new THREE.Vector3());
 
@@ -347,7 +352,22 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
     );
     camera.rotation.z += Math.sin(t * 0.61) * 0.004;
 
-    /* ---------- DURAK TETİKLEME ---------- */
+      /* ---------- ANİMASYON KLİBİ SEÇİMİ ---------- */
+    // GLB karakteri için: oyuncunun durumu → klip adı
+    const yeniKlip: OyunKlibi =
+      oturuyor.current ? "sit"
+      : havada.current ? "jump"
+      : y > 0.55 && kosuyor.current ? "run"
+      : y > 0.08 ? "walk"
+      : "idle";
+    if (yeniKlip !== klipRef.current) {
+      klipRef.current = yeniKlip;
+      setKlip(yeniKlip);
+    }
+    // adım temposunu hıza bağla
+    tempoRef.current = kosuyor.current ? 1.25 : 0.85 + y * 0.4;
+
+  /* ---------- DURAK TETİKLEME ---------- */
     // SERBEST TUR: hangi durağın yanına gelirsen o açılır, sıra beklemez
     const { nodlar, faz: oyunFazi, tamamlananNodIndexleri, duragaGir } = useOyun.getState();
     if (oyunFazi === "gezinti") {
@@ -364,19 +384,23 @@ export function Player({ baslangic = [0, 0, 30] as [number, number, number] }) {
 
   return (
     <group ref={grup}>
-      <GezginModel
-        govdeRef={govde}
-        basRef={bas}
-        pelerinRef={pelerin}
-        solKolRef={solKol}
-        sagKolRef={sagKol}
-        solDirsekRef={solDirsek}
-        sagDirsekRef={sagDirsek}
-        solBacakRef={solBacak}
-        sagBacakRef={sagBacak}
-        solDizRef={solDiz}
-        sagDizRef={sagDiz}
-      />
+      {/*
+        Gerçek 3B karakter. Yüklenirken prosedürel model gösterilir —
+        boşluk görünmez, sahne kesintiye uğramaz.
+      */}
+      <Suspense
+        fallback={
+          <GezginModel
+            govdeRef={govde} basRef={bas} pelerinRef={pelerin}
+            solKolRef={solKol} sagKolRef={sagKol}
+            solDirsekRef={solDirsek} sagDirsekRef={sagDirsek}
+            solBacakRef={solBacak} sagBacakRef={sagBacak}
+            solDizRef={solDiz} sagDizRef={sagDiz}
+          />
+        }
+      >
+        <GezginGLB klip={klip} tempo={tempoRef.current} />
+      </Suspense>
       
     </group>
   );
