@@ -46,9 +46,10 @@ export function YakinBitkiler() {
         dz: Math.sin(a) * d,
         aci: r() * Math.PI,
         // çeşitler: uzun ot, kısa tutam, çalı
-        olcek: tur < 0.55 ? 0.75 + r() * 0.5
-             : tur < 0.85 ? 0.42 + r() * 0.28
-             : 1.25 + r() * 0.7,
+        // bozkır otu insan dizinden yüksek olmamalı
+        olcek: tur < 0.55 ? 0.45 + r() * 0.3
+             : tur < 0.85 ? 0.28 + r() * 0.18
+             : 0.7 + r() * 0.35,
         renk: tur < 0.55 ? 0 : tur < 0.85 ? 1 : 2,
       };
     });
@@ -89,7 +90,6 @@ export function YakinBitkiler() {
     if (sonMerkez.current.distanceTo(new THREE.Vector2(px, pz)) < YENILEME_MESAFESI) return;
     sonMerkez.current.set(px, pz);
 
-    const renkler = im.instanceColor;
     for (let i = 0; i < ADET; i++) {
       const d = dagilim[i];
       const x = px + d.dx;
@@ -99,29 +99,39 @@ export function YakinBitkiler() {
       gecici.scale.set(d.olcek, d.olcek, d.olcek);
       gecici.updateMatrix();
       im.setMatrixAt(i, gecici.matrix);
-      if (renkler) {
-        const c = d.renk === 0 ? [0.58, 0.68, 0.55]
-                : d.renk === 1 ? [0.68, 0.72, 0.5]
-                : [0.42, 0.55, 0.42];
-        renkler.setXYZ(i, c[0], c[1], c[2]);
-      }
     }
     im.instanceMatrix.needsUpdate = true;
-    if (renkler) renkler.needsUpdate = true;
     im.computeBoundingSphere();
   });
 
-  const renkTamponu = useMemo(
-    () => new THREE.InstancedBufferAttribute(new Float32Array(ADET * 3).fill(0.6), 3),
-    []
-  );
+  /**
+   * Instance renkleri BAŞLANGIÇTA doldurulur ve malzemeye needsUpdate
+   * verilir. Aksi hâlde gölgelendirici renk niteliğini görmeden derlenir
+   * ve bitkiler SİYAH çıkar.
+   */
+  const renkTamponu = useMemo(() => {
+    const dizi = new Float32Array(ADET * 3);
+    for (let i = 0; i < ADET; i++) {
+      const d = dagilim[i];
+      const c = d.renk === 0 ? [0.58, 0.68, 0.55]
+              : d.renk === 1 ? [0.68, 0.72, 0.5]
+              : [0.42, 0.55, 0.42];
+      dizi[i * 3] = c[0]; dizi[i * 3 + 1] = c[1]; dizi[i * 3 + 2] = c[2];
+    }
+    return new THREE.InstancedBufferAttribute(dizi, 3);
+  }, [dagilim]);
+
+  useEffect(() => {
+    const im = ref.current;
+    if (!im) return;
+    im.instanceColor = renkTamponu;
+    im.instanceColor.needsUpdate = true;
+    (im.material as THREE.Material).needsUpdate = true;
+  }, [renkTamponu]);
 
   return (
     <instancedMesh
-      ref={(m) => {
-        ref.current = m;
-        if (m && !m.instanceColor) m.instanceColor = renkTamponu;
-      }}
+      ref={ref}
       args={[undefined, undefined, ADET]}
       frustumCulled={false}
     >

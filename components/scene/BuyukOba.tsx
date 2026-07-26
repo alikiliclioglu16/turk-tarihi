@@ -104,6 +104,9 @@ export function BuyukOba() {
         cm.instanceColor = new THREE.InstancedBufferAttribute(renkler, 3);
       }
       cm.instanceColor.needsUpdate = true;
+      // gölgelendirici renk niteliğini görsün diye malzeme yenilenmeli;
+      // bu satır olmadan çatılar SİYAH çıkar
+      (cm.material as THREE.Material).needsUpdate = true;
 
       [gm, cm, km].forEach((m) => {
         m.instanceMatrix.needsUpdate = true;
