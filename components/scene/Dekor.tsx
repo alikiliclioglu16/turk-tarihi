@@ -172,7 +172,7 @@ export function Dekor() {
           alphaTest={0.35}
           side={THREE.DoubleSide}
           roughness={1}
-          color="#93AFA4"
+          color="#E8E4D2"
         />
       </instancedMesh>
 

@@ -260,18 +260,55 @@ export function lekeDokusu(): THREE.CanvasTexture {
 
 /** Ot yaprakları — billboard için şeffaf doku */
 export function otDokusu(): THREE.CanvasTexture {
-  const { c, g } = tuval(64, 64);
-  g.clearRect(0, 0, 64, 64);
-  g.strokeStyle = "#46615C";
-  g.lineWidth = 3;
+  /**
+   * BOZKIR OTU
+   *
+   * Önceki sürüm 64px tuvalde 3px kalınlıkta koyu (#46615C) çizgiler
+   * çiziyordu; yarım metrelik bir levhaya büyütülünce kalın siyah
+   * çubuklara dönüşüyordu.
+   *
+   * Yeni sürüm: 128px, ince çok sayıda yaprak, dipte koyu uçta açık
+   * geçişli, kuru bozkır yeşili. Instance rengi bunu KARARTMAK yerine
+   * TONLAMAK için kullanılır.
+   */
+  const B = 128;
+  const { c, g } = tuval(B, B);
+  g.clearRect(0, 0, B, B);
   g.lineCap = "round";
-  for (let i = 0; i < 9; i++) {
-    const x = 5 + i * 6.8;
+
+  const yapraklar = 22;
+  for (let i = 0; i < yapraklar; i++) {
+    const x = 3 + (i / yapraklar) * (B - 6) + (Math.random() * 6 - 3);
+    const yukseklik = B * (0.45 + Math.random() * 0.5);
+    const tepeX = x + (Math.random() * 26 - 13);
+    const tepeY = B - yukseklik;
+
+    // dipten uca açılan renk geçişi — doğal görünüm
+    const grad = g.createLinearGradient(x, B, tepeX, tepeY);
+    grad.addColorStop(0.0, "#5A6B3A");
+    grad.addColorStop(0.55, "#7C8B4E");
+    grad.addColorStop(1.0, "#9BA765");
+    g.strokeStyle = grad;
+    g.lineWidth = 1.1 + Math.random() * 1.3;
+
     g.beginPath();
-    g.moveTo(x, 64);
-    g.quadraticCurveTo(x + (Math.random() * 10 - 5), 32, x + (Math.random() * 18 - 9), 4 + Math.random() * 12);
+    g.moveTo(x, B);
+    g.quadraticCurveTo(x + (Math.random() * 12 - 6), B - yukseklik * 0.55, tepeX, tepeY);
     g.stroke();
   }
+
+  // birkaç kurumuş sarı yaprak — bozkır kuruluğu
+  g.strokeStyle = "#B8AE72";
+  g.lineWidth = 1.0;
+  for (let i = 0; i < 5; i++) {
+    const x = Math.random() * B;
+    const h = B * (0.35 + Math.random() * 0.4);
+    g.beginPath();
+    g.moveTo(x, B);
+    g.quadraticCurveTo(x + (Math.random() * 14 - 7), B - h * 0.5, x + (Math.random() * 20 - 10), B - h);
+    g.stroke();
+  }
+
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
   return t;

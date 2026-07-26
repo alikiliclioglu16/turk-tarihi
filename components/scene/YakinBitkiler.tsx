@@ -113,9 +113,11 @@ export function YakinBitkiler() {
     const dizi = new Float32Array(ADET * 3);
     for (let i = 0; i < ADET; i++) {
       const d = dagilim[i];
-      const c = d.renk === 0 ? [0.58, 0.68, 0.55]
-              : d.renk === 1 ? [0.68, 0.72, 0.5]
-              : [0.42, 0.55, 0.42];
+      // Doku zaten yeşil; bu değerler onu KARARTMAZ, hafifçe tonlar.
+      // 1'e yakın tutulur, yoksa yapraklar siyaha döner.
+      const c = d.renk === 0 ? [1.00, 1.00, 0.96]   // taze yeşil
+              : d.renk === 1 ? [1.06, 1.00, 0.82]   // kuru sarımsı
+              : [0.86, 0.94, 0.84];                 // koyu çalı
       dizi[i * 3] = c[0]; dizi[i * 3 + 1] = c[1]; dizi[i * 3 + 2] = c[2];
     }
     return new THREE.InstancedBufferAttribute(dizi, 3);
