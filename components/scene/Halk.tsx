@@ -36,6 +36,12 @@ function Kisi({ k, onBilgi }: { k: HalkKaydi; onBilgi: (k: HalkKaydi) => void })
   const tohum = useMemo(() => Math.random() * 10, []);
   const faz = useMemo(() => fazHesapla(k.id), [k.id]);
   const [yakinMi, setYakinMi] = useState(false);
+  /**
+   * OYUNCUYA BAKIŞ
+   * Çok yakındaki figürler (8 m) oyuncuya döner — fark edilmiş olma
+   * hissi. Uzaktakiler kendi işine bakar.
+   */
+  const [bakisHedefi, setBakisHedefi] = useState<[number, number, number] | null>(null);
 
   useFrame((_, delta) => {
     const g = grup.current;
@@ -64,6 +70,17 @@ function Kisi({ k, onBilgi }: { k: HalkKaydi; onBilgi: (k: HalkKaydi) => void })
     const d = Math.hypot(oyuncuKonumu.x - g.position.x, oyuncuKonumu.z - g.position.z);
     const esik = yakinMi ? GLB_MESAFE + 4 : GLB_MESAFE;
     if (d < esik !== yakinMi) setYakinMi(d < esik);
+
+    const fark = d < 8;
+    const varMi = bakisHedefi !== null;
+    if (fark !== varMi) {
+      setBakisHedefi(fark ? [oyuncuKonumu.x, oyuncuKonumu.y + 1.55, oyuncuKonumu.z] : null);
+    } else if (fark) {
+      // hedef güncellensin — oyuncu hareket ediyor
+      bakisHedefi![0] = oyuncuKonumu.x;
+      bakisHedefi![1] = oyuncuKonumu.y + 1.55;
+      bakisHedefi![2] = oyuncuKonumu.z;
+    }
   });
 
   return (
@@ -90,6 +107,7 @@ function Kisi({ k, onBilgi }: { k: HalkKaydi; onBilgi: (k: HalkKaydi) => void })
             olcek={(k.boy ?? 1.72) / 1.70}
             doku={dokuYolu(k.id, k.aktivite)}
             duzeltme={ZANAAT_DUZELTMELERI[k.aktivite] ?? null}
+            bakisHedefi={bakisHedefi}
           />
         </Suspense>
       ) : (

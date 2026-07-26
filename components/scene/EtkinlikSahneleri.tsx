@@ -33,8 +33,8 @@ const GORUNUR = 95;
 const GLB_MESAFE = 34;
 
 function SahneFiguruBileseni({
-  f, mx, mz,
-}: { f: SahneFiguru; mx: number; mz: number }) {
+  f, mx, mz, odak,
+}: { f: SahneFiguru; mx: number; mz: number; odak?: [number, number, number] }) {
   const grup = useRef<THREE.Group>(null);
   const [yakin, setYakin] = useState(false);
   const faz = useMemo(() => fazHesapla(f.id), [f.id]);
@@ -43,6 +43,18 @@ function SahneFiguruBileseni({
   const x = (mx + f.dx) * OL;
   const z = (mz + f.dz) * OL;
   const y = araziYukseklik(x, z);
+
+  /**
+   * ORTAK BAKIŞ ODAĞI
+   * Sahnenin odağı dünya koordinatına çevrilir. Herkes oraya bakar —
+   * "bir bütünün parçası" hissini veren şey budur.
+   */
+  const bakis = useMemo<[number, number, number] | null>(() => {
+    if (!odak) return null;
+    const ox = (mx + odak[0]) * OL;
+    const oz = (mz + odak[2]) * OL;
+    return [ox, araziYukseklik(ox, oz) + odak[1], oz];
+  }, [odak, mx, mz]);
   // yon null ise sahne merkezine bak
   const yon = f.yon ?? Math.atan2(-f.dx, -f.dz);
 
@@ -63,6 +75,8 @@ function SahneFiguruBileseni({
             olcek={(f.boy ?? 1.72) / 1.7}
             doku={dokuYolu(f.id, f.aktivite)}
             duzeltme={ZANAAT_DUZELTMELERI[f.aktivite] ?? null}
+            elHedefi={f.elHedefi ?? null}
+            bakisHedefi={bakis}
           />
         </Suspense>
       ) : (
@@ -113,7 +127,7 @@ function Sahne({ s }: { s: EtkinlikSahnesi }) {
   return (
     <group>
       {s.figurler.map((f) => (
-        <SahneFiguruBileseni key={f.id} f={f} mx={mx} mz={mz} />
+        <SahneFiguruBileseni key={f.id} f={f} mx={mx} mz={mz} odak={s.odak} />
       ))}
       {s.hayvanlar?.map((h, i) =>
         h.dairesel ? (
