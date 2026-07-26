@@ -92,9 +92,9 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     merkez: [16, -30],
     nesne: "P03",
     figurler: [
-      { id: "so_okcu1",  aktivite: "asker", dx: 0.0,  dz: 7.0, yon: Math.PI, elde: "yay" },
-      { id: "so_okcu2",  aktivite: "asker", dx: 2.2,  dz: 7.2, yon: Math.PI, elde: "yay" },
-      { id: "so_okcu3",  aktivite: "asker", dx: -2.2, dz: 7.1, yon: Math.PI, elde: "yay" },
+      { id: "so_okcu1",  aktivite: "asker", dx: 0.0,  dz: 7.0, yon: Math.PI },
+      { id: "so_okcu2",  aktivite: "asker", dx: 2.2,  dz: 7.2, yon: Math.PI },
+      { id: "so_okcu3",  aktivite: "asker", dx: -2.2, dz: 7.1, yon: Math.PI },
       { id: "so_egitmen", aktivite: "bekleyen", dx: 4.4, dz: 6.0, yon: Math.PI * 1.35 },
       { id: "so_bekleyen", aktivite: "sohbet", dx: -4.6, dz: 8.4, yon: Math.PI * 0.9 },
     ],
@@ -127,10 +127,11 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     ad: "Kılıç Talimi",
     merkez: [4, -52],
     figurler: [
-      { id: "sk_asker1",  aktivite: "kilicTalimi", dx: -1.4, dz: 0, yon: Math.PI * 0.5, elde: "kilic" },
-      { id: "sk_asker2",  aktivite: "kilicTalimi", dx: 1.4,  dz: 0, yon: Math.PI * 1.5, elde: "kilic" },
+      { id: "sk_asker1",  aktivite: "kilicTalimi", dx: -1.4, dz: 0, yon: Math.PI * 0.5 },
+      { id: "sk_asker2",  aktivite: "kilicTalimi", dx: 1.4,  dz: 0, yon: Math.PI * 1.5 },
       { id: "sk_egitmen", aktivite: "bekleyen", dx: 0,   dz: 3.2, yon: null },
       { id: "sk_izleyen", aktivite: "bekleyen", dx: -4.2, dz: 2.4, yon: null },
+      { id: "sk_baltaci", aktivite: "baltaci",  dx: 4.6, dz: -1.2, yon: Math.PI * 1.7 },
     ],
   },
 
@@ -308,8 +309,8 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     merkez: [22, -58],
     nesne: "O03",
     figurler: [
-      { id: "sat_asker1", aktivite: "asker",    dx: -3.0, dz: 4.2, yon: Math.PI, elde: "yay" },
-      { id: "sat_asker2", aktivite: "asker",    dx: 0.4,  dz: 4.6, yon: Math.PI, elde: "yay" },
+      { id: "sat_asker1", aktivite: "asker",    dx: -3.0, dz: 4.2, yon: Math.PI },
+      { id: "sat_asker2", aktivite: "asker",    dx: 0.4,  dz: 4.6, yon: Math.PI },
       { id: "sat_egitmen", aktivite: "bekleyen", dx: 3.6, dz: 3.4, yon: Math.PI * 1.3 },
     ],
     hayvanlar: [
@@ -325,7 +326,7 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     merkez: [10, -46],
     nesne: "O04",
     figurler: [
-      { id: "ss_nobetci1", aktivite: "asker",    dx: 1.6,  dz: 1.2, yon: Math.PI * 1.2, elde: "yay" },
+      { id: "ss_nobetci1", aktivite: "nobetci",  dx: 1.6,  dz: 1.2, yon: Math.PI * 1.2 },
       { id: "ss_nobetci2", aktivite: "bekleyen", dx: -1.8, dz: 1.4, yon: Math.PI * 0.85 },
       { id: "ss_subay",    aktivite: "sohbet",   dx: 0.2,  dz: 3.2, yon: null },
     ],

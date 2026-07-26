@@ -125,6 +125,24 @@ export const VARSAYILAN_DUZELTMELER: KlipDuzeltme[] = [
     sure: 1.25,
   },
   {
+    // "Attack" klibi savaş hamlesi — talim için ölçülendirilir
+    esles: "attack",
+    genlik: {
+      kemikler: ["RightArm", "RightForeArm", "Spine", "Spine01", "Spine02", "Hips"],
+      oran: 0.6,
+    },
+    sure: 1.35,
+  },
+  {
+    // Balta duruşu ve savurması yumuşatılır
+    esles: "axe_spin",
+    genlik: {
+      kemikler: ["RightArm", "RightForeArm", "Spine", "Spine01", "Spine02", "Hips"],
+      oran: 0.5,
+    },
+    sure: 1.4,
+  },
+  {
     // Aşırı hevesli konuşmayı sakinleştir
     esles: "passionately",
     genlik: { kemikler: ["LeftArm", "RightArm", "Spine01", "Spine02"], oran: 0.78 },

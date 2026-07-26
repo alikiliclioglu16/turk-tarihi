@@ -229,7 +229,21 @@ export const tartan = yap((k, t) => {
   ekle(k, "Head", 0.32 + kontrol * 0.2);
 });
 
-/** ASKER — yay çekme: hazırlık, çekiş, nişan, bırakma, dinlenme */
+/**
+ * ASKER — GERÇEK OKÇULUK KLİBİ GELDİ
+ *
+ * Artık `Archery_Aim_with_Lateral_Scan` klibi var; yay çekme hareketini
+ * kodla taklit etmeye gerek kalmadı. Bu katman yalnız INCE AYAR yapıyor:
+ * nefes, mikro titreme ve baş takibi.
+ */
+export const askerOkGercek = yap((k, t) => {
+  canlilik(k, t, 0.42);
+  const nisanTitremesi = gurultu(t, 5.8, 1.1) * 0.008;
+  ekle(k, "LeftArm", nisanTitremesi);
+  ekle(k, "RightForeArm", nisanTitremesi * 0.6);
+});
+
+/** ASKER — yay çekme: klip yoksa tam prosedürel (yedek) */
 export const askerOk = yap((k, t) => {
   canlilik(k, t, 0.42);
   const periyot = 5.4;
@@ -417,6 +431,16 @@ export const ZANAAT_DUZELTMELERI: Record<string, KemikDuzeltme> = {
   demirci, okYapan, dokumaci, deriGeren, comlekci, ipBuken, keceBasan, asci,
   coban, avci, pazarci, tartan, guresci, atTerbiyecisi,
   ozan, dansci, asikAtan, asikIzleyen, cocuk, sohbet, bekleyen,
-  asker: askerOk,
+  asker: askerOkGercek,
   kilicTalimi,
+  baltaci: yap((k, t) => {
+    canlilik(k, t, 0.36);
+    ekle(k, "Spine01", 0.06);
+  }),
+  nobetci: yap((k, t) => {
+    canlilik(k, t, 0.72);
+    const tara = gurultu(t, 0.19, 2.8);
+    ekle(k, "Head", tara * 0.05, tara * 0.5);
+    ekle(k, "Spine01", 0, tara * 0.12);
+  }),
 };
