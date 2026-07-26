@@ -103,6 +103,26 @@ export function ElNesnesi({ kod }: { kod: string }) {
         </group>
       );
 
+    case "kopuz":
+      return (
+        <group position={[EL.x - 0.16, EL.y - 0.18, EL.z + 0.2]} rotation={[0.35, 0, -0.5]}>
+          <mesh position={[0, -0.1, 0]} castShadow>
+            <sphereGeometry args={[0.14, 12, 10]} />
+            <meshStandardMaterial map={ahsap} roughness={0.85} />
+          </mesh>
+          <mesh position={[0, 0.36, 0]} castShadow>
+            <cylinderGeometry args={[0.022, 0.026, 0.78, 6]} />
+            <meshStandardMaterial map={ahsap} roughness={0.88} />
+          </mesh>
+          {[-0.012, 0, 0.012].map((o, i) => (
+            <mesh key={i} position={[o, 0.2, 0.045]}>
+              <cylinderGeometry args={[0.0025, 0.0025, 0.9, 3]} />
+              <meshStandardMaterial color="#E4DCC8" roughness={1} />
+            </mesh>
+          ))}
+        </group>
+      );
+
     default:
       return null;
   }

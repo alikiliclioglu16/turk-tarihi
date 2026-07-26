@@ -127,8 +127,8 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     ad: "Kılıç Talimi",
     merkez: [4, -52],
     figurler: [
-      { id: "sk_asker1",  aktivite: "guresci", dx: -1.4, dz: 0, yon: Math.PI * 0.5, elde: "kilic" },
-      { id: "sk_asker2",  aktivite: "guresci", dx: 1.4,  dz: 0, yon: Math.PI * 1.5, elde: "kilic" },
+      { id: "sk_asker1",  aktivite: "kilicTalimi", dx: -1.4, dz: 0, yon: Math.PI * 0.5, elde: "kilic" },
+      { id: "sk_asker2",  aktivite: "kilicTalimi", dx: 1.4,  dz: 0, yon: Math.PI * 1.5, elde: "kilic" },
       { id: "sk_egitmen", aktivite: "bekleyen", dx: 0,   dz: 3.2, yon: null },
       { id: "sk_izleyen", aktivite: "bekleyen", dx: -4.2, dz: 2.4, yon: null },
     ],
@@ -206,6 +206,165 @@ export const SAHNELER: EtkinlikSahnesi[] = [
       { id: "sob_asci",  aktivite: "asci", dx: 1.4, dz: 0.6, yon: Math.PI * 1.55, elde: "kepce" },
       { id: "sob_yardim", aktivite: "bekleyen", dx: -1.6, dz: 1.2, yon: null },
       { id: "sob_cocuk", aktivite: "cocuk", dx: 0.4, dz: 2.4, yon: null, boy: 1.14 },
+    ],
+  },
+
+  /* ---------- PAZAR TEZGÂHI ----------
+     Satıcı tezgâhın arkasında, müşteriler önünde, tartıcı yanda. */
+  {
+    id: "sahne_pazar",
+    ad: "Pazar Tezgâhı",
+    merkez: [44, -34],
+    nesne: "P01",
+    figurler: [
+      { id: "sp_satici1",   aktivite: "pazarci",  dx: 0,    dz: -1.3, yon: 0 },
+      { id: "sp_musteri1",  aktivite: "bekleyen", dx: -0.8, dz: 1.5,  yon: null },
+      { id: "sp_musteri2",  aktivite: "sohbet",   dx: 1.2,  dz: 1.7,  yon: null },
+      { id: "sp_tartici",   aktivite: "tartan",   dx: 3.4,  dz: -1.1, yon: 0.3 },
+      { id: "sp_satici2",   aktivite: "pazarci",  dx: -4.2, dz: -1.3, yon: 0 },
+      { id: "sp_musteri3",  aktivite: "sohbet",   dx: -4.6, dz: 1.6,  yon: null },
+      { id: "sp_cocuk",     aktivite: "cocuk",    dx: 2.2,  dz: 2.8,  yon: null, boy: 1.16 },
+    ],
+  },
+
+  /* ---------- HALKA OYUNU ----------
+     Altı dansçı halka olmuş, hepsi merkeze dönük, ozan kenarda. */
+  {
+    id: "sahne_halka_oyunu",
+    ad: "Halka Oyunu",
+    merkez: [-2, 31],
+    figurler: [
+      { id: "sh_dans1", aktivite: "dansci", dx: 0,     dz: -3.2, yon: null },
+      { id: "sh_dans2", aktivite: "dansci", dx: 2.8,   dz: -1.6, yon: null },
+      { id: "sh_dans3", aktivite: "dansci", dx: 2.8,   dz: 1.6,  yon: null },
+      { id: "sh_dans4", aktivite: "dansci", dx: 0,     dz: 3.2,  yon: null },
+      { id: "sh_dans5", aktivite: "dansci", dx: -2.8,  dz: 1.6,  yon: null },
+      { id: "sh_dans6", aktivite: "dansci", dx: -2.8,  dz: -1.6, yon: null },
+      { id: "sh_izleyen1", aktivite: "bekleyen", dx: 5.4, dz: 2.6, yon: null },
+      { id: "sh_izleyen2", aktivite: "sohbet",   dx: -5.2, dz: 3.0, yon: null },
+    ],
+  },
+
+  /* ---------- OZAN VE DİNLEYİCİLER ----------
+     Ozan oturmuş kopuz çalıyor, dinleyiciler yarım daire. */
+  {
+    id: "sahne_ozan",
+    ad: "Ozan",
+    merkez: [4, 27],
+    figurler: [
+      { id: "soz_ozan",   aktivite: "ozan",     dx: 0,    dz: 0,   yon: 0, elde: "kopuz" },
+      { id: "soz_dinle1", aktivite: "bekleyen", dx: -2.2, dz: 2.4, yon: null },
+      { id: "soz_dinle2", aktivite: "sohbet",   dx: 0.4,  dz: 3.0, yon: null },
+      { id: "soz_dinle3", aktivite: "bekleyen", dx: 2.6,  dz: 2.2, yon: null },
+      { id: "soz_cocuk",  aktivite: "cocuk",    dx: 1.2,  dz: 1.6, yon: null, boy: 1.12 },
+    ],
+  },
+
+  /* ---------- AŞIK OYUNU ----------
+     Bir çocuk atıyor, üçü çömelmiş izliyor. */
+  {
+    id: "sahne_asik_oyunu",
+    ad: "Aşık Oyunu",
+    merkez: [10.5, 13.5],
+    nesne: "P04",
+    figurler: [
+      { id: "sao_atan",  aktivite: "asikAtan",    dx: 0,    dz: -1.3, yon: 0,    boy: 1.18 },
+      { id: "sao_izle1", aktivite: "asikIzleyen", dx: 1.3,  dz: 1.0,  yon: null, boy: 1.14 },
+      { id: "sao_izle2", aktivite: "asikIzleyen", dx: -1.3, dz: 1.0,  yon: null, boy: 1.2 },
+      { id: "sao_izle3", aktivite: "asikIzleyen", dx: 0.2,  dz: 1.7,  yon: null, boy: 1.1 },
+    ],
+  },
+
+  /* ---------- KOŞMACA ----------
+     Üç çocuk koşuyor, biri kovalıyor. */
+  {
+    id: "sahne_kosmaca",
+    ad: "Koşmaca",
+    merkez: [16, 18],
+    figurler: [
+      { id: "sko_1", aktivite: "cocuk", dx: 0,    dz: 0,   yon: 0.6,  boy: 1.16 },
+      { id: "sko_2", aktivite: "cocuk", dx: 3.2,  dz: 1.4, yon: 0.9,  boy: 1.2 },
+      { id: "sko_3", aktivite: "cocuk", dx: -2.6, dz: 2.2, yon: 0.3,  boy: 1.12 },
+    ],
+  },
+
+  /* ---------- BİLEK GÜREŞİ ----------
+     İki çocuk alçak taşın başında karşılıklı. */
+  {
+    id: "sahne_bilek_guresi",
+    ad: "Bilek Güreşi",
+    merkez: [7, 16],
+    figurler: [
+      { id: "sbg_1", aktivite: "guresci", dx: -0.7, dz: 0, yon: Math.PI * 0.5,  boy: 1.18 },
+      { id: "sbg_2", aktivite: "guresci", dx: 0.7,  dz: 0, yon: Math.PI * 1.5,  boy: 1.16 },
+      { id: "sbg_izleyen", aktivite: "cocuk", dx: 0, dz: 1.8, yon: null, boy: 1.1 },
+    ],
+  },
+
+  /* ---------- ATLI TALİM (ordugâh) ---------- */
+  {
+    id: "sahne_atli_talim",
+    ad: "Atlı Talim",
+    merkez: [22, -58],
+    nesne: "O03",
+    figurler: [
+      { id: "sat_asker1", aktivite: "asker",    dx: -3.0, dz: 4.2, yon: Math.PI, elde: "yay" },
+      { id: "sat_asker2", aktivite: "asker",    dx: 0.4,  dz: 4.6, yon: Math.PI, elde: "yay" },
+      { id: "sat_egitmen", aktivite: "bekleyen", dx: 3.6, dz: 3.4, yon: Math.PI * 1.3 },
+    ],
+    hayvanlar: [
+      { tur: "at", dx: -5.5, dz: 1.2 },
+      { tur: "at", dx: -6.8, dz: 2.6 },
+    ],
+  },
+
+  /* ---------- SANCAK VE NÖBET (ordugâh) ---------- */
+  {
+    id: "sahne_sancak",
+    ad: "Sancak Yeri",
+    merkez: [10, -46],
+    nesne: "O04",
+    figurler: [
+      { id: "ss_nobetci1", aktivite: "asker",    dx: 1.6,  dz: 1.2, yon: Math.PI * 1.2, elde: "yay" },
+      { id: "ss_nobetci2", aktivite: "bekleyen", dx: -1.8, dz: 1.4, yon: Math.PI * 0.85 },
+      { id: "ss_subay",    aktivite: "sohbet",   dx: 0.2,  dz: 3.2, yon: null },
+    ],
+  },
+
+  /* ---------- AT KOŞUMU ---------- */
+  {
+    id: "sahne_at_kosumu",
+    ad: "At Koşumu",
+    merkez: [-9, -4],
+    figurler: [
+      { id: "sak_usta", aktivite: "deriGeren", dx: 1.2, dz: 0.4, yon: Math.PI * 1.5 },
+      { id: "sak_yardim", aktivite: "bekleyen", dx: -1.6, dz: 1.2, yon: null },
+    ],
+    hayvanlar: [{ tur: "at", dx: 0, dz: 0 }],
+  },
+
+  /* ---------- DÜĞÜN HAZIRLIĞI ---------- */
+  {
+    id: "sahne_dugun",
+    ad: "Düğün Hazırlığı",
+    merkez: [-5, 24],
+    figurler: [
+      { id: "sdg_1", aktivite: "dokumaci", dx: 0,    dz: 0,   yon: 0 },
+      { id: "sdg_2", aktivite: "asci",     dx: 2.4,  dz: 0.6, yon: 0.4 },
+      { id: "sdg_3", aktivite: "sohbet",   dx: -2.2, dz: 1.2, yon: null },
+      { id: "sdg_4", aktivite: "bekleyen", dx: 0.8,  dz: 2.4, yon: null },
+    ],
+  },
+
+  /* ---------- İP BÜKME (konum düzeltildi) ---------- */
+  {
+    id: "sahne_ip_bukme",
+    ad: "İp Bükme",
+    merkez: [-6, 20],
+    nesne: "Z07",
+    figurler: [
+      { id: "sib_usta",  aktivite: "ipBuken", dx: 0,    dz: 1.0, yon: Math.PI },
+      { id: "sib_yardim", aktivite: "ipBuken", dx: -1.7, dz: 0.9, yon: Math.PI * 0.9 },
     ],
   },
 ];

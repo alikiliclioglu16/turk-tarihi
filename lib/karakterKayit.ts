@@ -48,14 +48,15 @@ export const AKTIVITE_KARAKTER: Record<string, KarakterTuru> = {
   // kadın modeli gelene kadar zanaatkâr modeli kullanılır
   dokumaci: "zanaatkar_erkek",
   asci: "zanaatkar_erkek",
-  dansci: "kadin_zanaat",
   asker: "zanaatkar_erkek",
   guresci: "zanaatkar_erkek",
+  kilicTalimi: "zanaatkar_erkek",
+  ozan: "zanaatkar_erkek",
+  dansci: "zanaatkar_erkek",
+  cocuk: "zanaatkar_erkek",
+  asikAtan: "zanaatkar_erkek",
+  asikIzleyen: "zanaatkar_erkek",
   atTerbiyecisi: "zanaatkar_erkek",
-  ozan: "yasli_erkek",
-  cocuk: "cocuk_erkek",
-  asikAtan: "cocuk_erkek",
-  asikIzleyen: "cocuk_erkek",
 };
 
 /** Aktivite → hangi taban klip */
@@ -73,6 +74,7 @@ export const AKTIVITE_KLIP: Record<string, OyunKlibi> = {
   asikIzleyen: "work_ground",
   asker: "shoot_bow",
   guresci: "wrestle",
+  kilicTalimi: "sword_practice",
   atTerbiyecisi: "idle",
   dansci: "dance",
   pazarci: "talk",
