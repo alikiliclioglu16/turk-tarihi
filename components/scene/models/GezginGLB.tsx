@@ -112,9 +112,18 @@ export function GezginGLB({ klip, gecis = 0.28, tempo = 1 }: Props) {
     actions[ad]!.timeScale = hareketli ? Math.max(0.4, tempo) : 1;
 
     // Karışım tamamlandıktan sonra kolları hafifçe içeri al
-    // birikme koruması: animasyon çalışmıyorsa düzeltme uygulanmaz
+    // birikme koruması
     const eylem = ad ? actions[ad] : null;
-    if (!eylem || !eylem.isRunning()) return;
+    if (!eylem) return;
+    if (!eylem.isRunning()) { eylem.reset().play(); return; }
+
+    // açı sınırlayıcı — birikme olursa bile kontrolden çıkmaz
+    const s = kollar.current;
+    for (const b of [s.sol, s.sag]) {
+      if (!b) continue;
+      b.rotation.z = THREE.MathUtils.clamp(b.rotation.z, -2.2, 2.2);
+      b.rotation.x = THREE.MathUtils.clamp(b.rotation.x, -2.2, 2.2);
+    }
     const uygula = klip === "idle" || klip === "walk";
     const { sol, sag } = kollar.current;
     if (uygula && KOL_DUZELTME > 0) {
