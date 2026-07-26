@@ -43,6 +43,9 @@ export const AKTIVITE_KARAKTER: Record<string, KarakterTuru> = {
   pazarci: "zanaatkar_erkek",
   tartan: "zanaatkar_erkek",
   sohbet: "zanaatkar_erkek",
+  dinleyen: "zanaatkar_erkek",
+  dinleyenOturan: "zanaatkar_erkek",
+  anlatan: "zanaatkar_erkek",
   bekleyen: "zanaatkar_erkek",
   // henüz modeli gelmeyenler
   // kadın modeli gelene kadar zanaatkâr modeli kullanılır
@@ -84,6 +87,9 @@ export const AKTIVITE_KLIP: Record<string, OyunKlibi> = {
   pazarci: "talk",
   tartan: "talk",
   sohbet: "talk",
+  dinleyen: "idle",
+  dinleyenOturan: "sit",
+  anlatan: "talk",
   bekleyen: "idle",
   coban: "walk",
   avci: "walk",

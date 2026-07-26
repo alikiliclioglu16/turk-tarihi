@@ -58,10 +58,10 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     merkez: [-26, 6],
     nesne: "P02",
     figurler: [
-      { id: "sd_usta",     aktivite: "demirci",  dx: 2.3,  dz: 0.2,  yon: Math.PI * 1.5, elde: "cekic" },
-      { id: "sd_korukcu",  aktivite: "keceBasan", dx: -1.9, dz: 0.1, yon: Math.PI * 0.5 },
-      { id: "sd_bekleyen", aktivite: "bekleyen", dx: 0.4,  dz: 2.4,  yon: null },
-      { id: "sd_cirak",    aktivite: "demirci",  dx: 2.6,  dz: 1.6,  yon: Math.PI * 1.35, elde: "cekic" },
+      { id: "sd_usta",     aktivite: "demirci",       dx: 1.9,  dz: 0.2,  yon: Math.PI * 1.5, elde: "cekic" },
+      { id: "sd_korukcu",  aktivite: "keceBasan",     dx: -1.3, dz: 0.1,  yon: Math.PI * 0.5 },
+      { id: "sd_cirak",    aktivite: "asci",          dx: 1.6,  dz: 1.3,  yon: Math.PI * 1.35 },
+      { id: "sd_izleyen",  aktivite: "dinleyen",      dx: 0.2,  dz: 1.9,  yon: null },
     ],
   },
 
@@ -74,9 +74,9 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     nesne: "Z06",
     figurler: [
       { id: "sa_terbiyeci", aktivite: "atTerbiyecisi", dx: 0, dz: 0, yon: null },
-      { id: "sa_izleyen1",  aktivite: "bekleyen", dx: 7.2,  dz: 1.2,  yon: null },
-      { id: "sa_izleyen2",  aktivite: "bekleyen", dx: 6.4,  dz: -3.2, yon: null },
-      { id: "sa_izleyen3",  aktivite: "sohbet",   dx: -6.8, dz: 2.6,  yon: null },
+      { id: "sa_izleyen1",  aktivite: "dinleyen", dx: 6.4,  dz: 1.0,  yon: null },
+      { id: "sa_izleyen2",  aktivite: "izleyenComelmis", dx: 5.8,  dz: -2.6, yon: null },
+      { id: "sa_izleyen3",  aktivite: "dinleyen",   dx: -6.0, dz: 2.2,  yon: null },
     ],
     hayvanlar: [
       { tur: "at", dx: 0, dz: 0, dairesel: { yaricap: 4.6, hiz: 0.42 } },
@@ -95,8 +95,8 @@ export const SAHNELER: EtkinlikSahnesi[] = [
       { id: "so_okcu1",  aktivite: "asker", dx: 0.0,  dz: 7.0, yon: Math.PI },
       { id: "so_okcu2",  aktivite: "asker", dx: 2.2,  dz: 7.2, yon: Math.PI },
       { id: "so_okcu3",  aktivite: "asker", dx: -2.2, dz: 7.1, yon: Math.PI },
-      { id: "so_egitmen", aktivite: "bekleyen", dx: 4.4, dz: 6.0, yon: Math.PI * 1.35 },
-      { id: "so_bekleyen", aktivite: "sohbet", dx: -4.6, dz: 8.4, yon: Math.PI * 0.9 },
+      { id: "so_egitmen", aktivite: "anlatan", dx: 2.8, dz: 6.2, yon: Math.PI * 1.35 },
+      { id: "so_bekleyen", aktivite: "dinleyen", dx: -3.0, dz: 8.0, yon: Math.PI * 0.9 },
     ],
   },
 
@@ -111,12 +111,12 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     figurler: [
       { id: "sg_pehlivan1", aktivite: "guresci", dx: -0.8, dz: 0, yon: Math.PI * 0.5 },
       { id: "sg_pehlivan2", aktivite: "guresci", dx: 0.8,  dz: 0, yon: Math.PI * 1.5 },
-      { id: "sg_hakem",     aktivite: "bekleyen", dx: 0,   dz: 2.6, yon: null },
-      { id: "sg_seyirci1",  aktivite: "bekleyen", dx: 4.6, dz: 2.2, yon: null },
-      { id: "sg_seyirci2",  aktivite: "sohbet",   dx: -4.4, dz: 2.6, yon: null },
-      { id: "sg_seyirci3",  aktivite: "bekleyen", dx: 3.4, dz: -3.8, yon: null },
-      { id: "sg_seyirci4",  aktivite: "sohbet",   dx: -3.8, dz: -3.4, yon: null },
-      { id: "sg_seyirci5",  aktivite: "cocuk",    dx: 1.2,  dz: 4.6, yon: null, boy: 1.18 },
+      { id: "sg_hakem",     aktivite: "anlatan", dx: 0,   dz: 2.6, yon: null },
+      { id: "sg_seyirci1",  aktivite: "dinleyen", dx: 3.0, dz: 1.7, yon: null },
+      { id: "sg_seyirci2",  aktivite: "sohbet",   dx: -2.9, dz: 1.9, yon: null },
+      { id: "sg_seyirci3",  aktivite: "izleyenComelmis", dx: 2.3, dz: -2.5, yon: null },
+      { id: "sg_seyirci4",  aktivite: "sohbet",   dx: -2.5, dz: -2.3, yon: null },
+      { id: "sg_seyirci5",  aktivite: "izleyenComelmis",    dx: 0.8,  dz: 2.9, yon: null, boy: 1.18 },
     ],
   },
 
@@ -129,8 +129,8 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     figurler: [
       { id: "sk_asker1",  aktivite: "kilicTalimi", dx: -1.4, dz: 0, yon: Math.PI * 0.5 },
       { id: "sk_asker2",  aktivite: "kilicTalimi", dx: 1.4,  dz: 0, yon: Math.PI * 1.5 },
-      { id: "sk_egitmen", aktivite: "bekleyen", dx: 0,   dz: 3.2, yon: null },
-      { id: "sk_izleyen", aktivite: "bekleyen", dx: -4.2, dz: 2.4, yon: null },
+      { id: "sk_egitmen", aktivite: "anlatan", dx: 0,   dz: 2.4, yon: null },
+      { id: "sk_izleyen", aktivite: "dinleyen", dx: -2.8, dz: 1.9, yon: null },
       { id: "sk_baltaci", aktivite: "baltaci",  dx: 4.6, dz: -1.2, yon: Math.PI * 1.7 },
     ],
   },
@@ -218,9 +218,9 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     merkez: [44, -34],
     nesne: "P01",
     figurler: [
-      { id: "sp_satici1",   aktivite: "pazarci",  dx: 0,    dz: -1.3, yon: 0 },
-      { id: "sp_musteri1",  aktivite: "bekleyen", dx: -0.8, dz: 1.5,  yon: null },
-      { id: "sp_musteri2",  aktivite: "sohbet",   dx: 1.2,  dz: 1.7,  yon: null },
+      { id: "sp_satici1",   aktivite: "pazarci",  dx: 0,    dz: -1.0, yon: 0 },
+      { id: "sp_musteri1",  aktivite: "dinleyen", dx: -0.7, dz: 1.0,  yon: null },
+      { id: "sp_musteri2",  aktivite: "sohbet",   dx: 0.9,  dz: 1.1,  yon: null },
       { id: "sp_tartici",   aktivite: "tartan",   dx: 3.4,  dz: -1.1, yon: 0.3 },
       { id: "sp_satici2",   aktivite: "pazarci",  dx: -4.2, dz: -1.3, yon: 0 },
       { id: "sp_musteri3",  aktivite: "sohbet",   dx: -4.6, dz: 1.6,  yon: null },
@@ -253,11 +253,13 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     ad: "Ozan",
     merkez: [4, 27],
     figurler: [
-      { id: "soz_ozan",   aktivite: "ozan",     dx: 0,    dz: 0,   yon: 0, elde: "kopuz" },
-      { id: "soz_dinle1", aktivite: "bekleyen", dx: -2.2, dz: 2.4, yon: null },
-      { id: "soz_dinle2", aktivite: "sohbet",   dx: 0.4,  dz: 3.0, yon: null },
-      { id: "soz_dinle3", aktivite: "bekleyen", dx: 2.6,  dz: 2.2, yon: null },
-      { id: "soz_cocuk",  aktivite: "cocuk",    dx: 1.2,  dz: 1.6, yon: null, boy: 1.12 },
+      { id: "soz_ozan",   aktivite: "ozan",           dx: 0,    dz: 0,   yon: 0, elde: "kopuz" },
+      { id: "soz_dinle1", aktivite: "dinleyenOturan", dx: -1.5, dz: 1.6, yon: null },
+      { id: "soz_dinle2", aktivite: "dinleyenOturan", dx: 0.3,  dz: 2.0, yon: null },
+      { id: "soz_dinle3", aktivite: "dinleyenOturan", dx: 1.7,  dz: 1.5, yon: null },
+      { id: "soz_dinle4", aktivite: "dinleyen",       dx: -2.4, dz: 0.5, yon: null },
+      { id: "soz_cocuk",  aktivite: "izleyenComelmis", dx: 0.9, dz: 1.1, yon: null, boy: 1.12 },
+      { id: "soz_cocuk2", aktivite: "izleyenComelmis", dx: -0.7, dz: 1.0, yon: null, boy: 1.16 },
     ],
   },
 
@@ -269,10 +271,10 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     merkez: [10.5, 13.5],
     nesne: "P04",
     figurler: [
-      { id: "sao_atan",  aktivite: "asikAtan",    dx: 0,    dz: -1.3, yon: 0,    boy: 1.18 },
-      { id: "sao_izle1", aktivite: "asikIzleyen", dx: 1.3,  dz: 1.0,  yon: null, boy: 1.14 },
-      { id: "sao_izle2", aktivite: "asikIzleyen", dx: -1.3, dz: 1.0,  yon: null, boy: 1.2 },
-      { id: "sao_izle3", aktivite: "asikIzleyen", dx: 0.2,  dz: 1.7,  yon: null, boy: 1.1 },
+      { id: "sao_atan",  aktivite: "asikAtan",    dx: 0,    dz: -0.9, yon: 0,    boy: 1.18 },
+      { id: "sao_izle1", aktivite: "asikIzleyen", dx: 0.9,  dz: 0.7,  yon: null, boy: 1.14 },
+      { id: "sao_izle2", aktivite: "asikIzleyen", dx: -0.9, dz: 0.7,  yon: null, boy: 1.2 },
+      { id: "sao_izle3", aktivite: "asikIzleyen", dx: 0.1,  dz: 1.2,  yon: null, boy: 1.1 },
     ],
   },
 
@@ -366,6 +368,54 @@ export const SAHNELER: EtkinlikSahnesi[] = [
     figurler: [
       { id: "sib_usta",  aktivite: "ipBuken", dx: 0,    dz: 1.0, yon: Math.PI },
       { id: "sib_yardim", aktivite: "ipBuken", dx: -1.7, dz: 0.9, yon: Math.PI * 0.9 },
+    ],
+  },
+
+  /* ---------- DERS HALKASI ----------
+     Ancient Egypt'teki sınıf sahnesinin karşılığı: bir usta anlatıyor,
+     çocuklar yere oturmuş dinliyor. Dönem doğrusu — bozkırda bilgi
+     sözle ve göstererek aktarılırdı. */
+  {
+    id: "sahne_ders_halkasi",
+    ad: "Ders Halkası",
+    merkez: [-3, 18],
+    figurler: [
+      { id: "sdh_usta", aktivite: "anlatan",         dx: 0,    dz: -1.8, yon: 0 },
+      { id: "sdh_c1",   aktivite: "dinleyenOturan",  dx: -1.6, dz: 0.4,  yon: null, boy: 1.16 },
+      { id: "sdh_c2",   aktivite: "dinleyenOturan",  dx: -0.6, dz: 0.9,  yon: null, boy: 1.2 },
+      { id: "sdh_c3",   aktivite: "dinleyenOturan",  dx: 0.6,  dz: 0.9,  yon: null, boy: 1.12 },
+      { id: "sdh_c4",   aktivite: "dinleyenOturan",  dx: 1.6,  dz: 0.4,  yon: null, boy: 1.18 },
+      { id: "sdh_c5",   aktivite: "izleyenComelmis", dx: -1.1, dz: 1.7,  yon: null, boy: 1.1 },
+      { id: "sdh_c6",   aktivite: "izleyenComelmis", dx: 1.0,  dz: 1.8,  yon: null, boy: 1.14 },
+      { id: "sdh_ana",  aktivite: "dinleyen",        dx: 2.8,  dz: 1.2,  yon: null },
+    ],
+  },
+
+  /* ---------- SU BAŞI SOHBETİ ---------- */
+  {
+    id: "sahne_su_sohbeti",
+    ad: "Su Başı Sohbeti",
+    merkez: [58, 30],
+    figurler: [
+      { id: "sss_dolduran",  aktivite: "asci",            dx: 0,    dz: 0,   yon: 0 },
+      { id: "sss_bekleyen1", aktivite: "sohbet",          dx: -1.4, dz: 1.1, yon: null },
+      { id: "sss_bekleyen2", aktivite: "dinleyen",        dx: 0.5,  dz: 1.5, yon: null },
+      { id: "sss_comelen",   aktivite: "izleyenComelmis", dx: 1.7,  dz: 0.6, yon: null },
+    ],
+  },
+
+  /* ---------- OCAK SOHBETİ ---------- */
+  {
+    id: "sahne_ocak_sohbeti",
+    ad: "Ocak Sohbeti",
+    merkez: [-30, 26],
+    nesne: "A05",
+    figurler: [
+      { id: "sos_anlatan", aktivite: "anlatan",         dx: 0,    dz: -1.6, yon: 0 },
+      { id: "sos_d1",      aktivite: "dinleyenOturan",  dx: -1.5, dz: 0.5,  yon: null },
+      { id: "sos_d2",      aktivite: "dinleyenOturan",  dx: 0.2,  dz: 1.2,  yon: null },
+      { id: "sos_d3",      aktivite: "dinleyenOturan",  dx: 1.5,  dz: 0.4,  yon: null },
+      { id: "sos_c",       aktivite: "izleyenComelmis", dx: 0.7,  dz: 1.9,  yon: null, boy: 1.15 },
     ],
   },
 ];

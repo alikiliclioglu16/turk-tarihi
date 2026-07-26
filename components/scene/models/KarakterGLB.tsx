@@ -124,12 +124,23 @@ export function KarakterGLB({
 
   /** Prosedürel katman — animasyon karışımından SONRA çalışır */
   /**
-   * Prosedürel katman. useAnimations kendi güncellemesini öncelik 0'da
-   * yapar; bu geri çağrı ondan SONRA kaydedildiği için kemikler
-   * animasyon uygulandıktan sonra düzeltilir.
+   * PROSEDÜREL KATMAN
+   *
+   * KRİTİK: `ekle()` kemik dönüşüne EKLEME yapar. Bu yalnız animasyon
+   * karışımı her karede dönüşleri SIFIRLADIĞI için güvenlidir.
+   *
+   * Animasyon çalışmıyorsa (klip bulunamadı, eylem duraklatıldı) ekleme
+   * sonsuza kadar birikir — saniyede 60 kez. Birkaç saniyede kemikler
+   * çılgına döner; figür "deli dana gibi" hareket eder.
+   *
+   * Bu yüzden düzeltme YALNIZ etkin bir eylem varken uygulanır.
    */
   useFrame(({ clock }) => {
-    if (duzeltme) duzeltme.uygula(kemikler, clock.elapsedTime + faz * 10);
+    if (!duzeltme) return;
+    const ad = onceki.current;
+    const eylem = ad ? actions[ad] : null;
+    if (!eylem || !eylem.isRunning()) return;   // ← birikme koruması
+    duzeltme.uygula(kemikler, clock.elapsedTime + faz * 10);
   });
 
   useEffect(() => () => { mixer.stopAllAction(); }, [mixer]);

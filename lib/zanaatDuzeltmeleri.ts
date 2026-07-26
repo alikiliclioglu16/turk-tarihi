@@ -426,11 +426,31 @@ export const bekleyen = yap((k, t) => {
   ekle(k, "Hips", 0, kaydir * 0.12, kaydir * 0.05);
 });
 
-/** Aktivite adı → hareket */
+import { DURUSLAR } from "./durusKitapligi";
+
+/**
+ * Aktivite adı → hareket
+ *
+ * Oturan, çömelen ve yaslanan duruşlar `durusKitapligi`'ndan geliyor.
+ * Ancient Egypt sahnelerindeki en belirgin fark buydu: bir sahnede
+ * herkes ayakta durmuyor.
+ */
 export const ZANAAT_DUZELTMELERI: Record<string, KemikDuzeltme> = {
-  demirci, okYapan, dokumaci, deriGeren, comlekci, ipBuken, keceBasan, asci,
-  coban, avci, pazarci, tartan, guresci, atTerbiyecisi,
-  ozan, dansci, asikAtan, asikIzleyen, cocuk, sohbet, bekleyen,
+  // ---- oturan / çömelen duruşlar (öncelikli) ----
+  comlekci: DURUSLAR.comlekciOturan,
+  ipBuken: DURUSLAR.ipBukenOturan,
+  ozan: DURUSLAR.ozanOturan,
+  asci: DURUSLAR.asciDizUstu,
+  asikAtan: DURUSLAR.asikAtanComelmis,
+  asikIzleyen: DURUSLAR.izleyenComelmis,
+  pazarci: DURUSLAR.saticiYaslanan,
+  dinleyen: DURUSLAR.dinleyenAyakta,
+  dinleyenOturan: DURUSLAR.dinleyenOturan,
+  anlatan: DURUSLAR.anlatan,
+  // ---- ayakta çalışanlar ----
+  demirci, okYapan, dokumaci, deriGeren, keceBasan,
+  coban, avci, tartan, guresci, atTerbiyecisi,
+  dansci, cocuk, sohbet, bekleyen,
   asker: askerOkGercek,
   kilicTalimi,
   baltaci: yap((k, t) => {
